@@ -7,7 +7,7 @@
 FeidUp aims to simplify transactions and reward customers for their loyalty. With our user-friendly app, customers can earn points for every purchase at participating restaurants. These points can be redeemed for discounts, gift cards, or even cashed out to provide direct financial benefits. Our unique model also includes funding the cost of packaging through targeted advertisements from local businesses.
 
 ### Key Features:
-- **Universal Payments**: Enable secure, fast, and easy payments across a variety of devices, similar to platforms like UPI and PayTM in India.
+- **Universal Payments**: Enable secure, fast, and easy payments across a variety of devices.
 - **Reward Points**: Customers earn points on every purchase, which can be redeemed for discounts, gift cards, or even cashed out.
 - **Sustainable Packaging**: Family-owned restaurants can access free packaging funded by local businesses through advertisements on the packaging.
 - **Targeted Advertising**: Businesses can advertise directly on packaging, reaching the ideal demographic using Google Maps and Google Trends to pair the right restaurant with the right business.
