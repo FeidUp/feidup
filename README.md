@@ -19,7 +19,7 @@ FeidUp aims to simplify transactions and reward customers for their loyalty. Wit
 2. **Onboarding Restaurants**: Focus on onboarding family-owned restaurants and small businesses to participate in the program.
 3. **User Acquisition**: Start building a loyal user base through targeted marketing campaigns, local community outreach, and partnerships with restaurants.
 4. **Sustainability Focus**: Establish partnerships with eco-friendly packaging providers and promote our sustainable model.
-5. **Early Testing & Feedback**: Conduct beta tests to gather user feedback and optimize the app's features for better user experience.
+5. **Early Testing & Feedback**: Conduct beta tests to gather user feedback and optimise the app's features for better user experience.
 
 ### Long-Term Goals (1-5 Years)
 1. **Scale and Expansion**: Expand the app's reach to more regions, starting with local areas and gradually expanding nationally.
@@ -34,7 +34,7 @@ FeidUp operates on a **multi-revenue model**:
 
 1. **Transaction Fees**: A small percentage of each transaction goes to FeidUp to sustain app operations.
 2. **Advertisement Revenue**: Local businesses can advertise on packaging, reaching a large, targeted audience at an affordable cost. FeidUp receives a share of the ad revenue.
-3. **Subscription for Businesses**: Restaurants can subscribe to FeidUp for premium features such as advanced customer analytics, customizable rewards, and more exposure on the platform.
+3. **Subscription for Businesses**: Restaurants can subscribe to FeidUp for premium features such as advanced customer analytics, customisable rewards, and more exposure on the platform.
 
 ## 📅 Roadmap
 
@@ -54,12 +54,12 @@ FeidUp operates on a **multi-revenue model**:
 
 ### Phase 4: Global Reach and Impact (3-5 years)
 - Expand into multiple countries, focusing on areas with high numbers of family-owned restaurants and small businesses.
-- Invest in technology to optimize ad targeting, rewards redemption, and packaging sustainability.
+- Invest in technology to optimise ad targeting, rewards redemption, and packaging sustainability.
 
 ## 📣 Marketing & Customer Acquisition Strategy
 
-1. **Targeted Local Marketing**: Focus on building strong relationships with local restaurants and businesses, incentivizing them to join FeidUp with low barriers to entry.
-2. **Social Media & Influencers**: Utilize social media platforms, influencers, and word-of-mouth marketing to spread awareness about FeidUp and its benefits.
+1. **Targeted Local Marketing**: Focus on building strong relationships with local restaurants and businesses, incentivising them to join FeidUp with low barriers to entry.
+2. **Social Media & Influencers**: Utilise social media platforms, influencers, and word-of-mouth marketing to spread awareness about FeidUp and its benefits.
 3. **Community Engagement**: Participate in local events, support community-driven initiatives, and collaborate with local nonprofits to promote FeidUp as a brand that gives back to the community.
 4. **Referral Programs**: Offer referral bonuses for users who bring in new customers and businesses to the platform.
 
