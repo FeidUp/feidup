@@ -104,7 +104,8 @@ const Home = () => {
           background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
           color: 'white',
           pt: { xs: 8, md: 12 },
-          pb: { xs: 10, md: 16 }
+          pb: { xs: 10, md: 16 },
+          textAlign: isMobile ? 'center' : 'left',
         }}
       >
         <Container maxWidth="lg">
