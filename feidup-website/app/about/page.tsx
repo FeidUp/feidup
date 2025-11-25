@@ -11,11 +11,11 @@ export default function AboutPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white py-24">
+      <section className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-5xl sm:text-6xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-6">
-              About <span className="text-[hsl(14,86%,57%)]">FeidUp</span>
+              About <span className="text-[hsl(0,83%,59%)]">FeidUp</span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
               We're transforming the way brands connect with audiences by turning everyday 
@@ -59,7 +59,7 @@ export default function AboutPage() {
       </section>
 
       {/* Short-Term Goals Section */}
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-[hsl(43,47%,95%)]">
+      <section className="py-24 bg-gradient-to-br from-gray-50 to-[hsl(51,39%,94%)]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="order-2 lg:order-1">
@@ -106,8 +106,8 @@ export default function AboutPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
+              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
@@ -121,8 +121,8 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
+              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                 </svg>
@@ -136,8 +136,8 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
+              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
@@ -155,7 +155,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-[hsl(43,47%,95%)]">
+      <section className="py-24 bg-gradient-to-br from-gray-50 to-[hsl(51,39%,94%)]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-4">
@@ -165,7 +165,7 @@ export default function AboutPage() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="bg-white p-8 rounded-3xl shadow-lg">
-              <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-[hsl(14,86%,57%)] mb-3">
+              <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-[hsl(0,83%,59%)] mb-3">
                 Community-Driven
               </h3>
               <p className="text-gray-600">
@@ -174,7 +174,7 @@ export default function AboutPage() {
             </div>
 
             <div className="bg-white p-8 rounded-3xl shadow-lg">
-              <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-[hsl(14,86%,57%)] mb-3">
+              <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-[hsl(0,83%,59%)] mb-3">
                 Design Excellence
               </h3>
               <p className="text-gray-600">
@@ -184,7 +184,7 @@ export default function AboutPage() {
             </div>
 
             <div className="bg-white p-8 rounded-3xl shadow-lg">
-              <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-[hsl(14,86%,57%)] mb-3">
+              <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-[hsl(0,83%,59%)] mb-3">
                 Sustainability Focus
               </h3>
               <p className="text-gray-600">
@@ -194,7 +194,7 @@ export default function AboutPage() {
             </div>
 
             <div className="bg-white p-8 rounded-3xl shadow-lg">
-              <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-[hsl(14,86%,57%)] mb-3">
+              <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-[hsl(0,83%,59%)] mb-3">
                 Mutual Value
               </h3>
               <p className="text-gray-600">
@@ -206,7 +206,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)]">
+      <section className="py-24 bg-gradient-to-r from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold font-[family-name:var(--font-fredoka)] text-white mb-6">
             Join Our Mission
@@ -215,7 +215,7 @@ export default function AboutPage() {
             Whether you're an advertiser looking for authentic reach or a café seeking 
             premium packaging, we'd love to work with you.
           </p>
-          <Button href="/contact" variant="secondary" className="bg-white text-[hsl(14,86%,57%)] border-0 hover:bg-gray-100">
+          <Button href="/contact" variant="secondary" className="bg-white text-[hsl(0,83%,59%)] border-0 hover:bg-gray-100">
             Get in Touch
           </Button>
         </div>

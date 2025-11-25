@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function Header() {
@@ -21,12 +22,13 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl font-[family-name:var(--font-fredoka)]">F</span>
-              </div>
-              <span className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900">
-                FeidUp
-              </span>
+              <Image 
+                src="/images/feidup-logo.png" 
+                alt="FeidUp Logo" 
+                width={120} 
+                height={60}
+                className="h-12 w-auto"
+              />
             </Link>
           </div>
 
@@ -36,7 +38,7 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 hover:text-[hsl(14,86%,57%)] transition-colors font-medium"
+                className="text-gray-700 hover:text-[hsl(0, 83%, 59%)] transition-colors font-medium"
               >
                 {item.name}
               </Link>
@@ -70,7 +72,7 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-[hsl(14,86%,57%)] rounded-md transition-colors"
+                  className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-[hsl(0, 83%, 59%)] rounded-md transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}

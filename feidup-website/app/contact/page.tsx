@@ -51,11 +51,11 @@ export default function ContactPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white py-24">
+      <section className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-5xl sm:text-6xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-6">
-              Get in <span className="text-[hsl(14,86%,57%)]">Touch</span>
+              Get in <span className="text-[hsl(0,83%,59%)]">Touch</span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
               Whether you're an advertiser looking for targeted impressions or a café 
@@ -68,7 +68,7 @@ export default function ContactPage() {
       {/* Contact Form Section */}
       <section className="py-24 bg-white">
         <div className="mx-auto max-w-3xl px-6 lg:px-8">
-          <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100">
+          <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name */}
               <div>
@@ -82,7 +82,7 @@ export default function ContactPage() {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[hsl(14,86%,57%)] focus:border-transparent outline-none transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[hsl(0,83%,59%)] focus:border-transparent outline-none transition-all"
                   placeholder="Your full name"
                 />
               </div>
@@ -99,7 +99,7 @@ export default function ContactPage() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[hsl(14,86%,57%)] focus:border-transparent outline-none transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[hsl(0,83%,59%)] focus:border-transparent outline-none transition-all"
                   placeholder="your@email.com"
                 />
               </div>
@@ -115,7 +115,7 @@ export default function ContactPage() {
                   required
                   value={formData.businessType}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[hsl(14,86%,57%)] focus:border-transparent outline-none transition-all bg-white"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[hsl(0,83%,59%)] focus:border-transparent outline-none transition-all bg-white"
                 >
                   <option value="">Select one...</option>
                   <option value="advertiser">Advertiser / Brand</option>
@@ -136,7 +136,7 @@ export default function ContactPage() {
                   rows={6}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[hsl(14,86%,57%)] focus:border-transparent outline-none transition-all resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[hsl(0,83%,59%)] focus:border-transparent outline-none transition-all resize-none"
                   placeholder="Tell us about your needs..."
                 />
               </div>
@@ -146,7 +146,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="w-full inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] text-white shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] text-white shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {status === "submitting" ? "Sending..." : "Send Message"}
                 </button>
@@ -177,7 +177,7 @@ export default function ContactPage() {
               Prefer to email directly?{" "}
               <a 
                 href="mailto:hello@feidup.com" 
-                className="text-[hsl(14,86%,57%)] font-semibold hover:underline"
+                className="text-[hsl(0,83%,59%)] font-semibold hover:underline"
               >
                 hello@feidup.com
               </a>
@@ -187,7 +187,7 @@ export default function ContactPage() {
       </section>
 
       {/* Quick Links */}
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-[hsl(43,47%,95%)]">
+      <section className="py-24 bg-gradient-to-br from-gray-50 to-[hsl(51,39%,94%)]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-4">
@@ -205,7 +205,7 @@ export default function ContactPage() {
               </p>
               <a
                 href="/advertisers"
-                className="text-[hsl(14,86%,57%)] font-semibold hover:underline"
+                className="text-[hsl(0,83%,59%)] font-semibold hover:underline"
               >
                 Learn More →
               </a>
@@ -220,7 +220,7 @@ export default function ContactPage() {
               </p>
               <a
                 href="/businesses"
-                className="text-[hsl(14,86%,57%)] font-semibold hover:underline"
+                className="text-[hsl(0,83%,59%)] font-semibold hover:underline"
               >
                 Learn More →
               </a>
@@ -235,7 +235,7 @@ export default function ContactPage() {
               </p>
               <a
                 href="/about"
-                className="text-[hsl(14,86%,57%)] font-semibold hover:underline"
+                className="text-[hsl(0,83%,59%)] font-semibold hover:underline"
               >
                 Learn More →
               </a>

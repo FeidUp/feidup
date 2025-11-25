@@ -11,12 +11,12 @@ export default function BusinessesPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white py-24">
+      <section className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-5xl sm:text-6xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-6 leading-tight">
-                Premium Packaging, <span className="text-[hsl(14,86%,57%)]">Zero Cost</span>
+                Premium Packaging, <span className="text-[hsl(0,83%,59%)]">Zero Cost</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
                 Partner with FeidUp to get free, high-quality custom packaging that showcases 
@@ -47,8 +47,8 @@ export default function BusinessesPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
+              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -62,8 +62,8 @@ export default function BusinessesPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
+              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                 </svg>
@@ -77,8 +77,8 @@ export default function BusinessesPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
+              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
@@ -92,8 +92,8 @@ export default function BusinessesPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
+              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -107,8 +107,8 @@ export default function BusinessesPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
+              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h4a1 1 0 010 2H6v2a1 1 0 01-2 0V5zM4 13a1 1 0 011 1v2h2a1 1 0 110 2H5a1 1 0 01-1-1v-3a1 1 0 011-1zm16 0a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 110-2h2v-2a1 1 0 011-1zM15 4a1 1 0 100 2h2v2a1 1 0 102 0V5a1 1 0 00-1-1h-3z" />
                 </svg>
@@ -122,8 +122,8 @@ export default function BusinessesPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-8 rounded-3xl shadow-lg border border-gray-100">
+              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -141,7 +141,7 @@ export default function BusinessesPage() {
       </section>
 
       {/* Co-Branding Explanation */}
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-[hsl(43,47%,95%)]">
+      <section className="py-24 bg-gradient-to-br from-gray-50 to-[hsl(51,39%,94%)]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -190,8 +190,8 @@ export default function BusinessesPage() {
 
           <div className="grid md:grid-cols-4 gap-6">
             <div className="relative">
-              <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-6 rounded-3xl shadow-lg h-full border border-gray-100">
-                <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-full flex items-center justify-center font-bold font-[family-name:var(--font-fredoka)] text-white text-xl shadow-lg">
+              <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-6 rounded-3xl shadow-lg h-full border border-gray-100">
+                <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-full flex items-center justify-center font-bold font-[family-name:var(--font-fredoka)] text-white text-xl shadow-lg">
                   1
                 </div>
                 <h3 className="text-xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-2 mt-4">
@@ -204,8 +204,8 @@ export default function BusinessesPage() {
             </div>
 
             <div className="relative">
-              <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-6 rounded-3xl shadow-lg h-full border border-gray-100">
-                <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-full flex items-center justify-center font-bold font-[family-name:var(--font-fredoka)] text-white text-xl shadow-lg">
+              <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-6 rounded-3xl shadow-lg h-full border border-gray-100">
+                <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-full flex items-center justify-center font-bold font-[family-name:var(--font-fredoka)] text-white text-xl shadow-lg">
                   2
                 </div>
                 <h3 className="text-xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-2 mt-4">
@@ -218,8 +218,8 @@ export default function BusinessesPage() {
             </div>
 
             <div className="relative">
-              <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-6 rounded-3xl shadow-lg h-full border border-gray-100">
-                <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-full flex items-center justify-center font-bold font-[family-name:var(--font-fredoka)] text-white text-xl shadow-lg">
+              <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-6 rounded-3xl shadow-lg h-full border border-gray-100">
+                <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-full flex items-center justify-center font-bold font-[family-name:var(--font-fredoka)] text-white text-xl shadow-lg">
                   3
                 </div>
                 <h3 className="text-xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-2 mt-4">
@@ -232,8 +232,8 @@ export default function BusinessesPage() {
             </div>
 
             <div className="relative">
-              <div className="bg-gradient-to-br from-[hsl(43,47%,95%)] to-white p-6 rounded-3xl shadow-lg h-full border border-gray-100">
-                <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-full flex items-center justify-center font-bold font-[family-name:var(--font-fredoka)] text-white text-xl shadow-lg">
+              <div className="bg-gradient-to-br from-[hsl(51,39%,94%)] to-white p-6 rounded-3xl shadow-lg h-full border border-gray-100">
+                <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-full flex items-center justify-center font-bold font-[family-name:var(--font-fredoka)] text-white text-xl shadow-lg">
                   4
                 </div>
                 <h3 className="text-xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-2 mt-4">
@@ -249,7 +249,7 @@ export default function BusinessesPage() {
       </section>
 
       {/* Ideal Partners */}
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-[hsl(43,47%,95%)]">
+      <section className="py-24 bg-gradient-to-br from-gray-50 to-[hsl(51,39%,94%)]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-4">
@@ -262,7 +262,7 @@ export default function BusinessesPage() {
 
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="bg-white p-8 rounded-3xl shadow-lg text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
@@ -276,7 +276,7 @@ export default function BusinessesPage() {
             </div>
 
             <div className="bg-white p-8 rounded-3xl shadow-lg text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
@@ -290,7 +290,7 @@ export default function BusinessesPage() {
             </div>
 
             <div className="bg-white p-8 rounded-3xl shadow-lg text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)] rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
@@ -307,7 +307,7 @@ export default function BusinessesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-[hsl(14,86%,57%)] to-[hsl(14,86%,47%)]">
+      <section className="py-24 bg-gradient-to-r from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold font-[family-name:var(--font-fredoka)] text-white mb-6">
             Ready to Upgrade Your Packaging?
@@ -315,7 +315,7 @@ export default function BusinessesPage() {
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
             Join FeidUp and get premium custom packaging at no cost to your café.
           </p>
-          <Button href="/contact" variant="secondary" className="bg-white text-[hsl(14,86%,57%)] border-0 hover:bg-gray-100">
+          <Button href="/contact" variant="secondary" className="bg-white text-[hsl(0,83%,59%)] border-0 hover:bg-gray-100">
             Partner with Us Today
           </Button>
         </div>

@@ -2,10 +2,10 @@
 
 @layer base {
   :root {
-    --color-brand-red: 14 86% 57%; /* Red-orange (American diner inspired) */
-    --color-brand-cream: 43 47% 95%; /* Cream / off-white */
-    --color-dark: 0 0% 10%;
-    --color-light: 0 0% 98%;
+    --color-brand-red: hsl(0, 83%, 59%); /* Red-orange (American diner inspired) */
+    --color-brand-cream: hsl(51, 39%, 94%); /* Cream / off-white */
+    --color-dark: hsl(0, 0%, 10%);
+    --color-light: hsl(0, 0%, 98%);
   }
 }
 
