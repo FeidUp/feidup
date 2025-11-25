@@ -176,10 +176,10 @@ export default function ContactPage() {
             <p className="text-gray-600">
               Prefer to email directly?{" "}
               <a 
-                href="mailto:hello@feidup.com" 
+                href="mailto:info@feidup.com" 
                 className="text-[hsl(0,83%,59%)] font-semibold hover:underline"
               >
-                hello@feidup.com
+                info@feidup.com
               </a>
             </p>
           </div>
