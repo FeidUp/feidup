@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({
-      from: 'FeidUp Contact <contact@feidup.com>',
+      from: 'FeidUp Contact <info@feidup.com>',
       to: [process.env.CONTACT_EMAIL || 'info@feidup.com'],
       replyTo: email,
       subject: `New ${businessType} inquiry from ${name}`,
