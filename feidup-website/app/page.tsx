@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import PlaceholderImage from "@/components/PlaceholderImage";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -24,10 +25,12 @@ export default function Home() {
               </div>
             </div>
             <div className="animate-slide-in-right">
-              <PlaceholderImage 
-                text="Branded Coffee Cup Mockup" 
-                className="w-full h-96 shadow-2xl"
-              />
+              <Image 
+                src="/images/feidup-logo.png" 
+                alt="Branded Coffee Cup"
+                width={600}
+                height={400}
+                />
             </div>
           </div>
         </div>
