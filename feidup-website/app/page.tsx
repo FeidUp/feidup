@@ -11,13 +11,13 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in">
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-6 leading-tight">
-                Transform Café Packaging into{" "}
-                <span className="text-[hsl(0,83%,59%)]">High-Visibility</span>{" "}
-                Ad Inventory
+                <span className="text-[hsl(0,83%,59%)]">Transform</span>{" "}
+                Packaging to Grow{" "}
+                <span className="text-[hsl(0,83%,59%)]">Your Business</span>{" "}
               </h1>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                FeidUp is a marketing and impressions company that partners with cafés to provide 
-                free custom packaging funded by advertiser impressions.
+                We partner with local businesses to provide customised food and beverage
+                packaging designed to improve customer loyalty and grow your local community.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button href="/advertisers">For Advertisers</Button>
@@ -25,6 +25,7 @@ export default function Home() {
               </div>
             </div>
             <div className="animate-slide-in-right">
+                {/* TODO: Replace image with actual branded coffee cup image */}
               <Image 
                 src="/images/feidup-logo.png" 
                 alt="Branded Coffee Cup"

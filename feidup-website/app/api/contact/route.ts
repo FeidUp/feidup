@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Send email using Resend
+    // Add email verification and sanitization as needed
     const { data, error } = await resend.emails.send({
       from: 'FeidUp Contact <info@feidup.com>',
       to: [process.env.CONTACT_EMAIL || 'info@feidup.com'],
