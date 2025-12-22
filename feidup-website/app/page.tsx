@@ -20,8 +20,8 @@ export default function Home() {
                 packaging designed to improve customer loyalty and grow your local community.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button href="/advertisers">For Advertisers</Button>
-                <Button href="/businesses" variant="secondary">For Café Partners</Button>
+                <Button href="/advertisers">Advertise With Us</Button>
+                <Button href="/businesses" variant="secondary">Join Us As Venue Partners</Button>
               </div>
             </div>
             <div className="animate-slide-in-right">
@@ -49,8 +49,8 @@ export default function Home() {
               Unskippable Real-World Impressions
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We turn everyday café packaging into powerful marketing opportunities, 
-              connecting brands with engaged audiences in high-traffic urban locations.
+              We turn everyday packaging into powerful marketing opportunities, 
+              connecting brands with engaged audiences in all locations.
             </p>
           </div>
 
@@ -62,12 +62,13 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
               </div>
+              {/* Make this a button to advertisers*/}
               <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-3">
                 For Advertisers
               </h3>
               <p className="text-gray-600">
-                Reach targeted audiences with unique, high-value impressions that can't be skipped, 
-                blocked, or ignored. Perfect for location-based campaigns.
+                Reach geo-targeted audiences with physical impressions that can't be skipped, 
+                blocked, or ignored. Invaluable exposure ideal for location-based campaigns.
               </p>
             </div>
 
@@ -77,11 +78,12 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
+              {/* Make this a button to venue partners*/}
               <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-3">
-                For Café Partners
+                For Venue Partners
               </h3>
               <p className="text-gray-600">
-                Get premium custom packaging at no cost, co-branded with your café's identity. 
+                Get premium custom packaging co-branded with your venue's identity. 
                 Enhance your brand while supporting sustainability.
               </p>
             </div>
@@ -92,6 +94,7 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
+              {/* Make this a button to about*/}
               <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-3">
                 Sustainable Impact
               </h3>
@@ -123,11 +126,11 @@ export default function Home() {
                   1
                 </div>
                 <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-3 mt-4">
-                  Partner with Cafés
+                  Partner with Venues
                 </h3>
                 <p className="text-gray-600">
-                  We collaborate with local cafés to provide them with premium custom packaging 
-                  that features both their branding and advertiser messaging.
+                  We collaborate with local venues to provide them with custom packaging 
+                  that features both their branding and advertiser messaging at low cost.
                 </p>
               </div>
             </div>
@@ -141,7 +144,7 @@ export default function Home() {
                   Connect with Brands
                 </h3>
                 <p className="text-gray-600">
-                  Advertisers gain access to targeted, high-value impressions in specific 
+                  Advertisers gain access to targeted, contextually relevant impressions in specific 
                   geographic areas with engaged audiences.
                 </p>
               </div>
