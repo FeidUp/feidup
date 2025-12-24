@@ -1,0 +1,204 @@
+// Prisma Schema for FeidUp Location-Based Advertising Backend
+// Database: SQLite (for easy local development - no external DB needed)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================================================
+// ADVERTISER - Businesses that want to advertise on cafe packaging
+// =============================================================================
+model Advertiser {
+  id           String   @id @default(uuid())
+  businessName String   @map("business_name")
+  industry     String   // e.g., "fitness", "education", "food", "fintech"
+  
+  // Targeting preferences (JSON since SQLite doesn't support arrays)
+  targetSuburbs   String @default("[]") @map("target_suburbs")   // JSON: ["New Farm", "Fortitude Valley"]
+  targetPostcodes String @default("[]") @map("target_postcodes") // JSON: ["4005", "4006"]
+  targetRadiusKm  Float?   @map("target_radius_km") // Optional radius for targeting
+  targetLat       Float?   @map("target_lat")       // Center point latitude
+  targetLng       Float?   @map("target_lng")       // Center point longitude
+  
+  // Target audience demographics (stored as JSON for flexibility)
+  targetAudience String? @map("target_audience")
+  // Example: { "ageRange": { "min": 18, "max": 35 }, "interests": ["fitness", "coffee"] }
+  
+  // Campaign goals
+  campaignGoal String @default("brand_awareness") @map("campaign_goal")
+  // Options: "brand_awareness", "local_reach", "event_promotion"
+  
+  // Contact info
+  contactEmail String? @map("contact_email")
+  contactPhone String? @map("contact_phone")
+  
+  // Metadata
+  city      String   @default("Brisbane")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  campaigns Campaign[]
+  
+  @@map("advertisers")
+}
+
+// =============================================================================
+// CAFE - Physical locations that serve as advertising partners
+// =============================================================================
+model Cafe {
+  id   String @id @default(uuid())
+  name String
+  
+  // Location data (critical for matching)
+  address  String
+  suburb   String  // e.g., "New Farm", "Fortitude Valley"
+  postcode String  // e.g., "4005"
+  city     String  @default("Brisbane")
+  lat      Float   // Latitude
+  lng      Float   // Longitude
+  
+  // Traffic & impression metrics
+  avgDailyFootTraffic Int @default(0) @map("avg_daily_foot_traffic")  // People per day
+  packagingVolume     Int @default(0) @map("packaging_volume")        // Cups/packages per day
+  
+  // Customer demographics (JSON for flexibility)
+  demographics String? // { "primaryAge": "25-34", "income": "medium", "type": "professionals" }
+  
+  // Operating hours (JSON)
+  operatingHours String? @map("operating_hours")
+  // { "monday": { "open": "07:00", "close": "16:00" }, ... }
+  
+  // Cafe characteristics for matching (JSON since SQLite doesn't support arrays)
+  tags String @default("[]") // JSON: ["coworking-friendly", "student-heavy", "business-district"]
+  
+  // Partner status
+  isActive       Boolean  @default(true) @map("is_active")
+  partnerSince   DateTime @default(now()) @map("partner_since")
+  
+  // Metadata
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  placements Placement[]
+  
+  @@index([suburb])
+  @@index([postcode])
+  @@index([city])
+  @@map("cafes")
+}
+
+// =============================================================================
+// CAMPAIGN - An advertiser's advertising campaign
+// =============================================================================
+model Campaign {
+  id           String   @id @default(uuid())
+  advertiserId String   @map("advertiser_id")
+  name         String
+  
+  // Campaign period
+  startDate DateTime? @map("start_date")
+  endDate   DateTime? @map("end_date")
+  
+  // Status tracking
+  status String @default("draft") // "draft", "proposed", "active", "paused", "completed"
+  
+  // Targeting (can override advertiser defaults) - JSON for SQLite
+  targetSuburbs   String @default("[]") @map("target_suburbs")
+  targetPostcodes String @default("[]") @map("target_postcodes")
+  targetRadiusKm  Float?   @map("target_radius_km")
+  
+  // Metrics
+  totalImpressions    Int @default(0) @map("total_impressions")
+  estimatedImpressions Int @default(0) @map("estimated_impressions")
+  
+  // Metadata
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  advertiser Advertiser  @relation(fields: [advertiserId], references: [id], onDelete: Cascade)
+  placements Placement[]
+  
+  @@index([advertiserId])
+  @@index([status])
+  @@map("campaigns")
+}
+
+// =============================================================================
+// PLACEMENT - Links a campaign to a specific cafe
+// =============================================================================
+model Placement {
+  id         String @id @default(uuid())
+  campaignId String @map("campaign_id")
+  cafeId     String @map("cafe_id")
+  
+  // Matching data (why this cafe was recommended)
+  matchScore  Float  @map("match_score")  // 0.0 to 100.0
+  matchReason String @map("match_reason") // Human-readable explanation
+  
+  // Score breakdown for transparency
+  scoreBreakdown String? @map("score_breakdown")
+  // { "locationScore": 35, "volumeScore": 28, "demographicScore": 22 }
+  
+  // Placement period
+  startDate DateTime? @map("start_date")
+  endDate   DateTime? @map("end_date")
+  
+  // Status
+  status String @default("proposed") // "proposed", "accepted", "rejected", "active", "completed"
+  
+  // Impression tracking
+  estimatedDailyImpressions Int @default(0) @map("estimated_daily_impressions")
+  actualImpressions         Int @default(0) @map("actual_impressions")
+  
+  // Metadata
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  cafe     Cafe     @relation(fields: [cafeId], references: [id], onDelete: Cascade)
+  
+  @@unique([campaignId, cafeId])
+  @@index([campaignId])
+  @@index([cafeId])
+  @@index([status])
+  @@map("placements")
+}
+
+// =============================================================================
+// SUBURB_DATA - Reference data for Brisbane suburbs
+// =============================================================================
+model SuburbData {
+  id       String @id @default(uuid())
+  suburb   String @unique
+  postcode String
+  city     String @default("Brisbane")
+  
+  // Geographic center
+  lat Float
+  lng Float
+  
+  // Demographics (from ABS or mock data)
+  population      Int?
+  medianAge       Int?   @map("median_age")
+  medianIncome    Int?   @map("median_income")
+  primaryDemographic String? @map("primary_demographic") // "students", "families", "professionals"
+  
+  // Interest/trend data (JSON for SQLite)
+  trendingInterests String @default("[]") @map("trending_interests") // JSON: ["fitness", "coffee", "tech"]
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  @@index([postcode])
+  @@map("suburb_data")
+}
