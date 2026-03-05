@@ -73,31 +73,31 @@ function AdvertisersHero() {
   );
 }
 
-/* ─── STATS BAR ─── */
-function StatsBar() {
-  return (
-    <section className="py-14 bg-white border-b border-gray-100">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <StaggerContainer className="grid grid-cols-3 gap-8 text-center">
-          {[
-            { value: 100, suffix: "%", label: "Unskippable" },
-            { value: 0, suffix: "%", label: "Ad-Block Rate" },
-            { value: 5, suffix: "min+", label: "Avg. Hold Time" },
-          ].map((s) => (
-            <StaggerItem key={s.label}>
-              <div>
-                <div className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-fredoka)] text-gradient">
-                  <CountUp end={s.value} suffix={s.suffix} />
-                </div>
-                <p className="text-gray-500 mt-2 text-sm font-medium tracking-wide">{s.label}</p>
-              </div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-      </div>
-    </section>
-  );
-}
+// /* ─── STATS BAR ─── */
+// function StatsBar() {
+//   return (
+//     <section className="py-14 bg-white border-b border-gray-100">
+//       <div className="mx-auto max-w-7xl px-6 lg:px-8">
+//         <StaggerContainer className="grid grid-cols-3 gap-8 text-center">
+//           {[
+//             { value: 100, suffix: "%", label: "Unskippable" },
+//             { value: 0, suffix: "%", label: "Ad-Block Rate" },
+//             { value: 5, suffix: "min+", label: "Avg. Hold Time" },
+//           ].map((s) => (
+//             <StaggerItem key={s.label}>
+//               <div>
+//                 <div className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-fredoka)] text-gradient">
+//                   <CountUp end={s.value} suffix={s.suffix} />
+//                 </div>
+//                 <p className="text-gray-500 mt-2 text-sm font-medium tracking-wide">{s.label}</p>
+//               </div>
+//             </StaggerItem>
+//           ))}
+//         </StaggerContainer>
+//       </div>
+//     </section>
+//   );
+// }
 
 /* ─── BENEFITS ─── */
 const benefits = [
@@ -266,11 +266,11 @@ function ProcessSection() {
           </p>
         </FadeIn>
 
-        <div className="grid md:grid-cols-4 gap-6 relative">
+        <div className="relative">
           {/* Connector line */}
-          <div className="hidden md:block absolute top-14 left-[15%] right-[15%] h-px bg-gradient-to-r from-[hsl(0,83%,59%)]/30 via-[hsl(0,83%,59%)]/20 to-[hsl(0,83%,59%)]/30" />
+          <div className="hidden md:block absolute top-14 left-[15%] right-[15%] h-px bg-gradient-to-r from-[hsl(0,83%,59%)]/30 via-[hsl(0,83%,59%)]/20 to-[hsl(0,83%,59%)]/30 z-0" />
 
-          <StaggerContainer className="contents">
+          <StaggerContainer className="grid md:grid-cols-4 gap-6">
             {steps.map((step) => (
               <StaggerItem key={step.num}>
                 <div className="relative pt-8">
@@ -333,7 +333,7 @@ export function AdvertisersSections() {
   return (
     <>
       <AdvertisersHero />
-      <StatsBar />
+      {/* <StatsBar /> */}
       <BenefitsSection />
       <PartnershipsSection />
       <ProcessSection />

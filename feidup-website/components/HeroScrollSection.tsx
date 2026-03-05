@@ -11,10 +11,6 @@ export function HeroScrollSection() {
         <ContainerScroll
           titleComponent={
             <div className="animate-fade-in">
-              <div className="inline-flex items-center gap-2 bg-red-50 text-[hsl(0,83%,59%)] px-4 py-2 rounded-full text-sm font-medium mb-6 border border-red-100">
-                <span className="w-2 h-2 bg-[hsl(0,83%,59%)] rounded-full animate-pulse"></span>
-                Now Partnering with Local Venues
-              </div>
               <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-6 leading-[1.1]">
                 <span className="text-[hsl(0,83%,59%)]">Transform</span>{" "}
                 Packaging to Grow{" "}

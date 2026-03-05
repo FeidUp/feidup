@@ -233,10 +233,10 @@ function ProcessSection() {
           </p>
         </FadeIn>
 
-        <div className="grid md:grid-cols-4 gap-6 relative">
-          <div className="hidden md:block absolute top-14 left-[15%] right-[15%] h-px bg-gradient-to-r from-[hsl(0,83%,59%)]/30 via-[hsl(0,83%,59%)]/20 to-[hsl(0,83%,59%)]/30" />
+        <div className="relative">
+          <div className="hidden md:block absolute top-14 left-[15%] right-[15%] h-px bg-gradient-to-r from-[hsl(0,83%,59%)]/30 via-[hsl(0,83%,59%)]/20 to-[hsl(0,83%,59%)]/30 z-0" />
 
-          <StaggerContainer className="contents">
+          <StaggerContainer className="grid md:grid-cols-4 gap-6">
             {processSteps.map((step) => (
               <StaggerItem key={step.num}>
                 <div className="relative pt-8">
