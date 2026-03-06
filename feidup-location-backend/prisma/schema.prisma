@@ -1,5 +1,5 @@
-// Prisma Schema for FeidUp Location-Based Advertising Backend
-// Database: SQLite (for easy local development - no external DB needed)
+// Prisma Schema for FeidUp CRM + Location-Based Advertising Backend
+// Database: SQLite (for easy local development)
 
 generator client {
   provider = "prisma-client-js"
@@ -11,6 +11,135 @@ datasource db {
 }
 
 // =============================================================================
+// AUTH & RBAC
+// =============================================================================
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  firstName    String   @map("first_name")
+  lastName     String   @map("last_name")
+  role         String   @default("sales") // "admin", "sales", "operations", "advertiser", "restaurant"
+  avatarUrl    String?  @map("avatar_url")
+  isActive     Boolean  @default(true) @map("is_active")
+  lastLoginAt  DateTime? @map("last_login_at")
+  
+  // Link to advertiser or restaurant (for external users)
+  advertiserId String? @map("advertiser_id")
+  restaurantId String? @map("restaurant_id")
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  advertiser       Advertiser?   @relation(fields: [advertiserId], references: [id])
+  restaurant       Cafe?         @relation(fields: [restaurantId], references: [id])
+  assignedLeads    Lead[]        @relation("AssignedTo")
+  createdLeads     Lead[]        @relation("CreatedBy")
+  activities       Activity[]
+  auditLogs        AuditLog[]
+  
+  @@index([role])
+  @@map("users")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  action    String   // "login", "create", "update", "delete"
+  entity    String   // "advertiser", "campaign", "lead", etc.
+  entityId  String?  @map("entity_id")
+  details   String?  // JSON with before/after changes
+  ipAddress String?  @map("ip_address")
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  user User @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+  @@index([entity])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+// =============================================================================
+// CRM - Lead & Deal Pipeline
+// =============================================================================
+model Lead {
+  id           String   @id @default(uuid())
+  companyName  String   @map("company_name")
+  contactName  String   @map("contact_name")
+  contactEmail String   @map("contact_email")
+  contactPhone String?  @map("contact_phone")
+  type         String   // "advertiser", "restaurant"
+  source       String   @default("manual") // "manual", "website", "referral", "cold_outreach"
+  
+  // Pipeline
+  stage        String   @default("lead") // "lead", "contacted", "negotiation", "signed", "active_client", "lost"
+  priority     String   @default("medium") // "low", "medium", "high"
+  estimatedValue Float? @map("estimated_value")
+  
+  // Assignment
+  assignedToId String? @map("assigned_to_id")
+  createdById  String  @map("created_by_id")
+  
+  // Conversion (link to created entity when signed)
+  advertiserId String? @map("advertiser_id")
+  restaurantId String? @map("restaurant_id")
+  
+  // Location context
+  suburb   String?
+  city     String   @default("Brisbane")
+  
+  // Metadata
+  notes     String?  // Rich text notes
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  closedAt  DateTime? @map("closed_at")
+  
+  // Relations
+  assignedTo  User?       @relation("AssignedTo", fields: [assignedToId], references: [id])
+  createdBy   User        @relation("CreatedBy", fields: [createdById], references: [id])
+  advertiser  Advertiser? @relation(fields: [advertiserId], references: [id])
+  restaurant  Cafe?       @relation(fields: [restaurantId], references: [id])
+  activities  Activity[]
+  
+  @@index([assignedToId])
+  @@index([stage])
+  @@index([type])
+  @@index([createdAt])
+  @@map("leads")
+}
+
+model Activity {
+  id       String   @id @default(uuid())
+  type     String   // "note", "call", "email", "meeting", "status_change", "contract_uploaded"
+  title    String
+  content  String?  // Body / details
+  
+  // Polymorphic reference
+  leadId       String? @map("lead_id")
+  advertiserId String? @map("advertiser_id")
+  campaignId   String? @map("campaign_id")
+  restaurantId String? @map("restaurant_id")
+  
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  // Relations
+  lead       Lead?       @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  advertiser Advertiser? @relation(fields: [advertiserId], references: [id], onDelete: Cascade)
+  campaign   Campaign?   @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  restaurant Cafe?       @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  user       User        @relation(fields: [userId], references: [id])
+  
+  @@index([leadId])
+  @@index([advertiserId])
+  @@index([campaignId])
+  @@index([createdAt])
+  @@map("activities")
+}
+
+// =============================================================================
 // ADVERTISER - Businesses that want to advertise on cafe packaging
 // =============================================================================
 model Advertiser {
@@ -19,19 +148,17 @@ model Advertiser {
   industry     String   // e.g., "fitness", "education", "food", "fintech"
   
   // Targeting preferences (JSON since SQLite doesn't support arrays)
-  targetSuburbs   String @default("[]") @map("target_suburbs")   // JSON: ["New Farm", "Fortitude Valley"]
-  targetPostcodes String @default("[]") @map("target_postcodes") // JSON: ["4005", "4006"]
-  targetRadiusKm  Float?   @map("target_radius_km") // Optional radius for targeting
-  targetLat       Float?   @map("target_lat")       // Center point latitude
-  targetLng       Float?   @map("target_lng")       // Center point longitude
+  targetSuburbs   String @default("[]") @map("target_suburbs")
+  targetPostcodes String @default("[]") @map("target_postcodes")
+  targetRadiusKm  Float?   @map("target_radius_km")
+  targetLat       Float?   @map("target_lat")
+  targetLng       Float?   @map("target_lng")
   
-  // Target audience demographics (stored as JSON for flexibility)
+  // Target audience demographics
   targetAudience String? @map("target_audience")
-  // Example: { "ageRange": { "min": 18, "max": 35 }, "interests": ["fitness", "coffee"] }
   
   // Campaign goals
   campaignGoal String @default("brand_awareness") @map("campaign_goal")
-  // Options: "brand_awareness", "local_reach", "event_promotion"
   
   // Contact info
   contactEmail String? @map("contact_email")
@@ -44,39 +171,48 @@ model Advertiser {
   updatedAt DateTime @updatedAt @map("updated_at")
   
   // Relations
-  campaigns Campaign[]
+  campaigns  Campaign[]
+  users      User[]
+  leads      Lead[]
+  activities Activity[]
+  assets     Asset[]
   
   @@map("advertisers")
 }
 
 // =============================================================================
-// CAFE - Physical locations that serve as advertising partners
+// CAFE / RESTAURANT - Physical locations that serve as advertising partners
 // =============================================================================
 model Cafe {
   id   String @id @default(uuid())
   name String
   
-  // Location data (critical for matching)
+  // Location data
   address  String
-  suburb   String  // e.g., "New Farm", "Fortitude Valley"
-  postcode String  // e.g., "4005"
+  suburb   String
+  postcode String
   city     String  @default("Brisbane")
-  lat      Float   // Latitude
-  lng      Float   // Longitude
+  state    String  @default("QLD")
+  country  String  @default("Australia")
+  lat      Float
+  lng      Float
+  
+  // Cuisine / type
+  cuisineType String? @map("cuisine_type") // "cafe", "restaurant", "bakery", "juice_bar"
   
   // Traffic & impression metrics
-  avgDailyFootTraffic Int @default(0) @map("avg_daily_foot_traffic")  // People per day
-  packagingVolume     Int @default(0) @map("packaging_volume")        // Cups/packages per day
+  avgDailyFootTraffic Int @default(0) @map("avg_daily_foot_traffic")
+  avgDailyOrders      Int @default(0) @map("avg_daily_orders")
+  packagingVolume     Int @default(0) @map("packaging_volume")
   
-  // Customer demographics (JSON for flexibility)
-  demographics String? // { "primaryAge": "25-34", "income": "medium", "type": "professionals" }
+  // Customer demographics (JSON)
+  demographics String?
   
   // Operating hours (JSON)
   operatingHours String? @map("operating_hours")
-  // { "monday": { "open": "07:00", "close": "16:00" }, ... }
   
-  // Cafe characteristics for matching (JSON since SQLite doesn't support arrays)
-  tags String @default("[]") // JSON: ["coworking-friendly", "student-heavy", "business-district"]
+  // Tags (JSON)
+  tags String @default("[]")
   
   // Partner status
   isActive       Boolean  @default(true) @map("is_active")
@@ -87,7 +223,12 @@ model Cafe {
   updatedAt DateTime @updatedAt @map("updated_at")
   
   // Relations
-  placements Placement[]
+  placements     Placement[]
+  users          User[]
+  leads          Lead[]
+  activities     Activity[]
+  inventory      PackagingInventory[]
+  usageReports   UsageReport[]
   
   @@index([suburb])
   @@index([postcode])
@@ -110,13 +251,26 @@ model Campaign {
   // Status tracking
   status String @default("draft") // "draft", "proposed", "active", "paused", "completed"
   
-  // Targeting (can override advertiser defaults) - JSON for SQLite
+  // Targeting (can override advertiser defaults)
   targetSuburbs   String @default("[]") @map("target_suburbs")
   targetPostcodes String @default("[]") @map("target_postcodes")
   targetRadiusKm  Float?   @map("target_radius_km")
   
+  // Packaging details
+  packagingQuantity Int @default(0) @map("packaging_quantity")
+  packagingType     String? @map("packaging_type") // "cups", "containers", "bags", "wraps"
+  
+  // Ad format
+  adFormat String? @map("ad_format") // "qr_code", "brand_logo", "short_message", "promo"
+  
+  // Target demographics (JSON)
+  targetDemographic String? @map("target_demographic")
+  
+  // Budget
+  budget Float?
+  
   // Metrics
-  totalImpressions    Int @default(0) @map("total_impressions")
+  totalImpressions     Int @default(0) @map("total_impressions")
   estimatedImpressions Int @default(0) @map("estimated_impressions")
   
   // Metadata
@@ -124,8 +278,11 @@ model Campaign {
   updatedAt DateTime @updatedAt @map("updated_at")
   
   // Relations
-  advertiser Advertiser  @relation(fields: [advertiserId], references: [id], onDelete: Cascade)
-  placements Placement[]
+  advertiser       Advertiser        @relation(fields: [advertiserId], references: [id], onDelete: Cascade)
+  placements       Placement[]
+  activities       Activity[]
+  assets           Asset[]
+  packagingBatches PackagingBatch[]
   
   @@index([advertiserId])
   @@index([status])
@@ -140,13 +297,12 @@ model Placement {
   campaignId String @map("campaign_id")
   cafeId     String @map("cafe_id")
   
-  // Matching data (why this cafe was recommended)
-  matchScore  Float  @map("match_score")  // 0.0 to 100.0
-  matchReason String @map("match_reason") // Human-readable explanation
+  // Matching data
+  matchScore  Float  @map("match_score")
+  matchReason String @map("match_reason")
   
-  // Score breakdown for transparency
+  // Score breakdown (JSON)
   scoreBreakdown String? @map("score_breakdown")
-  // { "locationScore": 35, "volumeScore": 28, "demographicScore": 22 }
   
   // Placement period
   startDate DateTime? @map("start_date")
@@ -175,30 +331,148 @@ model Placement {
 }
 
 // =============================================================================
-// SUBURB_DATA - Reference data for Brisbane suburbs
+// PACKAGING INVENTORY
+// =============================================================================
+model PackagingBatch {
+  id         String   @id @default(uuid())
+  campaignId String   @map("campaign_id")
+  
+  packagingType     String @map("packaging_type") // "cups", "containers", "bags"
+  quantityProduced  Int    @default(0) @map("quantity_produced")
+  quantityShipped   Int    @default(0) @map("quantity_shipped")
+  
+  productionDate  DateTime? @map("production_date")
+  estimatedReady  DateTime? @map("estimated_ready") // production_date + ~60 days
+  
+  status String @default("ordered") // "ordered", "in_production", "ready", "shipped", "delivered"
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  campaign  Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  inventory PackagingInventory[]
+  
+  @@index([campaignId])
+  @@index([status])
+  @@map("packaging_batches")
+}
+
+model PackagingInventory {
+  id       String @id @default(uuid())
+  batchId  String @map("batch_id")
+  cafeId   String @map("cafe_id")
+  
+  quantityAllocated Int @default(0) @map("quantity_allocated")
+  quantityUsed      Int @default(0) @map("quantity_used")
+  quantityRemaining Int @default(0) @map("quantity_remaining")
+  
+  lastRestockDate DateTime? @map("last_restock_date")
+  estimatedRunout DateTime? @map("estimated_runout")
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  batch PackagingBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  cafe  Cafe           @relation(fields: [cafeId], references: [id], onDelete: Cascade)
+  
+  @@unique([batchId, cafeId])
+  @@index([cafeId])
+  @@map("packaging_inventory")
+}
+
+model UsageReport {
+  id     String @id @default(uuid())
+  cafeId String @map("cafe_id")
+  
+  reportDate    DateTime @map("report_date")
+  packagingUsed Int      @map("packaging_used")
+  notes         String?
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  cafe Cafe @relation(fields: [cafeId], references: [id], onDelete: Cascade)
+  
+  @@index([cafeId])
+  @@index([reportDate])
+  @@map("usage_reports")
+}
+
+// =============================================================================
+// ASSET STORAGE - Contracts, ad creatives, packaging designs
+// =============================================================================
+model Asset {
+  id           String   @id @default(uuid())
+  fileName     String   @map("file_name")
+  fileType     String   @map("file_type") // "contract", "ad_artwork", "packaging_design", "document"
+  mimeType     String   @map("mime_type")
+  fileSize     Int      @map("file_size") // bytes
+  storagePath  String   @map("storage_path") // S3 key or local path
+  
+  // Polymorphic owner
+  advertiserId String? @map("advertiser_id")
+  campaignId   String? @map("campaign_id")
+  
+  uploadedBy String? @map("uploaded_by")
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  advertiser Advertiser? @relation(fields: [advertiserId], references: [id], onDelete: Cascade)
+  campaign   Campaign?   @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  
+  @@index([advertiserId])
+  @@index([campaignId])
+  @@index([fileType])
+  @@map("assets")
+}
+
+// =============================================================================
+// ANALYTICS EVENTS
+// =============================================================================
+model AnalyticsEvent {
+  id          String   @id @default(uuid())
+  eventType   String   @map("event_type") // "impression", "qr_scan", "click"
+  campaignId  String?  @map("campaign_id")
+  cafeId      String?  @map("cafe_id")
+  suburb      String?
+  postcode    String?
+  metadata    String?  // JSON with extra data
+  occurredAt  DateTime @default(now()) @map("occurred_at")
+  
+  @@index([eventType])
+  @@index([campaignId])
+  @@index([cafeId])
+  @@index([occurredAt])
+  @@map("analytics_events")
+}
+
+// =============================================================================
+// SUBURB_DATA - Reference data for suburbs
 // =============================================================================
 model SuburbData {
   id       String @id @default(uuid())
   suburb   String @unique
   postcode String
   city     String @default("Brisbane")
+  state    String @default("QLD")
+  country  String @default("Australia")
   
   // Geographic center
   lat Float
   lng Float
   
-  // Demographics (from ABS or mock data)
-  population      Int?
-  medianAge       Int?   @map("median_age")
-  medianIncome    Int?   @map("median_income")
-  primaryDemographic String? @map("primary_demographic") // "students", "families", "professionals"
+  // Demographics
+  population         Int?
+  medianAge          Int?   @map("median_age")
+  medianIncome       Int?   @map("median_income")
+  primaryDemographic String? @map("primary_demographic")
   
-  // Interest/trend data (JSON for SQLite)
-  trendingInterests String @default("[]") @map("trending_interests") // JSON: ["fitness", "coffee", "tech"]
+  // Interest/trend data (JSON)
+  trendingInterests String @default("[]") @map("trending_interests")
   
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   
   @@index([postcode])
+  @@index([city])
   @@map("suburb_data")
 }

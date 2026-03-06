@@ -1,7 +1,8 @@
-// Seed script for FeidUp Location Backend
-// Populates the database with realistic Brisbane cafe and advertiser data
+// Seed script for FeidUp CRM + Location Backend
+// Populates the database with realistic Brisbane data and default users
 
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -129,11 +130,56 @@ async function main() {
 
   // Clear existing data
   console.log('Clearing existing data...');
+  await prisma.activity.deleteMany();
+  await prisma.auditLog.deleteMany();
+  await prisma.lead.deleteMany();
+  await prisma.usageReport.deleteMany();
+  await prisma.packagingInventory.deleteMany();
+  await prisma.packagingBatch.deleteMany();
+  await prisma.asset.deleteMany();
+  await prisma.analyticsEvent.deleteMany();
   await prisma.placement.deleteMany();
   await prisma.campaign.deleteMany();
+  await prisma.user.deleteMany();
   await prisma.advertiser.deleteMany();
   await prisma.cafe.deleteMany();
   await prisma.suburbData.deleteMany();
+
+  // Seed default users
+  console.log('Seeding users...');
+  const passwordHash = await bcrypt.hash('password123', 12);
+  
+  const adminUser = await prisma.user.create({
+    data: {
+      email: 'admin@feidup.com',
+      passwordHash,
+      firstName: 'Admin',
+      lastName: 'FeidUp',
+      role: 'admin',
+    },
+  });
+  
+  const salesUser = await prisma.user.create({
+    data: {
+      email: 'sales@feidup.com',
+      passwordHash,
+      firstName: 'Sarah',
+      lastName: 'Chen',
+      role: 'sales',
+    },
+  });
+  
+  await prisma.user.create({
+    data: {
+      email: 'ops@feidup.com',
+      passwordHash,
+      firstName: 'Jake',
+      lastName: 'Morrison',
+      role: 'operations',
+    },
+  });
+  
+  console.log('  ✓ Created 3 staff users (admin@feidup.com / sales@feidup.com / ops@feidup.com, password: password123)');
 
   // Seed suburb data
   console.log('Seeding Brisbane suburbs...');
@@ -203,6 +249,28 @@ async function main() {
     });
   }
   console.log(`  ✓ Created ${sampleAdvertisers.length} advertisers`);
+
+  // Seed sample leads
+  console.log('Seeding leads...');
+  const sampleLeads = [
+    { companyName: 'Gold Coast Fitness Hub', contactName: 'Mike Thompson', contactEmail: 'mike@gcfitness.com.au', type: 'advertiser', stage: 'lead', priority: 'high', source: 'website', estimatedValue: 5000, suburb: 'Surfers Paradise', city: 'Gold Coast' },
+    { companyName: 'Sunshine Bakery', contactName: 'Emma Wilson', contactEmail: 'emma@sunshinebakery.com.au', type: 'restaurant', stage: 'contacted', priority: 'medium', source: 'cold_outreach', suburb: 'Maroochydore', city: 'Sunshine Coast' },
+    { companyName: 'Springfield Dental', contactName: 'Dr James Liu', contactEmail: 'james@springfielddental.com.au', type: 'advertiser', stage: 'negotiation', priority: 'high', source: 'referral', estimatedValue: 8000, suburb: 'Springfield', city: 'Ipswich' },
+    { companyName: 'The Daily Grind Ipswich', contactName: 'Olivia Brown', contactEmail: 'olivia@dailygrind.com.au', type: 'restaurant', stage: 'signed', priority: 'medium', source: 'cold_outreach', suburb: 'Ipswich', city: 'Ipswich' },
+    { companyName: 'BrisVet Animal Hospital', contactName: 'Dr Sarah Park', contactEmail: 'sarah@brisvet.com.au', type: 'advertiser', stage: 'lead', priority: 'low', source: 'manual', estimatedValue: 3000, suburb: 'Indooroopilly', city: 'Brisbane' },
+    { companyName: 'Currumbin Surf School', contactName: 'Brody Walsh', contactEmail: 'brody@currumbinsurf.com.au', type: 'advertiser', stage: 'contacted', priority: 'medium', source: 'website', estimatedValue: 4500, suburb: 'Currumbin', city: 'Gold Coast' },
+  ];
+  
+  for (const lead of sampleLeads) {
+    await prisma.lead.create({
+      data: {
+        ...lead,
+        createdById: salesUser.id,
+        assignedToId: salesUser.id,
+      },
+    });
+  }
+  console.log(`  ✓ Created ${sampleLeads.length} sample leads`);
 
   console.log('\n✅ Seeding complete!');
 }
