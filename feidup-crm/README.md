@@ -97,6 +97,8 @@ Open **http://localhost:5174** and use one of these seeded accounts:
 | `admin@feidup.com` | `password123` | Admin (full access) |
 | `sales@feidup.com` | `password123` | Sales |
 | `ops@feidup.com` | `password123` | Operations |
+| `advertiser@feidup.com` | `password123` | Advertiser |
+| `restaurant@feidup.com` | `password123` | Restaurant |
 
 ---
 
