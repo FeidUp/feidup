@@ -17,7 +17,7 @@ export default function Footer() {
                 alt="FeidUp Logo"
                 width={100}
                 height={50}
-                className="h-10 w-auto brightness-0 invert opacity-90"
+                className="h-10 w-auto brightness-auto opacity-90"
               />
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed">

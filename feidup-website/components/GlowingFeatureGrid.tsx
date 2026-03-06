@@ -11,7 +11,6 @@ const features = [
     description:
       "Reach geo-targeted audiences with physical impressions that can't be skipped, blocked, or ignored.",
     href: "/advertisers",
-    area: "md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]",
   },
   {
     icon: <Building2 className="h-5 w-5 text-[hsl(0,83%,59%)]" />,
@@ -19,7 +18,6 @@ const features = [
     description:
       "Get premium custom packaging co-branded with your venue's identity at zero cost.",
     href: "/businesses",
-    area: "md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]",
   },
   {
     icon: <Globe className="h-5 w-5 text-[hsl(0,83%,59%)]" />,
@@ -27,7 +25,6 @@ const features = [
     description:
       "High-quality eco-friendly packaging funded by brands that value authentic connections.",
     href: "/about",
-    area: "md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]",
   },
   {
     icon: <TrendingUp className="h-5 w-5 text-[hsl(0,83%,59%)]" />,
@@ -35,7 +32,6 @@ const features = [
     description:
       "100% view rate — your brand is literally in your audience's hands during their daily routine.",
     href: "/advertisers",
-    area: "md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]",
   },
   {
     icon: <Users className="h-5 w-5 text-[hsl(0,83%,59%)]" />,
@@ -43,7 +39,13 @@ const features = [
     description:
       "We partner with local cafés and venues to build stronger communities through thoughtful co-branding.",
     href: "/about",
-    area: "md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]",
+  },
+  {
+    icon: <BarChart3 className="h-5 w-5 text-[hsl(0,83%,59%)]" />,
+    title: "Measurable Results",
+    description:
+      "Track campaign performance with distribution metrics, geographic reach, and engagement analytics.",
+    href: "/advertisers",
   },
 ];
 
@@ -64,11 +66,11 @@ export function GlowingFeatureGrid() {
           </p>
         </div>
 
-        <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
+        <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-4">
           {features.map((feature) => (
             <GridItem
               key={feature.title}
-              area={feature.area}
+
               icon={feature.icon}
               title={feature.title}
               description={feature.description}
@@ -82,17 +84,16 @@ export function GlowingFeatureGrid() {
 }
 
 interface GridItemProps {
-  area: string;
   icon: React.ReactNode;
   title: string;
   description: React.ReactNode;
   href: string;
 }
 
-const GridItem = ({ area, icon, title, description, href }: GridItemProps) => {
+const GridItem = ({ icon, title, description, href }: GridItemProps) => {
   return (
     <li
-      className={`min-h-[14rem] list-none ${area}`}
+      className="min-h-[14rem] list-none"
     >
       <a href={href} className="block h-full group">
         <div className="relative h-full rounded-[1.25rem] border-[0.75px] border-gray-200 p-2 md:rounded-[1.5rem] md:p-3">

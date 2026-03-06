@@ -31,12 +31,12 @@ function ContactHero() {
       <div className="absolute bottom-1/4 left-1/4 w-[300px] h-[300px] bg-blue-500 opacity-[0.05] rounded-full blur-[120px] animate-blob-delay" />
 
       <motion.div className="relative z-10 text-center px-6 max-w-4xl mx-auto w-full" style={{ y, opacity }}>
-        <FadeIn>
+        {/* <FadeIn>
           <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white/80 px-5 py-2.5 rounded-full text-sm font-medium mb-8 border border-white/10">
             <span className="w-2 h-2 bg-[hsl(0,83%,59%)] rounded-full animate-pulse-soft" />
             Get in Touch
           </span>
-        </FadeIn>
+        </FadeIn> */}
 
         <FadeIn delay={0.1}>
           <h1 className="fluid-7xl font-bold font-[family-name:var(--font-fredoka)] text-white mb-6">
@@ -122,11 +122,6 @@ function ContactFormSection() {
                       label: "Email",
                       value: "info@feidup.com",
                       href: "mailto:info@feidup.com",
-                    },
-                    {
-                      icon: "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z",
-                      label: "Location",
-                      value: "United Kingdom",
                     },
                     {
                       icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
@@ -218,7 +213,7 @@ function ContactFormSection() {
                     >
                       <option value="">Select one...</option>
                       <option value="advertiser">Advertiser / Brand</option>
-                      <option value="cafe">Café / Business Owner</option>
+                      <option value="venue">Venue Owner</option>
                       <option value="other">Other</option>
                     </select>
                   </div>

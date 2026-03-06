@@ -32,12 +32,12 @@ function BusinessesHero() {
 
       <motion.div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 w-full" style={{ y, opacity }}>
         <div className="max-w-3xl">
-          <FadeIn>
+          {/* <FadeIn>
             <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white/80 px-5 py-2.5 rounded-full text-sm font-medium mb-8 border border-white/10">
               <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse-soft" />
               For Café Partners
             </span>
-          </FadeIn>
+          </FadeIn> */}
 
           <FadeIn delay={0.1}>
             <h1 className="fluid-7xl font-bold font-[family-name:var(--font-fredoka)] text-white mb-6 leading-[1.05]">
