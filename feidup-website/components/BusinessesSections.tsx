@@ -238,12 +238,12 @@ function ProcessSection() {
 
           <StaggerContainer className="grid md:grid-cols-4 gap-6">
             {processSteps.map((step) => (
-              <StaggerItem key={step.num}>
-                <div className="relative pt-8">
+              <StaggerItem key={step.num} className="flex">
+                <div className="relative pt-8 flex-1 flex flex-col">
                   <div className="absolute top-0 left-8 md:left-1/2 md:-translate-x-1/2 w-14 h-14 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,45%)] rounded-2xl flex items-center justify-center font-bold font-[family-name:var(--font-fredoka)] text-white text-xl shadow-lg shadow-red-200/40 z-10">
                     {step.num}
                   </div>
-                  <div className="bg-white rounded-3xl p-8 pt-14 border border-gray-200 shadow-sm hover:shadow-lg transition-shadow duration-500 h-full">
+                  <div className="bg-white rounded-3xl p-8 pt-14 border border-gray-200 shadow-sm hover:shadow-lg transition-shadow duration-500 flex-1 min-h-[180px]">
                     <h3 className="text-xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-3">
                       {step.title}
                     </h3>
