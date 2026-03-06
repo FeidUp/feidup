@@ -163,8 +163,8 @@ async function main() {
     data: {
       email: 'sales@feidup.com',
       passwordHash,
-      firstName: 'Sarah',
-      lastName: 'Chen',
+      firstName: 'Sales',
+      lastName: 'FeidUp',
       role: 'sales',
     },
   });
@@ -173,8 +173,8 @@ async function main() {
     data: {
       email: 'ops@feidup.com',
       passwordHash,
-      firstName: 'Jake',
-      lastName: 'Morrison',
+      firstName: 'Operations',
+      lastName: 'FeidUp',
       role: 'operations',
     },
   });
