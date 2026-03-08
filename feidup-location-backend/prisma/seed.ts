@@ -181,6 +181,28 @@ async function main() {
   
   console.log('  ✓ Created 3 staff users (admin@feidup.com / sales@feidup.com / ops@feidup.com, password: password123)');
 
+  await prisma.user.create({
+    data: {
+      email: 'advertiser@feidup.com',
+      passwordHash,
+      firstName: 'Demo',
+      lastName: 'Advertiser',
+      role: 'advertiser',
+    },
+  });
+
+  await prisma.user.create({
+    data: {
+      email: 'restaurant@feidup.com',
+      passwordHash,
+      firstName: 'Demo',
+      lastName: 'Restaurant',
+      role: 'restaurant',
+    },
+  });
+
+  console.log('  ✓ Created 2 client users (advertiser@feidup.com / restaurant@feidup.com, password: password123)');
+
   // Seed suburb data
   console.log('Seeding Brisbane suburbs...');
   for (const suburb of brisbaneSuburbs) {
