@@ -111,8 +111,8 @@ Open **http://localhost:5174** and use one of these seeded accounts:
 │   Port 5174          │────────▶│    Port 3001             │
 │                      │  /api/* │                          │
 │  ┌─────────────────┐ │         │  ┌────────────────────┐  │
-│  │ AuthContext      │ │         │  │ JWT Auth + RBAC    │  │
-│  │ (login/tokens)  │ │         │  │ middleware          │  │
+│  │ AuthContext     │ │         │  │ JWT Auth + RBAC    │  │
+│  │ (login/tokens)  │ │         │  │ middleware         │  │
 │  ├─────────────────┤ │         │  ├────────────────────┤  │
 │  │ api.ts          │ │         │  │ Routes             │  │
 │  │ (HTTP client)   │ │         │  │ auth, leads, cafes │  │
@@ -121,7 +121,7 @@ Open **http://localhost:5174** and use one of these seeded accounts:
 │  │ Layout/Sidebar  │ │         │  │ Matching Engine    │  │
 │  └─────────────────┘ │         │  │ (4-factor scoring) │  │
 │                      │         │  ├────────────────────┤  │
-│                      │         │  │ SQLite / Postgres   │  │
+│                      │         │  │ SQLite / Postgres  │  │
 │                      │         │  └────────────────────┘  │
 └──────────────────────┘         └──────────────────────────┘
 ```
