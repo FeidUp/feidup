@@ -6,6 +6,7 @@ import {
   FadeIn,
   StaggerContainer,
   StaggerItem,
+  FloatingCup,
 } from "@/components/animations";
 import { MagneticButton } from "@/components/animations/MagneticButton";
 
@@ -36,31 +37,37 @@ function AdvertisersHero() {
       <div className="absolute bottom-1/4 left-1/3 w-[400px] h-[400px] bg-purple-500 rounded-full blur-[120px] animate-blob-delay" style={{ opacity: "calc(var(--glow-opacity) * 0.8)" }} />
 
       <motion.div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 w-full" style={{ y, opacity }}>
-        <div className="max-w-3xl">
-          <FadeIn delay={0.1}>
-            <h1 className="fluid-7xl font-bold font-[family-name:var(--font-fredoka)] mb-6 leading-[1.05]" style={{ color: "var(--text-primary)" }}>
-              Unskippable<br />
-              <span className="text-gradient">Real-World</span><br />
-              Impressions
-            </h1>
-          </FadeIn>
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="max-w-3xl">
+            <FadeIn delay={0.1}>
+              <h1 className="fluid-7xl font-bold font-[family-name:var(--font-fredoka)] mb-6 leading-[1.05]" style={{ color: "var(--text-primary)" }}>
+                Unskippable<br />
+                <span className="text-gradient">Real-World</span><br />
+                Impressions
+              </h1>
+            </FadeIn>
 
-          <FadeIn delay={0.2}>
-            <p className="text-xl md:text-2xl leading-relaxed max-w-xl mb-10" style={{ color: "var(--text-secondary)" }}>
-              FeidUp enables targeted impressions in high-traffic urban areas with unique
-              reach that can&apos;t be blocked, skipped, or ignored.
-            </p>
-          </FadeIn>
+            <FadeIn delay={0.2}>
+              <p className="text-xl md:text-2xl leading-relaxed max-w-xl mb-10" style={{ color: "var(--text-secondary)" }}>
+                FeidUp enables targeted impressions in high-traffic urban areas with unique
+                reach that can&apos;t be blocked, skipped, or ignored.
+              </p>
+            </FadeIn>
 
-          <FadeIn delay={0.3}>
-            <MagneticButton href="/contact">
-              <span className="inline-flex items-center gap-2 px-10 py-5 rounded-full font-semibold text-lg bg-[hsl(0,83%,59%)] text-white shadow-xl shadow-red-500/20 hover:shadow-2xl transition-all duration-300 hover:brightness-110">
-                Start Your Campaign
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </span>
-            </MagneticButton>
+            <FadeIn delay={0.3}>
+              <MagneticButton href="/contact">
+                <span className="inline-flex items-center gap-2 px-10 py-5 rounded-full font-semibold text-lg bg-[hsl(0,83%,59%)] text-white shadow-xl shadow-red-500/20 hover:shadow-2xl transition-all duration-300 hover:brightness-110">
+                  Start Your Campaign
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </span>
+              </MagneticButton>
+            </FadeIn>
+          </div>
+
+          <FadeIn direction="right" delay={0.2} className="hidden lg:block">
+            <FloatingCup src="/images/cup-purple.jpg" alt="Branded coffee cup with advertiser design" />
           </FadeIn>
         </div>
       </motion.div>

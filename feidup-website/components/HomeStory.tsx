@@ -9,6 +9,8 @@ import {
   StaggerItem,
   TextReveal,
   CountUp,
+  Tilt3D,
+  FloatingCup,
 } from "@/components/animations";
 import { MagneticButton } from "@/components/animations/MagneticButton";
 
@@ -153,16 +155,8 @@ function ProblemSection() {
 
 /* ─── 3. THE INSIGHT ─── */
 function InsightSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const imageY = useTransform(scrollYProgress, [0, 1], [40, -40]);
-
   return (
     <section
-      ref={ref}
       className="relative min-h-screen flex items-center overflow-hidden"
     >
       <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
@@ -200,19 +194,9 @@ function InsightSection() {
             </FadeIn>
           </div>
 
-          {/* Image */}
+          {/* 3D Cup */}
           <FadeIn direction="right" delay={0.2}>
-            <motion.div
-              className="relative aspect-[4/5] rounded-3xl overflow-hidden"
-              style={{ y: imageY }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-[hsl(0,83%,59%)]/20 to-transparent z-10 rounded-3xl" />
-              <img
-                src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80"
-                alt="Person holding a branded coffee cup"
-                className="w-full h-full object-cover rounded-3xl"
-              />
-            </motion.div>
+            <FloatingCup className="min-h-[400px] md:min-h-[500px]" />
           </FadeIn>
         </div>
       </div>
@@ -266,40 +250,42 @@ function HowItWorksSection() {
         <div className="space-y-8 max-w-3xl mx-auto">
           {steps.map((step, i) => (
             <FadeIn key={step.num} delay={i * 0.15}>
-              <div className="group relative">
-                <div
-                  className="relative rounded-2xl p-8 md:p-10 transition-all duration-700"
-                  style={{
-                    background: "var(--card-bg)",
-                    border: "1px solid var(--border)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "var(--card-hover)";
-                    e.currentTarget.style.borderColor = "var(--border-hover)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "var(--card-bg)";
-                    e.currentTarget.style.borderColor = "var(--border)";
-                  }}
-                >
-                  <div className="flex items-start gap-6 md:gap-8">
-                    {/* Number */}
-                    <span className="text-4xl md:text-5xl font-bold font-[family-name:var(--font-fredoka)] text-gradient shrink-0">
-                      {step.num}
-                    </span>
-                    <div>
-                      <h3 className="text-2xl md:text-3xl font-bold font-[family-name:var(--font-fredoka)] mb-3" style={{ color: "var(--text-primary)" }}>
-                        {step.title}
-                      </h3>
-                      <p className="leading-relaxed text-base md:text-lg" style={{ color: "var(--text-secondary)" }}>
-                        {step.desc}
-                      </p>
+              <Tilt3D maxTilt={8} scale={1.03} glare>
+                <div className="group relative">
+                  <div
+                    className="relative rounded-2xl p-8 md:p-10 transition-all duration-700"
+                    style={{
+                      background: "var(--card-bg)",
+                      border: "1px solid var(--border)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "var(--card-hover)";
+                      e.currentTarget.style.borderColor = "var(--border-hover)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "var(--card-bg)";
+                      e.currentTarget.style.borderColor = "var(--border)";
+                    }}
+                  >
+                    <div className="flex items-start gap-6 md:gap-8">
+                      {/* Number */}
+                      <span className="text-4xl md:text-5xl font-bold font-[family-name:var(--font-fredoka)] text-gradient shrink-0">
+                        {step.num}
+                      </span>
+                      <div>
+                        <h3 className="text-2xl md:text-3xl font-bold font-[family-name:var(--font-fredoka)] mb-3" style={{ color: "var(--text-primary)" }}>
+                          {step.title}
+                        </h3>
+                        <p className="leading-relaxed text-base md:text-lg" style={{ color: "var(--text-secondary)" }}>
+                          {step.desc}
+                        </p>
+                      </div>
                     </div>
+                    {/* Hover line */}
+                    <div className="absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-[hsl(0,83%,59%)] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
                   </div>
-                  {/* Hover line */}
-                  <div className="absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-[hsl(0,83%,59%)] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
                 </div>
-              </div>
+              </Tilt3D>
             </FadeIn>
           ))}
         </div>
@@ -330,6 +316,7 @@ function AudienceSplit() {
         <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
           {/* Advertisers */}
           <FadeIn direction="left" delay={0.1}>
+            <Tilt3D maxTilt={10} scale={1.02} glare>
             <Link href="/advertisers" className="group block h-full">
               <div
                 className="relative rounded-3xl p-10 md:p-12 h-full transition-all duration-700 overflow-hidden"
@@ -376,10 +363,12 @@ function AudienceSplit() {
                 </span>
               </div>
             </Link>
+            </Tilt3D>
           </FadeIn>
 
           {/* Venues */}
           <FadeIn direction="right" delay={0.1}>
+            <Tilt3D maxTilt={10} scale={1.02} glare>
             <Link href="/businesses" className="group block h-full">
               <div
                 className="relative rounded-3xl p-10 md:p-12 h-full transition-all duration-700 overflow-hidden"
@@ -426,6 +415,7 @@ function AudienceSplit() {
                 </span>
               </div>
             </Link>
+            </Tilt3D>
           </FadeIn>
         </div>
       </div>

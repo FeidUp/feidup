@@ -4,3 +4,5 @@ export { FadeIn, StaggerContainer, StaggerItem, ScaleIn } from "./FadeIn";
 export { StickyReveal, ScrollScale, ScrollProgressBar, CountUp } from "./ScrollEffects";
 export { MagneticButton } from "./MagneticButton";
 export { HorizontalScroll } from "./HorizontalScroll";
+export { Tilt3D } from "./Tilt3D";
+export { FloatingCup } from "./FloatingCup";
