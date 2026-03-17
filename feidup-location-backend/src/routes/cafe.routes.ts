@@ -1,9 +1,38 @@
 // Cafe API Routes
 import { Router, Request, Response } from 'express';
 import { cafeService } from '../services/cafe.service.js';
+import { authenticate, authorize, AuthRequest } from '../middleware/auth.js';
+import { ScopedRequest, scopeToCafe } from '../middleware/scopeAuth.js';
+import { prisma } from '../lib/prisma.js';
 import type { CreateCafeInput } from '../types/index.js';
 
 const router = Router();
+
+/**
+ * GET /api/cafes/me
+ * Returns cafe + inventory + active campaigns for the logged-in restaurant user
+ */
+router.get('/me', authenticate, authorize('restaurant'), scopeToCafe, async (req: ScopedRequest, res: Response) => {
+  const cafeId = req.scopedCafeId!;
+  const cafe = await prisma.cafe.findUnique({
+    where: { id: cafeId },
+    include: {
+      inventory: {
+        include: { batch: { include: { campaign: { select: { id: true, name: true, status: true } } } } },
+      },
+      placements: {
+        where: { status: { in: ['active', 'proposed', 'accepted'] } },
+        include: { campaign: { include: { advertiser: { select: { businessName: true } } } } },
+      },
+    },
+  });
+
+  if (!cafe) {
+    return res.status(404).json({ success: false, error: 'Cafe not found' });
+  }
+
+  res.json({ success: true, data: cafe });
+});
 
 /**
  * POST /api/cafes

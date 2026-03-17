@@ -7,6 +7,8 @@ export interface AuthPayload {
   userId: string;
   email: string;
   role: string;
+  advertiserId?: string;
+  restaurantId?: string;
 }
 
 export interface AuthRequest extends Request {
@@ -44,8 +46,14 @@ export function authorize(...allowedRoles: string[]) {
 }
 
 // Helper to generate tokens
-export function generateTokens(user: { id: string; email: string; role: string }) {
-  const payload: AuthPayload = { userId: user.id, email: user.email, role: user.role };
+export function generateTokens(user: { id: string; email: string; role: string; advertiserId?: string | null; restaurantId?: string | null }) {
+  const payload: AuthPayload = {
+    userId: user.id,
+    email: user.email,
+    role: user.role,
+    ...(user.advertiserId && { advertiserId: user.advertiserId }),
+    ...(user.restaurantId && { restaurantId: user.restaurantId }),
+  };
   
   const accessToken = jwt.sign(payload, config.jwtSecret, {
     expiresIn: config.jwtExpiresIn as string,

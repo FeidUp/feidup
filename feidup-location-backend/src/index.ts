@@ -17,6 +17,8 @@ import { leadRoutes } from './routes/lead.routes.js';
 import { inventoryRoutes } from './routes/inventory.routes.js';
 import { analyticsRoutes } from './routes/analytics.routes.js';
 import { assetRoutes } from './routes/asset.routes.js';
+import { qrRedirectRoutes, qrAnalyticsRoutes } from './routes/qr.routes.js';
+import { enrichmentRoutes } from './routes/enrichment.routes.js';
 
 const app = express();
 const PORT = config.port;
@@ -50,6 +52,9 @@ app.use('/api/leads', leadRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/assets', assetRoutes);
+app.use('/qr', qrRedirectRoutes);
+app.use('/api/analytics', qrAnalyticsRoutes);
+app.use('/api/enrichment', enrichmentRoutes);
 
 // Error handling
 app.use(errorHandler);

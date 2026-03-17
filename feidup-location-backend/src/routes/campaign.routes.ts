@@ -1,6 +1,7 @@
 // Campaign API Routes
 import { Router, Request, Response } from 'express';
 import { campaignService } from '../services/campaign.service.js';
+import { prisma } from '../lib/prisma.js';
 import { ValidationError } from '../middleware/errorHandler.js';
 import type { CreateCampaignInput } from '../types/index.js';
 
@@ -45,22 +46,43 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.get('/', async (req: Request, res: Response) => {
   const { advertiser_id, status, limit, offset } = req.query;
 
-  if (!advertiser_id) {
-    throw new ValidationError('advertiser_id query parameter is required');
+  // If advertiser_id provided, filter by it
+  if (advertiser_id) {
+    const result = await campaignService.getByAdvertiser(advertiser_id as string, {
+      status: status as string,
+      limit: limit ? parseInt(limit as string, 10) : undefined,
+      offset: offset ? parseInt(offset as string, 10) : undefined,
+    });
+
+    return res.json({
+      success: true,
+      data: result.campaigns,
+      meta: { total: result.total },
+    });
   }
 
-  const result = await campaignService.getByAdvertiser(advertiser_id as string, {
-    status: status as string,
-    limit: limit ? parseInt(limit as string, 10) : undefined,
-    offset: offset ? parseInt(offset as string, 10) : undefined,
-  });
+  // No advertiser_id: return all campaigns (for internal CRM)
+  const where: Record<string, unknown> = {};
+  if (status) where.status = status;
+
+  const [campaigns, total] = await Promise.all([
+    prisma.campaign.findMany({
+      where,
+      include: {
+        advertiser: { select: { id: true, businessName: true, industry: true } },
+        placements: { include: { cafe: { select: { id: true, name: true, suburb: true } } } },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: limit ? parseInt(limit as string, 10) : 50,
+      skip: offset ? parseInt(offset as string, 10) : 0,
+    }),
+    prisma.campaign.count({ where }),
+  ]);
 
   res.json({
     success: true,
-    data: result.campaigns,
-    meta: {
-      total: result.total,
-    },
+    data: campaigns,
+    meta: { total },
   });
 });
 

@@ -38,9 +38,25 @@ model User {
   createdLeads     Lead[]        @relation("CreatedBy")
   activities       Activity[]
   auditLogs        AuditLog[]
-  
+  passwordResets   PasswordResetToken[]
+
   @@index([role])
   @@map("users")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+  @@map("password_reset_tokens")
 }
 
 model AuditLog {
@@ -423,6 +439,55 @@ model Asset {
   @@index([campaignId])
   @@index([fileType])
   @@map("assets")
+}
+
+// =============================================================================
+// QR CODE TRACKING
+// =============================================================================
+model QRCode {
+  id           String   @id @default(uuid())
+  code         String   @unique // 8-char alphanumeric
+  type         String   // "cafe" | "advertiser"
+  targetUrl    String   @map("target_url")
+  campaignId   String?  @map("campaign_id")
+  cafeId       String?  @map("cafe_id")
+  placementId  String?  @map("placement_id")
+  advertiserId String?  @map("advertiser_id")
+  batchId      String?  @map("batch_id")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  scans QRScan[]
+
+  @@index([code])
+  @@index([campaignId])
+  @@index([cafeId])
+  @@index([advertiserId])
+  @@map("qr_codes")
+}
+
+model QRScan {
+  id          String   @id @default(uuid())
+  qrCodeId    String   @map("qr_code_id")
+  deviceType  String?  @map("device_type")  // "mobile" | "tablet" | "desktop"
+  os          String?
+  browser     String?
+  userAgent   String?  @map("user_agent")
+  ipAddress   String?  @map("ip_address")
+  scanLat     Float?   @map("scan_lat")
+  scanLng     Float?   @map("scan_lng")
+  scanSuburb  String?  @map("scan_suburb")
+  sessionId   String?  @map("session_id")
+  referrer    String?
+  redirected  Boolean  @default(true)
+  scannedAt   DateTime @default(now()) @map("scanned_at")
+
+  qrCode QRCode @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+
+  @@index([qrCodeId])
+  @@index([scannedAt])
+  @@index([scanSuburb])
+  @@map("qr_scans")
 }
 
 // =============================================================================
