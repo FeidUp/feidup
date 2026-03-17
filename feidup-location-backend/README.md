@@ -1,6 +1,6 @@
 # FeidUp Location Backend
 
-A location-based advertising backend that intelligently matches advertisers to the most suitable cafes in Brisbane, Australia.
+A location-based advertising backend that intelligently matches advertisers to the most suitable restaurants in Brisbane, Australia.
 
 ## Overview
 
