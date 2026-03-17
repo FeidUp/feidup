@@ -6,6 +6,7 @@ import {
   FadeIn,
   StaggerContainer,
   StaggerItem,
+  FloatingCup,
 } from "@/components/animations";
 import { MagneticButton } from "@/components/animations/MagneticButton";
 
@@ -34,30 +35,36 @@ function BusinessesHero() {
       <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-[hsl(0,83%,59%)] rounded-full blur-[120px] animate-blob-delay" style={{ opacity: "var(--glow-opacity)" }} />
 
       <motion.div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 w-full" style={{ y, opacity }}>
-        <div className="max-w-3xl">
-          <FadeIn delay={0.1}>
-            <h1 className="fluid-7xl font-bold font-[family-name:var(--font-fredoka)] mb-6 leading-[1.05]" style={{ color: "var(--text-primary)" }}>
-              Premium Packaging,<br />
-              <span className="text-gradient">Zero Cost</span>
-            </h1>
-          </FadeIn>
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="max-w-3xl">
+            <FadeIn delay={0.1}>
+              <h1 className="fluid-7xl font-bold font-[family-name:var(--font-fredoka)] mb-6 leading-[1.05]" style={{ color: "var(--text-primary)" }}>
+                Premium Packaging,<br />
+                <span className="text-gradient">Zero Cost</span>
+              </h1>
+            </FadeIn>
 
-          <FadeIn delay={0.2}>
-            <p className="text-xl md:text-2xl leading-relaxed max-w-xl mb-10" style={{ color: "var(--text-secondary)" }}>
-              Partner with FeidUp to get free, high-quality custom packaging that showcases
-              your cafe&apos;s brand while supporting sustainability.
-            </p>
-          </FadeIn>
+            <FadeIn delay={0.2}>
+              <p className="text-xl md:text-2xl leading-relaxed max-w-xl mb-10" style={{ color: "var(--text-secondary)" }}>
+                Partner with FeidUp to get free, high-quality custom packaging that showcases
+                your cafe&apos;s brand while supporting sustainability.
+              </p>
+            </FadeIn>
 
-          <FadeIn delay={0.3}>
-            <MagneticButton href="/contact">
-              <span className="inline-flex items-center gap-2 px-10 py-5 rounded-full font-semibold text-lg bg-[hsl(0,83%,59%)] text-white shadow-xl shadow-red-500/20 hover:shadow-2xl transition-all duration-300 hover:brightness-110">
-                Become a Partner
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </span>
-            </MagneticButton>
+            <FadeIn delay={0.3}>
+              <MagneticButton href="/contact">
+                <span className="inline-flex items-center gap-2 px-10 py-5 rounded-full font-semibold text-lg bg-[hsl(0,83%,59%)] text-white shadow-xl shadow-red-500/20 hover:shadow-2xl transition-all duration-300 hover:brightness-110">
+                  Become a Partner
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </span>
+              </MagneticButton>
+            </FadeIn>
+          </div>
+
+          <FadeIn direction="right" delay={0.2} className="hidden lg:block">
+            <FloatingCup src="/images/cup-white.jpg" alt="Co-branded café packaging by FeidUp" />
           </FadeIn>
         </div>
       </motion.div>
