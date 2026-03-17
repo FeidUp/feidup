@@ -38,6 +38,11 @@ export const config = {
     fair: 40,
   },
   
+  // Email (Resend)
+  resendApiKey: process.env.RESEND_API_KEY || '',
+  fromEmail: process.env.FROM_EMAIL || 'FeidUp <noreply@feidup.com>',
+  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5174',
+
   // Rate limiting
   rateLimit: {
     windowMs: 15 * 60 * 1000, // 15 minutes

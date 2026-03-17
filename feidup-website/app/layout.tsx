@@ -3,6 +3,7 @@ import { Inter, Fredoka } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -18,12 +19,12 @@ const fredoka = Fredoka({
 });
 
 export const metadata: Metadata = {
-  title: "FeidUp | Transform Café Packaging into High-Visibility Ad Inventory",
-  description: "FeidUp partners with cafés to provide free custom packaging funded by advertiser impressions. Unskippable real-world advertising meets sustainable co-branding.",
-  keywords: "advertising impressions, café partnerships, co-branded packaging, marketing platform, real-world advertising, sustainable packaging",
+  title: "FeidUp | Transform Cafe Packaging into High-Visibility Ad Inventory",
+  description: "FeidUp partners with cafes to provide free custom packaging funded by advertiser impressions. Unskippable real-world advertising meets sustainable co-branding.",
+  keywords: "advertising impressions, cafe partnerships, co-branded packaging, marketing platform, real-world advertising, sustainable packaging",
   openGraph: {
     title: "FeidUp | Marketing & Impressions Platform",
-    description: "Transform everyday café packaging into high-visibility ad inventory",
+    description: "Transform everyday cafe packaging into high-visibility ad inventory",
     type: "website",
   },
 };
@@ -34,13 +35,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="dark scroll-smooth" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${fredoka.variable} antialiased font-sans`}
       >
-        <Header />
-        {children}
-        <Footer />
+        <ThemeProvider>
+          <Header />
+          {children}
+          <Footer />
+        </ThemeProvider>
         <Analytics />
         <SpeedInsights />
       </body>

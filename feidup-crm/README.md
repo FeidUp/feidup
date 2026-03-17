@@ -74,7 +74,7 @@ npx prisma db push
 # Seed with sample data (3 staff users, 12 suburbs, 16 cafés, 5 advertisers, 6 leads)
 npm run db:seed
 
-# Start the dev server (port 3001)
+# Start the dev server (port 3002)
 npm run dev
 ```
 
@@ -108,7 +108,7 @@ Open **http://localhost:5174** and use one of these seeded accounts:
 ┌──────────────────────┐         ┌──────────────────────────┐
 │   FeidUp CRM (SPA)   │         │    Location Backend      │
 │   React + Vite       │   API   │    Express + Prisma      │
-│   Port 5174          │────────▶│    Port 3001             │
+│   Port 5174          │────────▶│    Port 3002             │
 │                      │  /api/* │                          │
 │  ┌─────────────────┐ │         │  ┌────────────────────┐  │
 │  │ AuthContext     │ │         │  │ JWT Auth + RBAC    │  │
@@ -126,7 +126,7 @@ Open **http://localhost:5174** and use one of these seeded accounts:
 └──────────────────────┘         └──────────────────────────┘
 ```
 
-The Vite dev server proxies `/api/*` and `/health` requests to `http://localhost:3001`, so the frontend and backend can be developed together without CORS issues.
+The Vite dev server proxies `/api/*` and `/health` requests to `http://localhost:3002`, so the frontend and backend can be developed together without CORS issues.
 
 ---
 
@@ -157,7 +157,13 @@ The sidebar navigation automatically filters links based on the logged-in user's
 ## Pages & Features
 
 ### Login Page
-Split-screen layout with branded left panel and login form. Supports show/hide password toggle and error display. Redirects authenticated users to the dashboard.
+Split-screen layout with branded left panel and login form. Supports show/hide password toggle and error display. Redirects authenticated users to the dashboard. Includes a "Forgot password?" link.
+
+### Forgot Password Page
+Allows users to request a password reset by entering their email. Sends a reset link via Resend (or logs to console in dev mode). Shows a confirmation screen after submission. Prevents email enumeration by always showing success.
+
+### Reset Password Page
+Accepts a `?token=` query parameter from the reset email link. Users enter and confirm a new password (min 8 characters). Validates token expiry and single-use. Shows success with a link to sign in, or an error if the token is invalid/expired.
 
 ### Dashboard
 - **Internal users**: 5 stat cards (advertisers, restaurants, campaigns, open leads, impressions), pipeline overview by stage with dollar values, quick-action buttons
@@ -214,6 +220,8 @@ All endpoints are prefixed with `/api` and return `{ success: boolean, data?: T,
 |--------|----------|------|-------------|
 | `POST` | `/auth/login` | Public | Login → `{ user, accessToken, refreshToken }` |
 | `POST` | `/auth/refresh` | Public | Refresh access token |
+| `POST` | `/auth/forgot-password` | Public | Request password reset email |
+| `POST` | `/auth/reset-password` | Public | Reset password with token + new password |
 | `GET` | `/auth/me` | Required | Get current user |
 | `POST` | `/auth/users` | Admin/Sales | Create user |
 | `GET` | `/auth/users` | Admin | List all users |
@@ -325,6 +333,7 @@ Advertiser ──── campaigns ──▶ Campaign ──── placements ─
 | Table | Description | Key Fields |
 |-------|-------------|------------|
 | **users** | All system users | `email`, `role`, `passwordHash`, `isActive`, `lastLoginAt` |
+| **password_reset_tokens** | Password reset tokens | `userId`, `token`, `expiresAt`, `usedAt` |
 | **leads** | Sales pipeline entries | `companyName`, `contactEmail`, `type`, `stage`, `priority`, `estimatedValue` |
 | **activities** | Timeline events | `type` (note/call/email/meeting/status_change), `title`, `description` |
 | **advertisers** | Businesses buying ads | `businessName`, `industry`, `targetSuburbs`, `campaignGoal` |
@@ -436,6 +445,8 @@ feidup-crm/
     │   └── Layout.tsx            # Sidebar navigation + main content wrapper
     └── pages/
         ├── LoginPage.tsx         # Authentication
+        ├── ForgotPasswordPage.tsx # Request password reset email
+        ├── ResetPasswordPage.tsx  # Set new password via reset token
         ├── DashboardPage.tsx     # KPIs, pipeline overview, quick actions
         ├── LeadsPage.tsx         # Lead table with filters + create modal
         ├── LeadDetailPage.tsx    # Lead info, stage pipeline, activity timeline
@@ -495,14 +506,18 @@ feidup-location-backend/
 | `JWT_SECRET` | `feidup-dev-secret-change-in-production` | JWT signing secret |
 | `JWT_EXPIRES_IN` | `24h` | Access token expiry |
 | `JWT_REFRESH_EXPIRES_IN` | `7d` | Refresh token expiry |
-| `PORT` | `3001` | Server port |
+| `PORT` | `3002` | Server port |
 | `NODE_ENV` | `development` | Environment |
 | `UPLOAD_DIR` | `./uploads` | File upload directory |
 | `MAX_FILE_SIZE` | `10485760` | Max upload size (10MB) |
+| `RESEND_API_KEY` | *(empty)* | Resend API key for sending emails (password resets). If empty, reset links are logged to the console. |
+| `FROM_EMAIL` | `FeidUp <noreply@feidup.com>` | Sender address for transactional emails |
+| `FRONTEND_URL` | `http://localhost:5174` | Base URL for password reset links |
+| `GOOGLE_MAPS_API_KEY` | *(empty)* | Google Maps API key (optional) |
 
 ### Frontend
 
-The frontend uses Vite's proxy — no environment variables needed in development. API calls to `/api/*` are automatically forwarded to `http://localhost:3001`.
+The frontend uses Vite's proxy — no environment variables needed in development. API calls to `/api/*` are automatically forwarded to `http://localhost:3002`.
 
 ---
 

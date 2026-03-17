@@ -17,7 +17,8 @@ FeidUp connects advertisers with physical cafes and restaurants by placing brand
 - **Runtime**: Node.js 18+
 - **Language**: TypeScript
 - **Framework**: Express.js
-- **Database**: PostgreSQL (with Prisma ORM)
+- **Database**: SQLite (dev) / PostgreSQL (prod) (with Prisma ORM)
+- **Email**: Resend (transactional emails)
 - **Distance Calculations**: geolib
 
 ## Getting Started
@@ -25,8 +26,8 @@ FeidUp connects advertisers with physical cafes and restaurants by placing brand
 ### Prerequisites
 
 - Node.js 18+
-- PostgreSQL 14+ (or use Docker)
 - npm or yarn
+- (Optional) Resend API key for sending emails
 
 ### 1. Install Dependencies
 
@@ -37,15 +38,31 @@ npm install
 
 ### 2. Set Up Environment
 
-```bash
-cp .env.example .env
+Create a `.env` file in the project root:
+
+```env
+# Database (SQLite for local dev)
+DATABASE_URL="file:./dev.db"
+
+# JWT
+JWT_SECRET="feidup-dev-secret-change-in-production"
+
+# Server
+PORT=3002
+NODE_ENV=development
+
+# Frontend URL (used in password reset email links)
+FRONTEND_URL="http://localhost:5174"
+
+# Email (Resend) - leave empty for dev mode (reset links logged to console)
+RESEND_API_KEY=""
+FROM_EMAIL="FeidUp <noreply@feidup.com>"
+
+# Google Maps (optional)
+GOOGLE_MAPS_API_KEY=""
 ```
 
-Edit `.env` and update the `DATABASE_URL` with your PostgreSQL connection string:
-
-```
-DATABASE_URL="postgresql://postgres:password@localhost:5432/feidup_dev?schema=public"
-```
+> **Note**: Without a `RESEND_API_KEY`, password reset links are logged to the backend console instead of being emailed. This is fine for local development.
 
 ### 3. Set Up Database
 
@@ -71,13 +88,23 @@ npm run build
 npm start
 ```
 
-The server will start at `http://localhost:3001`.
+The server will start at `http://localhost:3002`.
 
 ## API Endpoints
 
 ### Health Check
 - `GET /health` - Service health status
 - `GET /health/ready` - Database readiness
+
+### Auth
+- `POST /api/auth/login` - Login with email/password → returns JWT tokens
+- `POST /api/auth/refresh` - Refresh access token
+- `POST /api/auth/forgot-password` - Request password reset email
+- `POST /api/auth/reset-password` - Reset password with token
+- `GET /api/auth/me` - Get current user (requires auth)
+- `POST /api/auth/users` - Create user (admin/sales only)
+- `GET /api/auth/users` - List users (admin only)
+- `PATCH /api/auth/users/:id` - Update user (admin only)
 
 ### Advertisers
 - `POST /api/advertisers` - Create advertiser
@@ -111,7 +138,7 @@ The server will start at `http://localhost:3001`.
 ### 1. Create an Advertiser
 
 ```bash
-curl -X POST http://localhost:3001/api/advertisers \
+curl -X POST http://localhost:3002/api/advertisers \
   -H "Content-Type: application/json" \
   -d '{
     "businessName": "FitLife Gym",
@@ -130,7 +157,7 @@ curl -X POST http://localhost:3001/api/advertisers \
 ### 2. Get Recommendations
 
 ```bash
-curl "http://localhost:3001/api/recommendations?advertiser_id=YOUR_ADVERTISER_ID"
+curl "http://localhost:3002/api/recommendations?advertiser_id=YOUR_ADVERTISER_ID"
 ```
 
 Response:
@@ -166,7 +193,7 @@ Response:
 ### 3. Create a Campaign with Auto-Selected Cafes
 
 ```bash
-curl -X POST http://localhost:3001/api/campaigns \
+curl -X POST http://localhost:3002/api/campaigns \
   -H "Content-Type: application/json" \
   -d '{
     "advertiserId": "YOUR_ADVERTISER_ID",
@@ -176,6 +203,41 @@ curl -X POST http://localhost:3001/api/campaigns \
     "endDate": "2025-01-31"
   }'
 ```
+
+## Password Reset Flow
+
+The system supports a full self-service password reset:
+
+1. User clicks "Forgot password?" on the login page
+2. Backend generates a secure token (expires in 1 hour) and either:
+   - **With `RESEND_API_KEY`**: Sends a branded HTML email via Resend with a reset link
+   - **Without API key (dev mode)**: Logs the reset URL to the backend console
+3. User clicks the link → enters new password (min 8 characters)
+4. Backend validates token, hashes new password, marks token as used
+
+Security features:
+- Always returns success (prevents email enumeration)
+- Tokens are single-use and expire after 1 hour
+- Previous unused tokens are invalidated when a new one is requested
+- All resets are recorded in the audit log
+
+## Email Configuration
+
+Transactional emails (password resets) are sent via [Resend](https://resend.com).
+
+| Variable | Description |
+|----------|-------------|
+| `RESEND_API_KEY` | API key from Resend dashboard |
+| `FROM_EMAIL` | Sender address (requires verified domain in Resend) |
+| `FRONTEND_URL` | Base URL for reset links (e.g., `http://localhost:5174`) |
+
+### Production Setup
+
+1. Add your domain in Resend → Domains
+2. Add the DNS records (DKIM TXT, SPF MX/TXT) to your DNS provider
+3. Set `RESEND_API_KEY` and `FROM_EMAIL` in your production environment
+
+**Current production config**: Domain `feidup.com` is verified with Resend. DNS is managed via Cloudflare. Incoming email (`info@feidup.com`) is routed via Cloudflare Email Routing to `feidup.2025@gmail.com`.
 
 ## Matching Algorithm
 

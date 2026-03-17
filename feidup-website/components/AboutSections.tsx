@@ -2,14 +2,12 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import Link from "next/link";
 import {
   FadeIn,
   StaggerContainer,
   StaggerItem,
 } from "@/components/animations";
 import { MagneticButton } from "@/components/animations/MagneticButton";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 /* ─── HERO ─── */
 function AboutHero() {
@@ -22,47 +20,43 @@ function AboutHero() {
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   return (
-    <section ref={ref} className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gray-950">
+    <section ref={ref} className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
       {/* Grid background */}
-      <div className="absolute inset-0 opacity-[0.04]" style={{
-        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
-        backgroundSize: "40px 40px",
-      }} />
+      <div
+        className="absolute inset-0"
+        style={{
+          opacity: 0.04,
+          backgroundImage: `radial-gradient(circle at 1px 1px, var(--grid-color) 1px, transparent 0)`,
+          backgroundSize: "40px 40px",
+        }}
+      />
 
       {/* Gradient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[hsl(0,83%,59%)] opacity-[0.08] rounded-full blur-[150px] animate-blob" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[hsl(30,90%,55%)] opacity-[0.06] rounded-full blur-[120px] animate-blob-delay" />
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[hsl(0,83%,59%)] rounded-full blur-[150px] animate-blob" style={{ opacity: "var(--glow-opacity)" }} />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[hsl(30,90%,55%)] rounded-full blur-[120px] animate-blob-delay" style={{ opacity: "var(--glow-opacity)" }} />
 
       <motion.div className="relative z-10 text-center px-6 max-w-4xl mx-auto" style={{ y, opacity }}>
-        {/* <FadeIn>
-          <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white/80 px-5 py-2.5 rounded-full text-sm font-medium mb-8 border border-white/10">
-            <span className="w-2 h-2 bg-[hsl(0,83%,59%)] rounded-full animate-pulse-soft" />
-            Our Story
-          </span>
-        </FadeIn> */}
-
         <FadeIn delay={0.1}>
-          <h1 className="fluid-7xl font-bold font-[family-name:var(--font-fredoka)] text-white mb-6">
+          <h1 className="fluid-7xl font-bold font-[family-name:var(--font-fredoka)] mb-6" style={{ color: "var(--text-primary)" }}>
             About <span className="text-gradient">FeidUp</span>
           </h1>
         </FadeIn>
 
         <FadeIn delay={0.2}>
-          <p className="text-xl md:text-2xl text-gray-400 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto" style={{ color: "var(--text-secondary)" }}>
             We&apos;re transforming the way brands connect with audiences by turning everyday
             packaging into powerful, sustainable marketing.
           </p>
         </FadeIn>
 
-        {/* Scroll indicator */}
         <FadeIn delay={0.5}>
           <motion.div
             className="mt-16 flex flex-col items-center gap-2"
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <span className="text-gray-500 text-xs uppercase tracking-widest">Scroll to explore</span>
-            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span className="text-xs uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>Scroll to explore</span>
+            <svg className="w-5 h-5" style={{ color: "var(--text-muted)" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </motion.div>
@@ -82,25 +76,27 @@ function VisionSection() {
   const imgY = useTransform(scrollYProgress, [0, 1], [60, -60]);
 
   return (
-    <section ref={ref} className="section-pad-lg bg-white overflow-hidden">
+    <section ref={ref} className="section-pad-lg overflow-hidden relative">
+      <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
+
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <FadeIn direction="right" className="order-2 lg:order-1">
             <span className="text-[hsl(0,83%,59%)] font-semibold text-xs uppercase tracking-[0.2em]">
               The Vision
             </span>
-            <h2 className="fluid-4xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mt-4 mb-8">
+            <h2 className="fluid-4xl font-bold font-[family-name:var(--font-fredoka)] mt-4 mb-8" style={{ color: "var(--text-primary)" }}>
               Connecting communities
               <br />
               through great design.
             </h2>
-            <div className="space-y-5 text-lg text-gray-600 leading-relaxed">
+            <div className="space-y-5 text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
               <p>
-                FeidUp envisions a future where cafés, customers, and advertisers are seamlessly
+                FeidUp envisions a future where cafes, customers, and advertisers are seamlessly
                 connected through sustainable, beautifully designed branded packaging.
               </p>
               <p>
-                We believe in creating value for everyone: cafés get premium packaging
+                We believe in creating value for everyone: cafes get premium packaging
                 at no cost, advertisers gain authentic real-world impressions, and customers
                 enjoy better-designed, more sustainable products.
               </p>
@@ -125,10 +121,9 @@ function VisionSection() {
                     </svg>
                   </div>
                   <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Our Vision</p>
-                  <p className="text-white/70 mt-2">Premium packaging for every café</p>
+                  <p className="text-white/70 mt-2">Premium packaging for every cafe</p>
                 </div>
               </div>
-              {/* Decorative circles */}
               <div className="absolute -top-12 -right-12 w-40 h-40 border border-white/10 rounded-full" />
               <div className="absolute -bottom-8 -left-8 w-32 h-32 border border-white/10 rounded-full" />
             </motion.div>
@@ -149,7 +144,9 @@ function StartingLocalSection() {
   const imgY = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   return (
-    <section ref={ref} className="section-pad-lg bg-gray-50 overflow-hidden">
+    <section ref={ref} className="section-pad-lg overflow-hidden relative">
+      <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
+
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <FadeIn direction="right">
@@ -165,7 +162,7 @@ function StartingLocalSection() {
                     </svg>
                   </div>
                   <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Co-Branded Packaging</p>
-                  <p className="text-white/70 mt-2">Ipswich Café × FeidUp</p>
+                  <p className="text-white/70 mt-2">Ipswich Cafe x FeidUp</p>
                 </div>
               </div>
             </motion.div>
@@ -175,28 +172,28 @@ function StartingLocalSection() {
             <span className="text-[hsl(0,83%,59%)] font-semibold text-xs uppercase tracking-[0.2em]">
               Our Focus
             </span>
-            <h2 className="fluid-4xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mt-4 mb-8">
+            <h2 className="fluid-4xl font-bold font-[family-name:var(--font-fredoka)] mt-4 mb-8" style={{ color: "var(--text-primary)" }}>
               Starting Local,
               <br />
               Thinking Global.
             </h2>
-            <div className="space-y-5 text-lg text-gray-600 leading-relaxed">
+            <div className="space-y-5 text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
               <p>
-                We&apos;re launching with targeted pilots at select local cafés, beginning with
-                custom co-branded cups that feature both the café&apos;s identity and advertiser
+                We&apos;re launching with targeted pilots at select local cafes, beginning with
+                custom co-branded cups that feature both the cafe&apos;s identity and advertiser
                 messaging.
               </p>
-              <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-                <p className="text-gray-900 font-semibold font-[family-name:var(--font-fredoka)] text-lg mb-2">
+              <div className="rounded-2xl p-6" style={{ background: "var(--card-bg)", border: "1px solid var(--border)" }}>
+                <p className="font-semibold font-[family-name:var(--font-fredoka)] text-lg mb-2" style={{ color: "var(--text-primary)" }}>
                   Co-Branding, Not Takeover
                 </p>
-                <p className="text-gray-600">
-                  Our packaging is designed café-first. When you see a FeidUp cup at Ipswich Cafe,
+                <p style={{ color: "var(--text-secondary)" }}>
+                  Our packaging is designed cafe-first. When you see a FeidUp cup at Ipswich Cafe,
                   it looks like their branding with subtle advertiser integration.
                 </p>
               </div>
               <p>
-                This ensures cafés maintain brand integrity while gaining access
+                This ensures cafes maintain brand integrity while gaining access
                 to premium materials they might not otherwise afford.
               </p>
             </div>
@@ -215,8 +212,8 @@ const approaches = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
       </svg>
     ),
-    title: "Café Identity First",
-    desc: "The café's branding stays front and center. Our packaging looks like it belongs to the café, not like a walking billboard.",
+    title: "Cafe Identity First",
+    desc: "The cafe's branding stays front and center. Our packaging looks like it belongs to the cafe, not like a walking billboard.",
   },
   {
     icon: (
@@ -234,42 +231,55 @@ const approaches = [
       </svg>
     ),
     title: "Premium Quality",
-    desc: "Higher-quality materials, better design, and sustainable production make this packaging something cafés are proud to use.",
+    desc: "Higher-quality materials, better design, and sustainable production make this packaging something cafes are proud to use.",
   },
 ];
 
 function CoBrandingSection() {
   return (
-    <section className="section-pad-lg bg-white">
+    <section className="section-pad-lg relative">
+      <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
+
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <FadeIn className="text-center mb-20">
           <span className="text-[hsl(0,83%,59%)] font-semibold text-xs uppercase tracking-[0.2em]">
             Our Approach
           </span>
-          <h2 className="fluid-5xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mt-4 mb-6">
+          <h2 className="fluid-5xl font-bold font-[family-name:var(--font-fredoka)] mt-4 mb-6" style={{ color: "var(--text-primary)" }}>
             Why Co-Branding Matters
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            We believe packaging should enhance the café experience, not distract from it.
+          <p className="text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+            We believe packaging should enhance the cafe experience, not distract from it.
           </p>
         </FadeIn>
 
         <StaggerContainer className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {approaches.map((item) => (
             <StaggerItem key={item.title}>
-              <div className="relative rounded-[1.25rem] border-[0.75px] border-gray-200 p-2 md:rounded-[1.5rem] md:p-3 h-full">
-                <GlowingEffect spread={40} glow proximity={64} inactiveZone={0.01} borderWidth={3} />
-                <div className="relative flex flex-col h-full rounded-xl border-[0.75px] border-gray-100 bg-gradient-to-br from-gray-50 to-white p-8 lg:p-10 shadow-sm">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] flex items-center justify-center text-white mb-6 shadow-lg shadow-red-200/30">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed text-base lg:text-lg">
-                    {item.desc}
-                  </p>
+              <div
+                className="group rounded-3xl p-8 lg:p-10 h-full transition-all duration-700"
+                style={{
+                  background: "var(--card-bg)",
+                  border: "1px solid var(--border)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "var(--card-hover)";
+                  e.currentTarget.style.borderColor = "var(--border-hover)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "var(--card-bg)";
+                  e.currentTarget.style.borderColor = "var(--border)";
+                }}
+              >
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] flex items-center justify-center text-white mb-6 shadow-lg shadow-red-500/20">
+                  {item.icon}
                 </div>
+                <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] mb-3" style={{ color: "var(--text-primary)" }}>
+                  {item.title}
+                </h3>
+                <p className="leading-relaxed text-base lg:text-lg" style={{ color: "var(--text-secondary)" }}>
+                  {item.desc}
+                </p>
               </div>
             </StaggerItem>
           ))}
@@ -283,7 +293,7 @@ function CoBrandingSection() {
 const values = [
   {
     title: "Community-Driven",
-    desc: "We prioritize partnerships with local cafés and support the communities they serve.",
+    desc: "We prioritize partnerships with local cafes and support the communities they serve.",
     icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z",
   },
   {
@@ -298,25 +308,31 @@ const values = [
   },
   {
     title: "Mutual Value",
-    desc: "Every partnership benefits all parties: cafés, advertisers, and customers alike.",
+    desc: "Every partnership benefits all parties: cafes, advertisers, and customers alike.",
     icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
   },
 ];
 
 function ValuesSection() {
   return (
-    <section className="section-pad-lg bg-gray-950 text-white relative overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.04]" style={{
-        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
-        backgroundSize: "40px 40px",
-      }} />
+    <section className="section-pad-lg relative overflow-hidden">
+      <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
+
+      <div
+        className="absolute inset-0"
+        style={{
+          opacity: 0.04,
+          backgroundImage: `radial-gradient(circle at 1px 1px, var(--grid-color) 1px, transparent 0)`,
+          backgroundSize: "40px 40px",
+        }}
+      />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
         <FadeIn className="text-center mb-20">
           <span className="text-[hsl(0,83%,59%)] font-semibold text-xs uppercase tracking-[0.2em]">
             What Drives Us
           </span>
-          <h2 className="fluid-5xl font-bold font-[family-name:var(--font-fredoka)] text-white mt-4">
+          <h2 className="fluid-5xl font-bold font-[family-name:var(--font-fredoka)] mt-4" style={{ color: "var(--text-primary)" }}>
             Our Core Values
           </h2>
         </FadeIn>
@@ -324,23 +340,37 @@ function ValuesSection() {
         <StaggerContainer className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {values.map((v) => (
             <StaggerItem key={v.title}>
-              <div className="group bg-white/[0.04] backdrop-blur-sm border border-white/[0.08] rounded-3xl p-8 lg:p-10 hover:bg-white/[0.08] transition-all duration-700 hover:border-white/[0.15] h-full">
+              <div
+                className="group backdrop-blur-sm rounded-3xl p-8 lg:p-10 h-full transition-all duration-700"
+                style={{
+                  background: "var(--card-bg)",
+                  border: "1px solid var(--border)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "var(--card-hover)";
+                  e.currentTarget.style.borderColor = "var(--border-hover)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "var(--card-bg)";
+                  e.currentTarget.style.borderColor = "var(--border)";
+                }}
+              >
                 <div className="w-12 h-12 rounded-xl bg-[hsl(0,83%,59%)]/20 flex items-center justify-center mb-6">
                   <svg className="w-6 h-6 text-[hsl(0,83%,59%)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={v.icon} />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] text-white mb-3 group-hover:text-[hsl(0,83%,59%)] transition-colors">
+                <h3 className="text-2xl font-bold font-[family-name:var(--font-fredoka)] mb-3 group-hover:text-[hsl(0,83%,59%)] transition-colors" style={{ color: "var(--text-primary)" }}>
                   {v.title}
                 </h3>
-                <p className="text-gray-400 leading-relaxed lg:text-lg">{v.desc}</p>
+                <p className="leading-relaxed lg:text-lg" style={{ color: "var(--text-secondary)" }}>{v.desc}</p>
               </div>
             </StaggerItem>
           ))}
         </StaggerContainer>
       </div>
 
-      <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[hsl(0,83%,59%)] opacity-[0.06] rounded-full blur-[120px]" />
+      <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[hsl(0,83%,59%)] rounded-full blur-[120px]" style={{ opacity: "var(--glow-opacity)" }} />
     </section>
   );
 }
@@ -348,7 +378,9 @@ function ValuesSection() {
 /* ─── CTA ─── */
 function AboutCTA() {
   return (
-    <section className="section-pad-lg bg-white">
+    <section className="section-pad-lg relative">
+      <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
+
       <div className="mx-auto max-w-5xl px-6 lg:px-8">
         <FadeIn>
           <div className="relative bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,45%)] rounded-[2.5rem] px-8 py-20 md:px-16 md:py-24 text-center overflow-hidden">
@@ -361,7 +393,7 @@ function AboutCTA() {
                 Join Our Mission
               </h2>
               <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-                Whether you&apos;re an advertiser or a café seeking premium packaging,
+                Whether you&apos;re an advertiser or a cafe seeking premium packaging,
                 we&apos;d love to work with you.
               </p>
               <MagneticButton href="/contact">

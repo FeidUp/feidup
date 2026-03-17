@@ -21,32 +21,29 @@ function ContactHero() {
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   return (
-    <section ref={ref} className="relative min-h-[55vh] flex items-center overflow-hidden bg-gray-950">
-      <div className="absolute inset-0 opacity-[0.04]" style={{
-        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
-        backgroundSize: "40px 40px",
-      }} />
+    <section ref={ref} className="relative min-h-[55vh] flex items-center overflow-hidden">
+      <div
+        className="absolute inset-0"
+        style={{
+          opacity: 0.04,
+          backgroundImage: `radial-gradient(circle at 1px 1px, var(--grid-color) 1px, transparent 0)`,
+          backgroundSize: "40px 40px",
+        }}
+      />
 
-      <div className="absolute top-1/3 right-1/3 w-[400px] h-[400px] bg-[hsl(0,83%,59%)] opacity-[0.08] rounded-full blur-[150px] animate-blob" />
-      <div className="absolute bottom-1/4 left-1/4 w-[300px] h-[300px] bg-blue-500 opacity-[0.05] rounded-full blur-[120px] animate-blob-delay" />
+      <div className="absolute top-1/3 right-1/3 w-[400px] h-[400px] bg-[hsl(0,83%,59%)] rounded-full blur-[150px] animate-blob" style={{ opacity: "var(--glow-opacity)" }} />
+      <div className="absolute bottom-1/4 left-1/4 w-[300px] h-[300px] bg-blue-500 rounded-full blur-[120px] animate-blob-delay" style={{ opacity: "calc(var(--glow-opacity) * 0.8)" }} />
 
       <motion.div className="relative z-10 text-center px-6 max-w-4xl mx-auto w-full" style={{ y, opacity }}>
-        {/* <FadeIn>
-          <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white/80 px-5 py-2.5 rounded-full text-sm font-medium mb-8 border border-white/10">
-            <span className="w-2 h-2 bg-[hsl(0,83%,59%)] rounded-full animate-pulse-soft" />
-            Get in Touch
-          </span>
-        </FadeIn> */}
-
         <FadeIn delay={0.1}>
-          <h1 className="fluid-7xl font-bold font-[family-name:var(--font-fredoka)] text-white mb-6">
+          <h1 className="fluid-7xl font-bold font-[family-name:var(--font-fredoka)] mb-6" style={{ color: "var(--text-primary)" }}>
             Let&apos;s Start a <span className="text-gradient">Conversation</span>
           </h1>
         </FadeIn>
 
         <FadeIn delay={0.2}>
-          <p className="text-xl md:text-2xl text-gray-400 leading-relaxed max-w-2xl mx-auto">
-            Whether you&apos;re an advertiser looking for targeted impressions or a café
+          <p className="text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto" style={{ color: "var(--text-secondary)" }}>
+            Whether you&apos;re an advertiser looking for targeted impressions or a cafe
             seeking premium packaging, we&apos;d love to hear from you.
           </p>
         </FadeIn>
@@ -92,13 +89,23 @@ function ContactFormSection() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const inputBase =
-    "w-full px-5 py-4 rounded-2xl border-2 bg-white focus:ring-0 outline-none transition-all duration-300 text-gray-900 placeholder:text-gray-400 text-base";
-  const inputFocus = "border-[hsl(0,83%,59%)] shadow-lg shadow-red-100/50";
-  const inputIdle = "border-gray-200 hover:border-gray-300";
+  const inputStyles = (field: string): React.CSSProperties => ({
+    width: "100%",
+    padding: "1rem 1.25rem",
+    borderRadius: "1rem",
+    border: `2px solid ${focusedField === field ? "hsl(0,83%,59%)" : "var(--input-border)"}`,
+    background: "var(--input-bg)",
+    color: "var(--input-text)",
+    fontSize: "1rem",
+    outline: "none",
+    transition: "all 0.3s",
+    boxShadow: focusedField === field ? "0 10px 40px -10px rgba(220,38,38,0.15)" : "none",
+  });
 
   return (
-    <section className="section-pad-lg bg-white">
+    <section className="section-pad-lg relative">
+      <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
+
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid lg:grid-cols-5 gap-16">
           {/* Sidebar */}
@@ -108,10 +115,10 @@ function ContactFormSection() {
                 <span className="text-[hsl(0,83%,59%)] font-semibold text-xs uppercase tracking-[0.2em]">
                   Contact
                 </span>
-                <h2 className="fluid-4xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mt-4 mb-6">
+                <h2 className="fluid-4xl font-bold font-[family-name:var(--font-fredoka)] mt-4 mb-6" style={{ color: "var(--text-primary)" }}>
                   We&apos;d love to hear from you
                 </h2>
-                <p className="text-gray-600 leading-relaxed mb-10 text-lg">
+                <p className="leading-relaxed mb-10 text-lg" style={{ color: "var(--text-secondary)" }}>
                   Fill out the form and our team will get back to you within 24 hours.
                 </p>
 
@@ -130,7 +137,7 @@ function ContactFormSection() {
                     },
                   ].map((item) => (
                     <div key={item.label} className="flex items-start gap-4 group">
-                      <div className="w-12 h-12 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-red-200/30 group-hover:scale-110 transition-transform duration-300">
+                      <div className="w-12 h-12 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-red-500/20 group-hover:scale-110 transition-transform duration-300">
                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           {item.icon.split(" M").map((d, i) => (
                             <path key={i} strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={i === 0 ? d : "M" + d} />
@@ -138,7 +145,7 @@ function ContactFormSection() {
                         </svg>
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900 font-[family-name:var(--font-fredoka)]">
+                        <p className="font-semibold font-[family-name:var(--font-fredoka)]" style={{ color: "var(--text-primary)" }}>
                           {item.label}
                         </p>
                         {item.href ? (
@@ -146,7 +153,7 @@ function ContactFormSection() {
                             {item.value}
                           </a>
                         ) : (
-                          <p className="text-gray-600">{item.value}</p>
+                          <p style={{ color: "var(--text-secondary)" }}>{item.value}</p>
                         )}
                       </div>
                     </div>
@@ -159,10 +166,16 @@ function ContactFormSection() {
           {/* Form */}
           <div className="lg:col-span-3">
             <FadeIn delay={0.2}>
-              <div className="bg-gradient-to-br from-gray-50 to-white p-8 md:p-12 rounded-3xl shadow-xl border border-gray-200">
+              <div
+                className="p-8 md:p-12 rounded-3xl"
+                style={{
+                  background: "var(--card-bg)",
+                  border: "1px solid var(--border)",
+                }}
+              >
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-semibold text-gray-900 mb-2 font-[family-name:var(--font-fredoka)]">
+                    <label htmlFor="name" className="block text-sm font-semibold mb-2 font-[family-name:var(--font-fredoka)]" style={{ color: "var(--text-primary)" }}>
                       Name *
                     </label>
                     <input
@@ -174,13 +187,13 @@ function ContactFormSection() {
                       onChange={handleChange}
                       onFocus={() => setFocusedField("name")}
                       onBlur={() => setFocusedField(null)}
-                      className={`${inputBase} ${focusedField === "name" ? inputFocus : inputIdle}`}
+                      style={inputStyles("name")}
                       placeholder="Your full name"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-2 font-[family-name:var(--font-fredoka)]">
+                    <label htmlFor="email" className="block text-sm font-semibold mb-2 font-[family-name:var(--font-fredoka)]" style={{ color: "var(--text-primary)" }}>
                       Email *
                     </label>
                     <input
@@ -192,13 +205,13 @@ function ContactFormSection() {
                       onChange={handleChange}
                       onFocus={() => setFocusedField("email")}
                       onBlur={() => setFocusedField(null)}
-                      className={`${inputBase} ${focusedField === "email" ? inputFocus : inputIdle}`}
+                      style={inputStyles("email")}
                       placeholder="your@email.com"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="businessType" className="block text-sm font-semibold text-gray-900 mb-2 font-[family-name:var(--font-fredoka)]">
+                    <label htmlFor="businessType" className="block text-sm font-semibold mb-2 font-[family-name:var(--font-fredoka)]" style={{ color: "var(--text-primary)" }}>
                       I am an... *
                     </label>
                     <select
@@ -209,7 +222,7 @@ function ContactFormSection() {
                       onChange={handleChange}
                       onFocus={() => setFocusedField("businessType")}
                       onBlur={() => setFocusedField(null)}
-                      className={`${inputBase} ${focusedField === "businessType" ? inputFocus : inputIdle}`}
+                      style={inputStyles("businessType")}
                     >
                       <option value="">Select one...</option>
                       <option value="advertiser">Advertiser / Brand</option>
@@ -219,7 +232,7 @@ function ContactFormSection() {
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="block text-sm font-semibold text-gray-900 mb-2 font-[family-name:var(--font-fredoka)]">
+                    <label htmlFor="message" className="block text-sm font-semibold mb-2 font-[family-name:var(--font-fredoka)]" style={{ color: "var(--text-primary)" }}>
                       Message *
                     </label>
                     <textarea
@@ -231,14 +244,14 @@ function ContactFormSection() {
                       onChange={handleChange}
                       onFocus={() => setFocusedField("message")}
                       onBlur={() => setFocusedField(null)}
-                      className={`${inputBase} resize-none ${focusedField === "message" ? inputFocus : inputIdle}`}
+                      style={{ ...inputStyles("message"), resize: "none" as const }}
                       placeholder="Tell us about your needs..."
                     />
                   </div>
 
                   <div>
                     <MagneticButton type="submit" disabled={status === "submitting"}>
-                      <span className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold text-lg bg-gradient-to-r from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] text-white shadow-lg hover:shadow-xl hover:shadow-red-200/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                      <span className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold text-lg bg-gradient-to-r from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] text-white shadow-lg hover:shadow-xl hover:shadow-red-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         {status === "submitting" ? (
                           <>
                             <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
@@ -263,7 +276,11 @@ function ContactFormSection() {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-5 bg-green-50 border-2 border-green-200 rounded-2xl"
+                      className="p-5 rounded-2xl"
+                      style={{
+                        background: "var(--success-bg)",
+                        border: `2px solid var(--success-border)`,
+                      }}
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shrink-0">
@@ -271,7 +288,7 @@ function ContactFormSection() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <p className="text-green-800 font-medium">
+                        <p className="font-medium" style={{ color: "var(--success-text)" }}>
                           Thank you! We&apos;ll get back to you within 24 hours.
                         </p>
                       </div>
@@ -282,7 +299,11 @@ function ContactFormSection() {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-5 bg-red-50 border-2 border-red-200 rounded-2xl"
+                      className="p-5 rounded-2xl"
+                      style={{
+                        background: "var(--error-bg)",
+                        border: `2px solid var(--error-border)`,
+                      }}
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shrink-0">
@@ -290,7 +311,7 @@ function ContactFormSection() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </div>
-                        <p className="text-red-800 font-medium">
+                        <p className="font-medium" style={{ color: "var(--error-text)" }}>
                           Something went wrong. Please try again or email us at{" "}
                           <a href="mailto:info@feidup.com" className="underline">info@feidup.com</a>.
                         </p>
@@ -316,7 +337,7 @@ const quickLinks = [
     icon: "M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z",
   },
   {
-    title: "For Café Partners",
+    title: "For Cafe Partners",
     desc: "Discover free premium packaging and co-branding opportunities.",
     href: "/businesses",
     icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
@@ -331,13 +352,15 @@ const quickLinks = [
 
 function QuickLinksSection() {
   return (
-    <section className="section-pad-lg bg-gray-50">
+    <section className="section-pad-lg relative">
+      <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
+
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <FadeIn className="text-center mb-16">
           <span className="text-[hsl(0,83%,59%)] font-semibold text-xs uppercase tracking-[0.2em]">
             Explore
           </span>
-          <h2 className="fluid-4xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mt-4">
+          <h2 className="fluid-4xl font-bold font-[family-name:var(--font-fredoka)] mt-4" style={{ color: "var(--text-primary)" }}>
             Learn More About FeidUp
           </h2>
         </FadeIn>
@@ -347,17 +370,29 @@ function QuickLinksSection() {
             <StaggerItem key={link.title}>
               <Link
                 href={link.href}
-                className="block bg-white p-8 rounded-3xl shadow-sm border border-gray-200 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-500 h-full group"
+                className="block p-8 rounded-3xl text-center hover:-translate-y-1 transition-all duration-500 h-full group"
+                style={{
+                  background: "var(--card-bg)",
+                  border: "1px solid var(--border)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "var(--card-hover)";
+                  e.currentTarget.style.borderColor = "var(--border-hover)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "var(--card-bg)";
+                  e.currentTarget.style.borderColor = "var(--border)";
+                }}
               >
-                <div className="w-14 h-14 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-red-200/30 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-14 h-14 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,49%)] rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-red-500/20 group-hover:scale-110 transition-transform duration-300">
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={link.icon} />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold font-[family-name:var(--font-fredoka)] text-gray-900 mb-3">
+                <h3 className="text-xl font-bold font-[family-name:var(--font-fredoka)] mb-3" style={{ color: "var(--text-primary)" }}>
                   {link.title}
                 </h3>
-                <p className="text-gray-600 mb-5 text-sm leading-relaxed">{link.desc}</p>
+                <p className="mb-5 text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>{link.desc}</p>
                 <span className="text-[hsl(0,83%,59%)] font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-300 text-sm">
                   Learn More
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

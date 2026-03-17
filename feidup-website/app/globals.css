@@ -9,6 +9,61 @@
     --color-light: hsl(0, 0%, 98%);
   }
 
+  /* Dark theme (default) */
+  html,
+  html.dark {
+    --bg-primary: hsl(0, 0%, 6%);
+    --bg-secondary: hsl(0, 0%, 10%);
+    --text-primary: #ffffff;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    --border: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(255, 255, 255, 0.12);
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --card-hover: rgba(255, 255, 255, 0.06);
+    --card-solid: hsl(0, 0%, 10%);
+    --input-bg: rgba(255, 255, 255, 0.05);
+    --input-border: rgba(255, 255, 255, 0.1);
+    --input-text: #ffffff;
+    --input-placeholder: #6b7280;
+    --grid-color: rgba(255, 255, 255, 0.1);
+    --glow-opacity: 0.06;
+    --divider: rgba(255, 255, 255, 0.1);
+    --success-bg: rgba(34, 197, 94, 0.1);
+    --success-border: rgba(34, 197, 94, 0.3);
+    --success-text: #86efac;
+    --error-bg: rgba(239, 68, 68, 0.1);
+    --error-border: rgba(239, 68, 68, 0.3);
+    --error-text: #fca5a5;
+  }
+
+  /* Light theme */
+  html.light {
+    --bg-primary: hsl(51, 39%, 94%);
+    --bg-secondary: hsl(51, 39%, 90%);
+    --text-primary: hsl(0, 0%, 10%);
+    --text-secondary: hsl(0, 0%, 40%);
+    --text-muted: hsl(0, 0%, 55%);
+    --border: rgba(0, 0, 0, 0.08);
+    --border-hover: rgba(0, 0, 0, 0.15);
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --card-hover: rgba(255, 255, 255, 0.9);
+    --card-solid: hsl(51, 39%, 97%);
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-border: rgba(0, 0, 0, 0.12);
+    --input-text: hsl(0, 0%, 10%);
+    --input-placeholder: hsl(0, 0%, 55%);
+    --grid-color: rgba(0, 0, 0, 0.06);
+    --glow-opacity: 0.08;
+    --divider: rgba(0, 0, 0, 0.08);
+    --success-bg: rgba(34, 197, 94, 0.1);
+    --success-border: rgba(34, 197, 94, 0.4);
+    --success-text: #166534;
+    --error-bg: rgba(239, 68, 68, 0.1);
+    --error-border: rgba(239, 68, 68, 0.4);
+    --error-text: #991b1b;
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
@@ -17,6 +72,9 @@
 
   body {
     overflow-x: hidden;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background 0.4s ease, color 0.4s ease;
   }
 
   ::selection {
@@ -176,6 +234,14 @@
     animation: rotateSlow 20s linear infinite;
   }
 
+  /* ---- Full-viewport section ---- */
+  .section-viewport {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   /* ---- Keyframes ---- */
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(24px); }
@@ -220,5 +286,3 @@
     to { transform: rotate(360deg); }
   }
 }
-
-
