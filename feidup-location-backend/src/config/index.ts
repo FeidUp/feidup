@@ -41,7 +41,7 @@ export const config = {
   // Email (Resend)
   resendApiKey: process.env.RESEND_API_KEY || '',
   fromEmail: process.env.FROM_EMAIL || 'FeidUp <noreply@feidup.com>',
-  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5174',
+  frontendUrl: process.env.FRONTEND_URL || 'https://app.feidup.com',
 
   // Rate limiting
   rateLimit: {
