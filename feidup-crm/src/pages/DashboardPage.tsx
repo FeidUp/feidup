@@ -1,42 +1,33 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import { api } from '../api';
 import type { AnalyticsOverview, PipelineStage } from '../api';
-import { Building2, UtensilsCrossed, Megaphone, Target, TrendingUp, Eye } from 'lucide-react';
+import { Building2, UtensilsCrossed, Megaphone, Target, Eye, ArrowUpRight, TrendingUp } from 'lucide-react';
+import { CafeDashboardPage } from './CafeDashboardPage';
+import { AdvertiserDashboardPage } from './AdvertiserDashboardPage';
 
-export function DashboardPage() {
-  const { user, isInternal } = useAuth();
+// Wrapper to avoid conditional hooks
+function InternalDashboard() {
+  const { user } = useAuth();
   const [overview, setOverview] = useState<AnalyticsOverview | null>(null);
   const [pipeline, setPipeline] = useState<PipelineStage[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        if (isInternal) {
-          const [overviewRes, pipelineRes] = await Promise.all([
-            api.analytics.overview(),
-            api.leads.pipeline(),
-          ]);
-          setOverview(overviewRes.data);
-          setPipeline(pipelineRes.data);
-        }
-      } catch (err) {
-        console.error('Failed to load dashboard:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, [isInternal]);
+    Promise.all([api.analytics.overview(), api.leads.pipeline()])
+      .then(([ov, pl]) => { setOverview(ov.data); setPipeline(pl.data); })
+      .catch(err => console.error('Failed to load dashboard:', err))
+      .finally(() => setLoading(false));
+  }, []);
 
   if (loading) {
     return (
       <div className="p-8">
-        <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-gray-200 rounded w-48" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[1,2,3,4].map(i => <div key={i} className="h-32 bg-gray-200 rounded-xl" />)}
+        <div className="space-y-6">
+          <div className="h-8 rounded w-48 animate-shimmer" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            {[1,2,3,4,5].map(i => <div key={i} className="h-28 rounded-2xl animate-shimmer" />)}
           </div>
         </div>
       </div>
@@ -45,89 +36,90 @@ export function DashboardPage() {
 
   return (
     <div className="p-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Welcome back, {user?.firstName}</h1>
-        <p className="text-gray-500 mt-1">Here's what's happening across FeidUp today.</p>
+      <div className="mb-8 animate-fade-in">
+        <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Welcome back, {user?.firstName}</h1>
+        <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>Here's what's happening across FeidUp today.</p>
       </div>
 
-      {isInternal && overview && (
+      {overview && (
         <>
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5 mb-8">
-            <StatCard icon={Building2} label="Advertisers" value={overview.advertisers.total} sub={`${overview.advertisers.active} active`} color="blue" />
-            <StatCard icon={UtensilsCrossed} label="Restaurants" value={overview.restaurants.total} sub={`${overview.restaurants.active} active`} color="green" />
-            <StatCard icon={Megaphone} label="Campaigns" value={overview.campaigns.total} sub={`${overview.campaigns.active} active`} color="purple" />
-            <StatCard icon={Target} label="Open Leads" value={overview.leads.open} sub={`${overview.leads.total} total`} color="orange" />
-            <StatCard icon={Eye} label="Impressions" value={overview.totalImpressions} sub="all time" color="red" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+            <StatCard icon={Building2} label="Advertisers" value={overview.advertisers.total} sub={`${overview.advertisers.active} active`} color="blue" delay={0} />
+            <StatCard icon={UtensilsCrossed} label="Restaurants" value={overview.restaurants.total} sub={`${overview.restaurants.active} active`} color="green" delay={1} />
+            <StatCard icon={Megaphone} label="Campaigns" value={overview.campaigns.total} sub={`${overview.campaigns.active} active`} color="purple" delay={2} />
+            <StatCard icon={Target} label="Open Leads" value={overview.leads.open} sub={`${overview.leads.total} total`} color="orange" delay={3} />
+            <StatCard icon={Eye} label="Impressions" value={overview.totalImpressions} sub="all time" color="red" delay={4} />
           </div>
 
-          {/* Pipeline overview */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
-            <h2 className="text-lg font-semibold mb-4">Sales Pipeline</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="glass-card rounded-2xl p-6 mb-8 animate-fade-in animate-fade-in-delay-2">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-[15px] font-semibold" style={{ color: 'var(--text-primary)' }}>Sales Pipeline</h2>
+              <Link to="/pipeline" className="text-xs text-gray-500 hover:text-red-500 flex items-center gap-1 transition-colors">
+                View all <ArrowUpRight size={12} />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
               {pipeline.map(stage => (
-                <div key={stage.stage} className="text-center p-4 bg-gray-50 rounded-lg">
-                  <p className="text-2xl font-bold text-gray-900">{stage.count}</p>
-                  <p className="text-sm text-gray-500 capitalize mt-1">{stage.stage.replace('_', ' ')}</p>
+                <div key={stage.stage} className="text-center p-4 rounded-xl" style={{ background: 'var(--bg-secondary)' }}>
+                  <p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{stage.count}</p>
+                  <p className="text-[11px] capitalize mt-1" style={{ color: 'var(--text-secondary)' }}>{stage.stage.replace('_', ' ')}</p>
                   {stage.totalValue > 0 && (
-                    <p className="text-xs text-green-600 font-medium mt-1">${stage.totalValue.toLocaleString()}</p>
+                    <p className="text-[11px] text-green-500 font-medium mt-1">${stage.totalValue.toLocaleString()}</p>
                   )}
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Quick actions */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
+          <div className="glass-card rounded-2xl p-6 animate-fade-in animate-fade-in-delay-3">
+            <h2 className="text-[15px] font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Quick Actions</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
-                { label: 'New Lead', href: '/leads', color: 'bg-blue-50 text-blue-700 hover:bg-blue-100' },
-                { label: 'Add Advertiser', href: '/advertisers', color: 'bg-green-50 text-green-700 hover:bg-green-100' },
-                { label: 'Add Restaurant', href: '/restaurants', color: 'bg-purple-50 text-purple-700 hover:bg-purple-100' },
-                { label: 'View Analytics', href: '/analytics', color: 'bg-orange-50 text-orange-700 hover:bg-orange-100' },
+                { label: 'New Lead', to: '/leads', icon: Target, color: 'from-blue-600/10 to-blue-600/5 text-blue-400 hover:border-blue-500/20' },
+                { label: 'Add Advertiser', to: '/advertisers', icon: Building2, color: 'from-green-600/10 to-green-600/5 text-green-400 hover:border-green-500/20' },
+                { label: 'Add Restaurant', to: '/restaurants', icon: UtensilsCrossed, color: 'from-purple-600/10 to-purple-600/5 text-purple-400 hover:border-purple-500/20' },
+                { label: 'View Analytics', to: '/analytics', icon: TrendingUp, color: 'from-red-600/10 to-red-600/5 text-red-400 hover:border-red-500/20' },
               ].map(action => (
-                <a key={action.label} href={action.href} className={`px-4 py-3 rounded-lg text-sm font-medium text-center transition-colors ${action.color}`}>
+                <Link key={action.label} to={action.to}
+                  className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium border border-transparent bg-gradient-to-br transition-all duration-200 ${action.color}`}>
+                  <action.icon size={16} />
                   {action.label}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
         </>
       )}
-
-      {!isInternal && (
-        <div className="bg-white rounded-xl border border-gray-200 p-8 text-center">
-          <h2 className="text-lg font-semibold mb-2">Welcome to FeidUp</h2>
-          <p className="text-gray-500">Navigate using the sidebar to view your campaigns and analytics.</p>
-        </div>
-      )}
     </div>
   );
 }
 
-function StatCard({ icon: Icon, label, value, sub, color }: {
-  icon: any; label: string; value: number; sub: string; color: string;
+export function DashboardPage() {
+  const { user } = useAuth();
+  if (user?.role === 'restaurant') return <CafeDashboardPage />;
+  if (user?.role === 'advertiser') return <AdvertiserDashboardPage />;
+  return <InternalDashboard />;
+}
+
+function StatCard({ icon: Icon, label, value, sub, color, delay }: {
+  icon: any; label: string; value: number; sub: string; color: string; delay: number;
 }) {
-  const colorMap: Record<string, string> = {
-    blue: 'bg-blue-50 text-blue-600',
-    green: 'bg-green-50 text-green-600',
-    purple: 'bg-purple-50 text-purple-600',
-    orange: 'bg-orange-50 text-orange-600',
-    red: 'bg-red-50 text-red-600',
+  const iconColors: Record<string, string> = {
+    blue: 'text-blue-400 bg-blue-500/10',
+    green: 'text-green-400 bg-green-500/10',
+    purple: 'text-purple-400 bg-purple-500/10',
+    orange: 'text-orange-400 bg-orange-500/10',
+    red: 'text-red-400 bg-red-500/10',
   };
-  
+
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5">
+    <div className={`glass-card rounded-2xl p-5 animate-fade-in animate-fade-in-delay-${delay}`}>
       <div className="flex items-center justify-between mb-3">
-        <span className="text-sm font-medium text-gray-500">{label}</span>
-        <div className={`p-2 rounded-lg ${colorMap[color]}`}>
-          <Icon size={18} />
-        </div>
+        <span className="text-xs font-medium" style={{ color: 'var(--text-secondary)' }}>{label}</span>
+        <div className={`p-2 rounded-lg ${iconColors[color]}`}><Icon size={16} /></div>
       </div>
-      <p className="text-2xl font-bold text-gray-900">{value.toLocaleString()}</p>
-      <p className="text-xs text-gray-400 mt-1">{sub}</p>
+      <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{value.toLocaleString()}</p>
+      <p className="text-[11px] mt-1" style={{ color: 'var(--text-muted)' }}>{sub}</p>
     </div>
   );
 }

@@ -1,23 +1,172 @@
 @import "tailwindcss";
 
 @theme {
+  /* Brand palette */
   --color-brand: #dc2626;
   --color-brand-light: #fca5a5;
   --color-brand-dark: #991b1b;
-  --color-sidebar: #111827;
-  --color-sidebar-hover: #1f2937;
-  --color-surface: #ffffff;
-  --color-surface-secondary: #f9fafb;
-  --color-border: #e5e7eb;
+  --color-brand-glow: rgba(220, 38, 38, 0.15);
+}
+
+/* ==============================
+   DARK THEME (default)
+   ============================== */
+:root {
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #222222;
+  --sidebar-bg: #0a0a0a;
+  --sidebar-hover: #1a1a1a;
+  --surface: #161616;
+  --surface-secondary: #1e1e1e;
+  --surface-hover: #222222;
+  --border-color: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-hover: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-border-hover: rgba(255, 255, 255, 0.1);
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --row-hover: rgba(255, 255, 255, 0.02);
+  --divider: rgba(255, 255, 255, 0.04);
+  --chart-grid: rgba(255, 255, 255, 0.04);
+  --chart-axis: #6b7280;
+  --tooltip-bg: #1a1a1a;
+  --tooltip-border: rgba(255, 255, 255, 0.1);
+  --modal-overlay: rgba(0, 0, 0, 0.7);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.1);
+  --scrollbar-hover: rgba(255, 255, 255, 0.2);
+  --badge-bg-subtle: rgba(255, 255, 255, 0.04);
+  /* Aliases for component inline styles */
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-border: var(--border-color);
+  --color-border-hover: var(--border-hover);
+  --color-sidebar: var(--sidebar-bg);
+  --color-sidebar-hover: var(--sidebar-hover);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  color-scheme: dark;
+}
+
+/* ==============================
+   LIGHT THEME
+   ============================== */
+:root.light {
+  --bg-primary: #f8f8f8;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f3f4f6;
+  --sidebar-bg: #111827;
+  --sidebar-hover: #1f2937;
+  --surface: #ffffff;
+  --surface-secondary: #f9fafb;
+  --surface-hover: #f3f4f6;
+  --border-color: #e5e7eb;
+  --border-hover: #d1d5db;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-bg-hover: rgba(255, 255, 255, 0.95);
+  --glass-border: #e5e7eb;
+  --glass-border-hover: #d1d5db;
+  --input-bg: #f9fafb;
+  --row-hover: #f9fafb;
+  --divider: #f3f4f6;
+  --chart-grid: #f3f4f6;
+  --chart-axis: #9ca3af;
+  --tooltip-bg: #ffffff;
+  --tooltip-border: #e5e7eb;
+  --modal-overlay: rgba(0, 0, 0, 0.4);
+  --scrollbar-thumb: #d1d5db;
+  --scrollbar-hover: #9ca3af;
+  --badge-bg-subtle: #f3f4f6;
+  color-scheme: light;
 }
 
 body {
-  @apply bg-gray-50 text-gray-900 antialiased;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
+
+/* Glass card effect */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease;
+}
+.glass-card:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+}
+
+/* Ambient glow (dark mode only) */
+.glow-red {
+  box-shadow: 0 0 60px rgba(220, 38, 38, 0.08), 0 0 120px rgba(220, 38, 38, 0.04);
+}
+:root.light .glow-red {
+  box-shadow: 0 0 60px rgba(220, 38, 38, 0.05);
+}
+
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(135deg, #dc2626, #f87171, #dc2626);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+.animate-fade-in-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.animate-fade-in-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.animate-fade-in-delay-3 { animation-delay: 0.3s; opacity: 0; }
+.animate-fade-in-delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, var(--glass-bg) 25%, var(--glass-bg-hover) 50%, var(--glass-bg) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Chart tooltip (applies to recharts via CSS) */
+.recharts-default-tooltip {
+  background: var(--tooltip-bg) !important;
+  border: 1px solid var(--tooltip-border) !important;
+  border-radius: 12px !important;
+  color: var(--text-primary) !important;
+}
+.recharts-tooltip-label {
+  color: var(--text-secondary) !important;
+}
+
+/* Light theme overrides for badges that use opacity-based colors */
+:root.light .badge-subtle {
+  opacity: 0.9;
+}

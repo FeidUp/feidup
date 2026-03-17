@@ -1,7 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './AuthContext';
+import { ThemeProvider } from './ThemeContext';
 import { Layout } from './components/Layout';
 import { LoginPage } from './pages/LoginPage';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
+import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { LeadsPage } from './pages/LeadsPage';
 import { LeadDetailPage } from './pages/LeadDetailPage';
@@ -12,6 +15,12 @@ import { CampaignsPage } from './pages/CampaignsPage';
 import { InventoryPage } from './pages/InventoryPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { UsersPage } from './pages/UsersPage';
+import { CafeInventoryPage } from './pages/CafeInventoryPage';
+import { CafeQRAnalyticsPage } from './pages/CafeQRAnalyticsPage';
+import { CafeProfilePage } from './pages/CafeProfilePage';
+import { AdvertiserAnalyticsPage } from './pages/AdvertiserAnalyticsPage';
+import { AdvertiserRecommendationsPage } from './pages/AdvertiserRecommendationsPage';
+import { MapPage } from './pages/MapPage';
 import { ReactNode } from 'react';
 
 function ProtectedRoute({ children, roles }: { children: ReactNode; roles?: string[] }) {
@@ -24,10 +33,13 @@ function ProtectedRoute({ children, roles }: { children: ReactNode; roles?: stri
 
 export default function App() {
   return (
+    <ThemeProvider>
     <BrowserRouter>
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
             <Route index element={<DashboardPage />} />
             <Route path="leads" element={<ProtectedRoute roles={['admin','sales','operations']}><LeadsPage /></ProtectedRoute>} />
@@ -36,12 +48,21 @@ export default function App() {
             <Route path="advertisers" element={<AdvertisersPage />} />
             <Route path="restaurants" element={<RestaurantsPage />} />
             <Route path="campaigns" element={<CampaignsPage />} />
+            <Route path="map" element={<ProtectedRoute roles={['admin','sales','operations']}><MapPage /></ProtectedRoute>} />
             <Route path="inventory" element={<ProtectedRoute roles={['admin','operations']}><InventoryPage /></ProtectedRoute>} />
             <Route path="analytics" element={<AnalyticsPage />} />
             <Route path="users" element={<ProtectedRoute roles={['admin']}><UsersPage /></ProtectedRoute>} />
+            {/* Cafe portal routes */}
+            <Route path="cafe/inventory" element={<ProtectedRoute roles={['restaurant']}><CafeInventoryPage /></ProtectedRoute>} />
+            <Route path="cafe/qr-analytics" element={<ProtectedRoute roles={['restaurant']}><CafeQRAnalyticsPage /></ProtectedRoute>} />
+            <Route path="cafe/profile" element={<ProtectedRoute roles={['restaurant']}><CafeProfilePage /></ProtectedRoute>} />
+            {/* Advertiser portal routes */}
+            <Route path="advertiser/analytics" element={<ProtectedRoute roles={['advertiser']}><AdvertiserAnalyticsPage /></ProtectedRoute>} />
+            <Route path="advertiser/recommendations" element={<ProtectedRoute roles={['advertiser']}><AdvertiserRecommendationsPage /></ProtectedRoute>} />
           </Route>
         </Routes>
       </AuthProvider>
     </BrowserRouter>
+    </ThemeProvider>
   );
 }

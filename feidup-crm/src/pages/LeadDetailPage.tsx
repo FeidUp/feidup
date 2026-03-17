@@ -5,12 +5,12 @@ import type { Lead, Activity } from '../api';
 import { ArrowLeft, Building2, UtensilsCrossed, Clock, Mail, Phone, MapPin, DollarSign, MessageSquare, FileText, PhoneCall, Send } from 'lucide-react';
 
 const stageColors: Record<string, string> = {
-  lead: 'bg-gray-100 text-gray-700',
-  contacted: 'bg-blue-100 text-blue-700',
-  negotiation: 'bg-yellow-100 text-yellow-700',
-  signed: 'bg-green-100 text-green-700',
-  active_client: 'bg-emerald-100 text-emerald-700',
-  lost: 'bg-red-100 text-red-700',
+  lead: 'bg-gray-500/10 text-gray-400',
+  contacted: 'bg-blue-500/10 text-blue-400',
+  negotiation: 'bg-yellow-500/10 text-yellow-400',
+  signed: 'bg-green-500/10 text-green-400',
+  active_client: 'bg-emerald-500/10 text-emerald-400',
+  lost: 'bg-red-500/10 text-red-400',
 };
 
 const stages = ['lead', 'contacted', 'negotiation', 'signed', 'active_client', 'lost'];
@@ -73,12 +73,12 @@ export function LeadDetailPage() {
     }
   };
 
-  if (loading) return <div className="p-8"><div className="animate-pulse space-y-4"><div className="h-8 bg-gray-200 rounded w-48" /><div className="h-40 bg-gray-100 rounded" /></div></div>;
+  if (loading) return <div className="p-8"><div className="animate-shimmer space-y-4"><div className="h-8 rounded w-48" style={{ background: 'rgba(255,255,255,0.06)' }} /><div className="h-40 rounded" style={{ background: 'rgba(255,255,255,0.04)' }} /></div></div>;
   if (!lead) return <div className="p-8 text-center text-gray-400">Lead not found</div>;
 
   return (
     <div className="p-8">
-      <button onClick={() => navigate('/leads')} className="flex items-center gap-1 text-gray-500 hover:text-gray-700 text-sm mb-4">
+      <button onClick={() => navigate('/leads')} className="flex items-center gap-1 text-gray-500 hover:text-gray-300 text-sm mb-4">
         <ArrowLeft size={14} /> Back to Leads
       </button>
 
@@ -86,8 +86,8 @@ export function LeadDetailPage() {
       <div className="flex items-start justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            {lead.type === 'advertiser' ? <Building2 size={20} className="text-blue-600" /> : <UtensilsCrossed size={20} className="text-orange-600" />}
-            <h1 className="text-2xl font-bold">{lead.companyName}</h1>
+            {lead.type === 'advertiser' ? <Building2 size={20} className="text-blue-400" /> : <UtensilsCrossed size={20} className="text-orange-400" />}
+            <h1 className="text-2xl font-bold text-white">{lead.companyName}</h1>
             <span className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize ${stageColors[lead.stage]}`}>
               {lead.stage.replace('_', ' ')}
             </span>
@@ -97,7 +97,7 @@ export function LeadDetailPage() {
       </div>
 
       {/* Stage Pipeline */}
-      <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6">
+      <div className="glass-card rounded-2xl p-4 mb-6">
         <p className="text-xs font-medium text-gray-500 mb-3">Pipeline Stage</p>
         <div className="flex gap-1">
           {stages.map(stage => {
@@ -109,8 +109,9 @@ export function LeadDetailPage() {
                 disabled={updating}
                 onClick={() => updateStage(stage)}
                 className={`flex-1 py-2 px-2 rounded text-xs font-medium capitalize transition-colors
-                  ${active ? 'bg-red-600 text-white' : passed ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}
+                  ${active ? 'bg-red-600 text-white' : passed ? 'bg-red-500/10 text-red-400' : 'text-gray-500 hover:bg-white/[0.02]'}
                   disabled:opacity-50`}
+                style={!active && !passed ? { background: 'rgba(255,255,255,0.04)' } : undefined}
               >
                 {stage.replace('_', ' ')}
               </button>
@@ -122,21 +123,21 @@ export function LeadDetailPage() {
       <div className="grid grid-cols-3 gap-6">
         {/* Left Column - Info */}
         <div className="col-span-1 space-y-6">
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <h3 className="text-sm font-semibold mb-4">Contact Information</h3>
+          <div className="glass-card rounded-2xl p-5">
+            <h3 className="text-[15px] font-semibold text-white mb-4">Contact Information</h3>
             <div className="space-y-3 text-sm">
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-gray-400">
                 <Mail size={14} className="text-gray-400" />
                 <a href={`mailto:${lead.contactEmail}`} className="hover:text-red-600">{lead.contactEmail}</a>
               </div>
               {lead.contactPhone && (
-                <div className="flex items-center gap-2 text-gray-600">
+                <div className="flex items-center gap-2 text-gray-400">
                   <Phone size={14} className="text-gray-400" />
                   {lead.contactPhone}
                 </div>
               )}
               {(lead.suburb || lead.city) && (
-                <div className="flex items-center gap-2 text-gray-600">
+                <div className="flex items-center gap-2 text-gray-400">
                   <MapPin size={14} className="text-gray-400" />
                   {[lead.suburb, lead.city].filter(Boolean).join(', ')}
                 </div>
@@ -144,53 +145,54 @@ export function LeadDetailPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <h3 className="text-sm font-semibold mb-4">Details</h3>
+          <div className="glass-card rounded-2xl p-5">
+            <h3 className="text-[15px] font-semibold text-white mb-4">Details</h3>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-500">Priority</span>
-                <span className="capitalize font-medium">{lead.priority}</span>
+                <span className="capitalize font-medium text-white">{lead.priority}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Est. Value</span>
-                <span className="font-medium flex items-center gap-1">
+                <span className="font-medium flex items-center gap-1 text-white">
                   <DollarSign size={12} />
                   {lead.estimatedValue ? lead.estimatedValue.toLocaleString() : '—'}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Assigned To</span>
-                <span className="font-medium">
+                <span className="font-medium text-white">
                   {lead.assignedTo ? `${lead.assignedTo.firstName} ${lead.assignedTo.lastName}` : 'Unassigned'}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Created</span>
-                <span className="text-gray-600">{new Date(lead.createdAt).toLocaleDateString()}</span>
+                <span className="text-gray-400">{new Date(lead.createdAt).toLocaleDateString()}</span>
               </div>
             </div>
           </div>
 
           {lead.notes && (
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
-              <h3 className="text-sm font-semibold mb-2">Notes</h3>
-              <p className="text-sm text-gray-600 whitespace-pre-wrap">{lead.notes}</p>
+            <div className="glass-card rounded-2xl p-5">
+              <h3 className="text-[15px] font-semibold text-white mb-2">Notes</h3>
+              <p className="text-sm text-gray-400 whitespace-pre-wrap">{lead.notes}</p>
             </div>
           )}
         </div>
 
         {/* Right Column - Activity Timeline */}
         <div className="col-span-2">
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <h3 className="text-sm font-semibold mb-4">Activity Timeline</h3>
+          <div className="glass-card rounded-2xl p-5">
+            <h3 className="text-[15px] font-semibold text-white mb-4">Activity Timeline</h3>
 
             {/* Add Activity Form */}
-            <form onSubmit={addActivity} className="mb-6 bg-gray-50 rounded-lg p-4">
+            <form onSubmit={addActivity} className="mb-6 rounded-lg p-4" style={{ background: 'var(--color-bg-secondary)' }}>
               <div className="flex gap-3 mb-3">
                 <select
                   value={activityForm.type}
                   onChange={e => setActivityForm(f => ({ ...f, type: e.target.value }))}
-                  className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white"
+                  className="px-3 py-1.5 rounded-xl text-sm text-white"
+                  style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)' }}
                 >
                   <option value="note">Note</option>
                   <option value="call">Call</option>
@@ -201,7 +203,8 @@ export function LeadDetailPage() {
                   placeholder="Activity title..."
                   value={activityForm.title}
                   onChange={e => setActivityForm(f => ({ ...f, title: e.target.value }))}
-                  className="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
+                  className="flex-1 px-3 py-1.5 rounded-xl text-sm text-white focus:ring-2 focus:ring-red-500 outline-none"
+                  style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)' }}
                 />
               </div>
               <div className="flex gap-3">
@@ -210,7 +213,8 @@ export function LeadDetailPage() {
                   rows={2}
                   value={activityForm.content}
                   onChange={e => setActivityForm(f => ({ ...f, content: e.target.value }))}
-                  className="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none resize-none"
+                  className="flex-1 px-3 py-1.5 rounded-xl text-sm text-white focus:ring-2 focus:ring-red-500 outline-none resize-none"
+                  style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)' }}
                 />
                 <button
                   type="submit"
@@ -229,15 +233,15 @@ export function LeadDetailPage() {
                   const Icon = activityIcons[act.type] || MessageSquare;
                   return (
                     <div key={act.id} className="flex gap-3">
-                      <div className="mt-0.5 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                      <div className="mt-0.5 w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.04)' }}>
                         <Icon size={14} className="text-gray-500" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 text-sm">
-                          <span className="font-medium">{act.title}</span>
-                          <span className="text-xs text-gray-400 capitalize px-1.5 py-0.5 bg-gray-50 rounded">{act.type}</span>
+                          <span className="font-medium text-white">{act.title}</span>
+                          <span className="text-xs text-gray-400 capitalize px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.04)' }}>{act.type}</span>
                         </div>
-                        {act.content && <p className="text-sm text-gray-600 mt-0.5">{act.content}</p>}
+                        {act.content && <p className="text-sm text-gray-400 mt-0.5">{act.content}</p>}
                         <p className="text-xs text-gray-400 mt-1">
                           {act.user && `${act.user.firstName} ${act.user.lastName} · `}
                           {new Date(act.createdAt).toLocaleString()}

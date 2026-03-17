@@ -61,14 +61,14 @@ export function PipelinePage() {
   if (loading) {
     return (
       <div className="p-8">
-        <h1 className="text-2xl font-bold mb-6">Pipeline</h1>
+        <h1 className="text-2xl font-bold text-white mb-6">Pipeline</h1>
         <div className="flex gap-4 overflow-x-auto pb-4">
           {stageOrder.map(s => (
-            <div key={s} className="w-72 shrink-0 bg-gray-100 rounded-xl p-4 animate-pulse">
-              <div className="h-5 bg-gray-200 rounded w-24 mb-3" />
+            <div key={s} className="w-72 shrink-0 rounded-2xl p-4 animate-shimmer" style={{ background: 'rgba(255,255,255,0.04)' }}>
+              <div className="h-5 rounded w-24 mb-3" style={{ background: 'rgba(255,255,255,0.06)' }} />
               <div className="space-y-3">
-                <div className="h-20 bg-gray-200 rounded-lg" />
-                <div className="h-20 bg-gray-200 rounded-lg" />
+                <div className="h-20 rounded-lg" style={{ background: 'rgba(255,255,255,0.06)' }} />
+                <div className="h-20 rounded-lg" style={{ background: 'rgba(255,255,255,0.06)' }} />
               </div>
             </div>
           ))}
@@ -80,18 +80,18 @@ export function PipelinePage() {
   return (
     <div className="p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold">Pipeline</h1>
+        <h1 className="text-2xl font-bold text-white">Pipeline</h1>
         <p className="text-gray-500 text-sm mt-1">Kanban view of your sales pipeline</p>
       </div>
 
       {/* Summary bar */}
       <div className="flex gap-3 mb-6 overflow-x-auto pb-1">
         {pipeline.map(p => (
-          <div key={p.stage} className="bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm shrink-0">
+          <div key={p.stage} className="glass-card rounded-lg px-4 py-2 text-sm shrink-0">
             <span className="text-gray-500 capitalize">{stageLabels[p.stage] || p.stage}</span>
-            <span className="ml-2 font-semibold">{p.count}</span>
+            <span className="ml-2 font-semibold text-white">{p.count}</span>
             <span className="ml-1 text-gray-400">·</span>
-            <span className="ml-1 text-green-600 font-medium">${(p.totalValue / 1000).toFixed(0)}k</span>
+            <span className="ml-1 text-green-400 font-medium">${(p.totalValue / 1000).toFixed(0)}k</span>
           </div>
         ))}
       </div>
@@ -102,12 +102,12 @@ export function PipelinePage() {
           const stageLeads = leads[stage] || [];
           const stageData = pipeline.find(p => p.stage === stage);
           return (
-            <div key={stage} className={`w-72 shrink-0 bg-gray-50 rounded-xl border-t-4 ${stageHeaderColors[stage]}`}>
+            <div key={stage} className={`w-72 shrink-0 rounded-2xl border-t-4 ${stageHeaderColors[stage]}`} style={{ background: 'var(--color-bg-secondary)' }}>
               {/* Column Header */}
-              <div className="p-3 border-b border-gray-200">
+              <div className="p-3" style={{ borderBottom: '1px solid var(--color-border)' }}>
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-sm capitalize">{stageLabels[stage]}</h3>
-                  <span className="text-xs bg-gray-200 text-gray-600 rounded-full px-2 py-0.5">{stageLeads.length}</span>
+                  <h3 className="font-semibold text-sm capitalize text-white">{stageLabels[stage]}</h3>
+                  <span className="text-xs text-gray-400 rounded-full px-2 py-0.5" style={{ background: 'rgba(255,255,255,0.04)' }}>{stageLeads.length}</span>
                 </div>
                 {stageData && (
                   <p className="text-xs text-gray-400 mt-0.5 flex items-center gap-0.5">
@@ -125,10 +125,10 @@ export function PipelinePage() {
                     <Link
                       key={lead.id}
                       to={`/leads/${lead.id}`}
-                      className="block bg-white rounded-lg border border-gray-200 p-3 hover:shadow-md transition-shadow group"
+                      className="block glass-card rounded-2xl p-3 hover:bg-white/[0.02] transition-shadow group"
                     >
                       <div className="flex items-start justify-between mb-1">
-                        <h4 className="text-sm font-medium text-gray-900 group-hover:text-red-600 transition-colors flex items-center gap-1">
+                        <h4 className="text-sm font-medium text-white group-hover:text-red-400 transition-colors flex items-center gap-1">
                           {lead.companyName}
                           <ArrowUpRight size={10} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                         </h4>
@@ -141,7 +141,7 @@ export function PipelinePage() {
                           <span className="capitalize">{lead.type}</span>
                         </span>
                         {lead.estimatedValue != null && (
-                          <span className="text-green-600 font-medium">${lead.estimatedValue.toLocaleString()}</span>
+                          <span className="text-green-400 font-medium">${lead.estimatedValue.toLocaleString()}</span>
                         )}
                       </div>
                     </Link>

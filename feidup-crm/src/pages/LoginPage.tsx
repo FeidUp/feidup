@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
-import { Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, AlertCircle, Zap, BarChart3, Target, Coffee } from 'lucide-react';
 
 export function LoginPage() {
   const { user, login } = useAuth();
@@ -29,25 +29,31 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex" style={{ background: 'var(--color-bg-primary)' }}>
       {/* Left: Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gray-900 text-white flex-col justify-center items-center p-12">
-        <div className="max-w-md text-center">
-          <div className="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-8">F</div>
-          <h1 className="text-4xl font-bold mb-4">FeidUp CRM</h1>
-          <p className="text-gray-400 text-lg mb-8">
-            Manage your advertisers, restaurant partners, campaigns, and packaging logistics — all in one place.
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-center items-center p-12 relative overflow-hidden"
+        style={{ background: 'var(--color-sidebar)' }}>
+        {/* Ambient glow */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-[150px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-orange-600/5 rounded-full blur-[120px]" />
+
+        <div className="max-w-md text-center relative z-10">
+          <div className="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-8 shadow-2xl shadow-red-600/30">F</div>
+          <h1 className="text-4xl font-bold text-white mb-4 tracking-tight">FeidUp</h1>
+          <p className="text-gray-400 text-lg mb-10">
+            Location-based advertising that connects brands with cafes through co-branded packaging.
           </p>
-          <div className="grid grid-cols-2 gap-4 text-left">
+          <div className="grid grid-cols-2 gap-3 text-left">
             {[
-              { label: 'Lead Management', desc: 'Track and nurture leads through your pipeline' },
-              { label: 'Campaign Engine', desc: 'Create and manage advertising campaigns' },
-              { label: 'Smart Matching', desc: 'AI-powered advertiser-to-restaurant matching' },
-              { label: 'Live Analytics', desc: 'Real-time campaign performance insights' },
+              { icon: Target, label: 'Smart Matching', desc: 'AI-powered cafe recommendations' },
+              { icon: Zap, label: 'QR Tracking', desc: 'Real-time scan analytics' },
+              { icon: Coffee, label: 'Partner Portal', desc: 'Self-serve for cafes & brands' },
+              { icon: BarChart3, label: 'Live Analytics', desc: 'Campaign performance insights' },
             ].map(f => (
-              <div key={f.label} className="bg-gray-800 rounded-xl p-4">
-                <p className="font-medium text-sm">{f.label}</p>
-                <p className="text-xs text-gray-400 mt-1">{f.desc}</p>
+              <div key={f.label} className="glass-card rounded-xl p-4 group">
+                <f.icon size={16} className="text-red-500 mb-2" />
+                <p className="font-medium text-sm text-white">{f.label}</p>
+                <p className="text-[11px] text-gray-500 mt-0.5">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -56,17 +62,17 @@ export function LoginPage() {
 
       {/* Right: Login form */}
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-sm">
           <div className="lg:hidden flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white font-bold">F</div>
-            <span className="text-xl font-bold">FeidUp CRM</span>
+            <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-red-600/20">F</div>
+            <span className="text-xl font-bold text-white">FeidUp</span>
           </div>
 
-          <h2 className="text-2xl font-bold mb-1">Welcome back</h2>
-          <p className="text-gray-500 mb-8">Sign in to your account to continue</p>
+          <h2 className="text-2xl font-bold text-white mb-1">Welcome back</h2>
+          <p className="text-gray-500 mb-8 text-sm">Sign in to your account</p>
 
           {error && (
-            <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
+            <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl mb-6 text-sm">
               <AlertCircle size={16} />
               {error}
             </div>
@@ -74,19 +80,25 @@ export function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+              <label className="block text-xs font-medium text-gray-400 mb-1.5">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
                 placeholder="you@feidup.com"
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors"
+                className="w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-600 outline-none transition-all duration-200 focus:ring-2 focus:ring-red-500/50"
+                style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-medium text-gray-400">Password</label>
+                <Link to="/forgot-password" className="text-xs text-red-500 hover:text-red-400 transition-colors">
+                  Forgot?
+                </Link>
+              </div>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -94,14 +106,15 @@ export function LoginPage() {
                   onChange={e => setPassword(e.target.value)}
                   required
                   placeholder="Enter your password"
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors pr-10"
+                  className="w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-600 outline-none transition-all duration-200 pr-10 focus:ring-2 focus:ring-red-500/50"
+                  style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400 transition-colors"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
@@ -109,14 +122,14 @@ export function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-red-600 text-white py-2.5 rounded-lg font-medium hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full bg-red-600 text-white py-2.5 rounded-xl font-medium text-sm hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-red-600/20 hover:shadow-xl hover:shadow-red-600/30"
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
 
-          <p className="text-xs text-gray-400 text-center mt-8">
-            Accounts are created by FeidUp staff. Contact your administrator for access.
+          <p className="text-[11px] text-gray-600 text-center mt-8">
+            Accounts are created by FeidUp staff. Contact your admin for access.
           </p>
         </div>
       </div>
