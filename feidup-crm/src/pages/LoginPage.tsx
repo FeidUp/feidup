@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import { Eye, EyeOff, AlertCircle, Zap, BarChart3, Target, Coffee } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export function LoginPage() {
   const { user, login } = useAuth();
@@ -37,32 +38,38 @@ export function LoginPage() {
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-[150px]" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-orange-600/5 rounded-full blur-[120px]" />
 
-        <div className="max-w-md text-center relative z-10">
-          <div className="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-8 shadow-2xl shadow-red-600/30">F</div>
+        <motion.div className="max-w-md text-center relative z-10"
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <motion.div className="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-8 shadow-2xl shadow-red-600/30"
+            initial={{ scale: 0.8, rotate: -10 }} animate={{ scale: 1, rotate: 0 }} transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}>F</motion.div>
           <h1 className="text-4xl font-bold text-white mb-4 tracking-tight">FeidUp</h1>
           <p className="text-gray-400 text-lg mb-10">
             Location-based advertising that connects brands with cafes through co-branded packaging.
           </p>
-          <div className="grid grid-cols-2 gap-3 text-left">
+          <motion.div className="grid grid-cols-2 gap-3 text-left"
+            initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}>
             {[
               { icon: Target, label: 'Smart Matching', desc: 'AI-powered cafe recommendations' },
               { icon: Zap, label: 'QR Tracking', desc: 'Real-time scan analytics' },
               { icon: Coffee, label: 'Partner Portal', desc: 'Self-serve for cafes & brands' },
               { icon: BarChart3, label: 'Live Analytics', desc: 'Campaign performance insights' },
             ].map(f => (
-              <div key={f.label} className="glass-card rounded-xl p-4 group">
+              <motion.div key={f.label} className="glass-card rounded-xl p-4 group"
+                variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
+                whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}>
                 <f.icon size={16} className="text-red-500 mb-2" />
                 <p className="font-medium text-sm text-white">{f.label}</p>
                 <p className="text-[11px] text-gray-500 mt-0.5">{f.desc}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Right: Login form */}
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-sm">
+        <motion.div className="w-full max-w-sm"
+          initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
           <div className="lg:hidden flex items-center gap-3 mb-8">
             <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-red-600/20">F</div>
             <span className="text-xl font-bold text-white">FeidUp</span>
@@ -131,7 +138,7 @@ export function LoginPage() {
           <p className="text-[11px] text-gray-600 text-center mt-8">
             Accounts are created by FeidUp staff. Contact your admin for access.
           </p>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

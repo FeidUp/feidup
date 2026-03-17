@@ -7,6 +7,7 @@ import {
   QrCode, Coffee, Sparkles, ChevronRight, Sun, Moon, MapPin,
 } from 'lucide-react';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard', roles: ['admin', 'sales', 'operations', 'advertiser', 'restaurant'] },
@@ -81,16 +82,27 @@ export function Layout() {
                   to={item.to}
                   end={item.to === '/'}
                   className={({ isActive }) =>
-                    `flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-200 ${
+                    `relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-200 ${
                       isActive
-                        ? 'bg-red-600/10 text-red-500 shadow-sm'
+                        ? 'bg-red-600/10 text-red-500'
                         : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.03]'
                     }`
                   }
                   title={collapsed ? item.label : undefined}
                 >
-                  <item.icon size={18} className="shrink-0" />
-                  {!collapsed && <span>{item.label}</span>}
+                  {({ isActive }) => (
+                    <>
+                      {isActive && (
+                        <motion.div
+                          layoutId="sidebar-active"
+                          className="absolute left-0 top-1 bottom-1 w-0.5 bg-red-500 rounded-full"
+                          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                        />
+                      )}
+                      <item.icon size={18} className="shrink-0" />
+                      {!collapsed && <span>{item.label}</span>}
+                    </>
+                  )}
                 </NavLink>
               </div>
             );

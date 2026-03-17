@@ -6,6 +6,7 @@ import type { AnalyticsOverview, PipelineStage } from '../api';
 import { Building2, UtensilsCrossed, Megaphone, Target, Eye, ArrowUpRight, TrendingUp } from 'lucide-react';
 import { CafeDashboardPage } from './CafeDashboardPage';
 import { AdvertiserDashboardPage } from './AdvertiserDashboardPage';
+import { PageTransition, FadeIn, StaggerContainer, StaggerItem, HoverCard } from '../components/Motion';
 
 // Wrapper to avoid conditional hooks
 function InternalDashboard() {
@@ -35,23 +36,23 @@ function InternalDashboard() {
   }
 
   return (
-    <div className="p-8">
-      <div className="mb-8 animate-fade-in">
+    <PageTransition className="p-8">
+      <FadeIn>
         <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Welcome back, {user?.firstName}</h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>Here's what's happening across FeidUp today.</p>
-      </div>
+        <p className="text-sm mt-1 mb-8" style={{ color: 'var(--text-secondary)' }}>Here's what's happening across FeidUp today.</p>
+      </FadeIn>
 
       {overview && (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-            <StatCard icon={Building2} label="Advertisers" value={overview.advertisers.total} sub={`${overview.advertisers.active} active`} color="blue" delay={0} />
-            <StatCard icon={UtensilsCrossed} label="Restaurants" value={overview.restaurants.total} sub={`${overview.restaurants.active} active`} color="green" delay={1} />
-            <StatCard icon={Megaphone} label="Campaigns" value={overview.campaigns.total} sub={`${overview.campaigns.active} active`} color="purple" delay={2} />
-            <StatCard icon={Target} label="Open Leads" value={overview.leads.open} sub={`${overview.leads.total} total`} color="orange" delay={3} />
-            <StatCard icon={Eye} label="Impressions" value={overview.totalImpressions} sub="all time" color="red" delay={4} />
-          </div>
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+            <StaggerItem><StatCard icon={Building2} label="Advertisers" value={overview.advertisers.total} sub={`${overview.advertisers.active} active`} color="blue" delay={0} /></StaggerItem>
+            <StaggerItem><StatCard icon={UtensilsCrossed} label="Restaurants" value={overview.restaurants.total} sub={`${overview.restaurants.active} active`} color="green" delay={1} /></StaggerItem>
+            <StaggerItem><StatCard icon={Megaphone} label="Campaigns" value={overview.campaigns.total} sub={`${overview.campaigns.active} active`} color="purple" delay={2} /></StaggerItem>
+            <StaggerItem><StatCard icon={Target} label="Open Leads" value={overview.leads.open} sub={`${overview.leads.total} total`} color="orange" delay={3} /></StaggerItem>
+            <StaggerItem><StatCard icon={Eye} label="Impressions" value={overview.totalImpressions} sub="all time" color="red" delay={4} /></StaggerItem>
+          </StaggerContainer>
 
-          <div className="glass-card rounded-2xl p-6 mb-8 animate-fade-in animate-fade-in-delay-2">
+          <FadeIn delay={0.3} className="glass-card rounded-2xl p-6 mb-8">
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-[15px] font-semibold" style={{ color: 'var(--text-primary)' }}>Sales Pipeline</h2>
               <Link to="/pipeline" className="text-xs text-gray-500 hover:text-red-500 flex items-center gap-1 transition-colors">
@@ -71,26 +72,30 @@ function InternalDashboard() {
             </div>
           </div>
 
-          <div className="glass-card rounded-2xl p-6 animate-fade-in animate-fade-in-delay-3">
+          <FadeIn delay={0.4} className="glass-card rounded-2xl p-6">
             <h2 className="text-[15px] font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Quick Actions</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <StaggerContainer staggerDelay={0.06} className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
                 { label: 'New Lead', to: '/leads', icon: Target, color: 'from-blue-600/10 to-blue-600/5 text-blue-400 hover:border-blue-500/20' },
                 { label: 'Add Advertiser', to: '/advertisers', icon: Building2, color: 'from-green-600/10 to-green-600/5 text-green-400 hover:border-green-500/20' },
                 { label: 'Add Restaurant', to: '/restaurants', icon: UtensilsCrossed, color: 'from-purple-600/10 to-purple-600/5 text-purple-400 hover:border-purple-500/20' },
                 { label: 'View Analytics', to: '/analytics', icon: TrendingUp, color: 'from-red-600/10 to-red-600/5 text-red-400 hover:border-red-500/20' },
               ].map(action => (
-                <Link key={action.label} to={action.to}
-                  className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium border border-transparent bg-gradient-to-br transition-all duration-200 ${action.color}`}>
-                  <action.icon size={16} />
-                  {action.label}
-                </Link>
+                <StaggerItem key={action.label}>
+                  <HoverCard>
+                    <Link to={action.to}
+                      className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium border border-transparent bg-gradient-to-br transition-all duration-200 ${action.color}`}>
+                      <action.icon size={16} />
+                      {action.label}
+                    </Link>
+                  </HoverCard>
+                </StaggerItem>
               ))}
-            </div>
-          </div>
+            </StaggerContainer>
+          </FadeIn>
         </>
       )}
-    </div>
+    </PageTransition>
   );
 }
 
