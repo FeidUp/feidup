@@ -122,6 +122,12 @@ export default function Header() {
             <div className="ml-2">
               <ThemeToggle />
             </div>
+            <a
+              href="https://feidup-crm.vercel.app"
+              className="ml-3 px-5 py-2 bg-[hsl(0,83%,59%)] text-white text-sm font-semibold rounded-full hover:bg-[hsl(0,83%,49%)] transition-all duration-300 shadow-lg shadow-red-500/20 hover:shadow-xl hover:shadow-red-500/30"
+            >
+              Login
+            </a>
           </div>
 
           {/* Mobile: toggle + hamburger */}
@@ -174,6 +180,13 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
+            <a
+              href="https://feidup-crm.vercel.app"
+              className="block mx-4 mt-2 px-4 py-3 bg-[hsl(0,83%,59%)] text-white text-center text-base font-semibold rounded-xl hover:bg-[hsl(0,83%,49%)] transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Login
+            </a>
           </div>
         </div>
       </nav>
