@@ -58,6 +58,14 @@ export const api = {
         method: 'POST', body: JSON.stringify({ email, password }),
       }),
     me: () => request<{ success: boolean; data: User }>('/auth/me'),
+    forgotPassword: (email: string) =>
+      request<{ success: boolean; message: string }>('/auth/forgot-password', {
+        method: 'POST', body: JSON.stringify({ email }),
+      }),
+    resetPassword: (token: string, password: string) =>
+      request<{ success: boolean; message: string }>('/auth/reset-password', {
+        method: 'POST', body: JSON.stringify({ token, password }),
+      }),
     listUsers: () => request<{ success: boolean; data: User[] }>('/auth/users'),
     createUser: (data: CreateUserPayload) =>
       request<{ success: boolean; data: User }>('/auth/users', {
@@ -92,14 +100,19 @@ export const api = {
     get: (id: string) => request<{ success: boolean; data: Advertiser }>(`/advertisers/${id}`),
     create: (data: Record<string, unknown>) =>
       request<{ success: boolean; data: Advertiser }>('/advertisers', { method: 'POST', body: JSON.stringify(data) }),
+    update: (id: string, data: Record<string, unknown>) =>
+      request<{ success: boolean; data: Advertiser }>(`/advertisers/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
     delete: (id: string) => request<{ success: boolean }>(`/advertisers/${id}`, { method: 'DELETE' }),
   },
 
   restaurants: {
-    list: () => request<{ success: boolean; data: Restaurant[] }>('/cafes'),
+    list: () => request<{ success: boolean; data: Restaurant[]; meta: { total: number } }>('/cafes?limit=2000'),
     get: (id: string) => request<{ success: boolean; data: Restaurant }>(`/cafes/${id}`),
     create: (data: Record<string, unknown>) =>
       request<{ success: boolean; data: Restaurant }>('/cafes', { method: 'POST', body: JSON.stringify(data) }),
+    update: (id: string, data: Record<string, unknown>) =>
+      request<{ success: boolean; data: Restaurant }>(`/cafes/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    delete: (id: string) => request<{ success: boolean }>(`/cafes/${id}`, { method: 'DELETE' }),
   },
 
   campaigns: {
@@ -147,6 +160,34 @@ export const api = {
     region: () => request<{ success: boolean; data: RegionData[] }>('/analytics/region'),
     performance: () => request<{ success: boolean; data: CampaignPerformance[] }>('/analytics/performance'),
     revenue: () => request<{ success: boolean; data: RevenueData }>('/analytics/revenue'),
+    qrOverview: () => request<{ success: boolean; data: QROverviewAnalytics }>('/analytics/qr/overview'),
+    qrLive: () => request<{ success: boolean; data: QRLiveScan[] }>('/analytics/qr/live'),
+    qrGeography: () => request<{ success: boolean; data: QRGeographyEntry[] }>('/analytics/qr/geography'),
+    qrTrends: () => request<{ success: boolean; data: { weeks: { week: string; count: number }[]; totalScans: number } }>('/analytics/qr/trends'),
+    conversions: () => request<{ success: boolean; data: QRConversionFunnel }>('/analytics/conversions'),
+  },
+
+  enrichment: {
+    discoverAdvertisersNear: (lat: number, lng: number, industries?: string[]) =>
+      request<{ success: boolean; data: { count: number; businesses: DiscoveredBusiness[] } }>('/enrichment/discover-advertisers/near', {
+        method: 'POST', body: JSON.stringify({ lat, lng, industries, radiusM: 5000 }),
+      }),
+    searchAdvertisers: (keyword: string) =>
+      request<{ success: boolean; data: { count: number; keyword: string; businesses: DiscoveredBusiness[] } }>('/enrichment/discover-advertisers/search', {
+        method: 'POST', body: JSON.stringify({ keyword }),
+      }),
+    getIndustries: () =>
+      request<{ success: boolean; data: Array<{ industry: string; label: string }> }>('/enrichment/discover-advertisers/industries'),
+  },
+
+  cafePortal: {
+    me: () => request<{ success: boolean; data: CafePortalData }>('/cafes/me'),
+    qrAnalytics: (cafeId: string) => request<{ success: boolean; data: QRCafeAnalytics }>(`/analytics/qr/cafe/${cafeId}`),
+  },
+
+  advertiserPortal: {
+    me: () => request<{ success: boolean; data: AdvertiserPortalData }>('/advertisers/me'),
+    campaignQRAnalytics: (campaignId: string) => request<{ success: boolean; data: QRCampaignAnalytics }>(`/analytics/qr/campaign/${campaignId}`),
   },
 };
 
@@ -240,8 +281,8 @@ export interface Advertiser {
   id: string;
   businessName: string;
   industry: string;
-  targetSuburbs: string;
-  targetPostcodes: string;
+  targetSuburbs: string | string[];
+  targetPostcodes: string | string[];
   targetRadiusKm?: number;
   campaignGoal: string;
   contactEmail?: string;
@@ -258,16 +299,17 @@ export interface Restaurant {
   suburb: string;
   postcode: string;
   city: string;
-  lat: number;
-  lng: number;
+  location?: { lat: number; lng: number };
+  lat?: number;
+  lng?: number;
   cuisineType?: string;
   avgDailyFootTraffic: number;
   avgDailyOrders: number;
   packagingVolume: number;
   demographics?: string;
-  tags: string;
+  tags: string | string[];
   isActive: boolean;
-  partnerSince: string;
+  partnerSince?: string;
   createdAt: string;
 }
 
@@ -374,4 +416,131 @@ export interface RevenueData {
   totalRevenue: number;
   activeRevenue: number;
   campaignCount: number;
+}
+
+// Discovered business (potential advertiser from Google Places)
+export interface DiscoveredBusiness {
+  googlePlaceId: string;
+  name: string;
+  address: string;
+  suburb: string;
+  postcode: string;
+  lat: number;
+  lng: number;
+  industry: string;
+  businessType: string;
+  rating?: number;
+  reviewCount?: number;
+  websiteUrl?: string;
+  googleMapsUrl?: string;
+  phone?: string;
+  isOpen?: boolean;
+}
+
+// QR Analytics types
+export interface QROverviewAnalytics {
+  totalCodes: number;
+  totalScans: number;
+  activeCodes: number;
+  scanRate: string;
+}
+
+export interface QRLiveScan {
+  id: string;
+  scannedAt: string;
+  deviceType?: string;
+  os?: string;
+  browser?: string;
+  scanSuburb?: string;
+  qrCode: { code: string; type: string; campaignId?: string; cafeId?: string };
+}
+
+export interface QRGeographyEntry {
+  suburb: string;
+  count: number;
+}
+
+export interface QRConversionFunnel {
+  codesGenerated: number;
+  scanned: number;
+  redirected: number;
+  scanRate: string;
+  redirectRate: string;
+}
+
+export interface QRCampaignAnalytics {
+  totalCodes: number;
+  totalScans: number;
+  cafeScans: number;
+  advertiserScans: number;
+  scanRate: string;
+  deviceBreakdown: { device: string; count: number }[];
+  suburbDistribution: { suburb: string; count: number }[];
+}
+
+export interface QRCafeAnalytics {
+  totalCodes: number;
+  totalScans: number;
+  dailyScans: { date: string; count: number }[];
+  peakHours: { hour: number; count: number }[];
+  deviceBreakdown: { device: string; count: number }[];
+  suburbDistribution: { suburb: string; count: number }[];
+}
+
+// Portal data types
+export interface CafePortalData {
+  id: string;
+  name: string;
+  address: string;
+  suburb: string;
+  postcode: string;
+  city: string;
+  lat: number;
+  lng: number;
+  cuisineType?: string;
+  avgDailyFootTraffic: number;
+  avgDailyOrders: number;
+  packagingVolume: number;
+  demographics?: string;
+  operatingHours?: string;
+  tags: string;
+  isActive: boolean;
+  partnerSince: string;
+  inventory?: {
+    id: string;
+    quantityAllocated: number;
+    quantityUsed: number;
+    quantityRemaining: number;
+    batch?: {
+      packagingType: string;
+      campaign?: { id: string; name: string; status: string };
+    };
+  }[];
+  placements?: {
+    id: string;
+    status: string;
+    cafeId: string;
+    campaign?: {
+      id: string;
+      name: string;
+      status: string;
+      advertiser?: { businessName: string };
+    };
+  }[];
+}
+
+export interface AdvertiserPortalData {
+  id: string;
+  businessName: string;
+  industry: string;
+  city: string;
+  isActive: boolean;
+  contactEmail?: string;
+  totalImpressions: number;
+  totalScans: number;
+  campaigns: (Campaign & {
+    placements?: (Placement & {
+      cafe?: { id: string; name: string; suburb: string };
+    })[];
+  })[];
 }
