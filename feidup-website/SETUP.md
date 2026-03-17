@@ -20,7 +20,7 @@ npm install
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to view the site.
+Visit [http://localhost:3000](http://localhost:3000) to view the site
 
 ### 3. Configure Email Service (Optional but Recommended)
 
