@@ -1,0 +1,32 @@
+databases:
+  - name: feidup-db
+    plan: free
+    databaseName: feidup
+    user: feidup
+
+services:
+  - type: web
+    name: feidup-api
+    plan: free
+    runtime: node
+    rootDir: feidup-location-backend
+    buildCommand: npm install && npx prisma migrate deploy && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: feidup-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3001"
+      - key: FRONTEND_URL
+        value: https://feidup-crm.vercel.app
+      - key: GOOGLE_MAPS_API_KEY
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false

@@ -1,12 +1,13 @@
 // Prisma Schema for FeidUp CRM + Location-Based Advertising Backend
-// Database: SQLite (for easy local development)
+// Database: PostgreSQL (production) or SQLite (local dev)
+// Set DATABASE_PROVIDER env var to "sqlite" for local dev, defaults to "postgresql"
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
