@@ -55,12 +55,12 @@ export function generateTokens(user: { id: string; email: string; role: string; 
     ...(user.restaurantId && { restaurantId: user.restaurantId }),
   };
   
-  const accessToken = jwt.sign(payload, config.jwtSecret, {
-    expiresIn: config.jwtExpiresIn as string,
+  const accessToken = jwt.sign(payload, config.jwtSecret as string, {
+    expiresIn: config.jwtExpiresIn as any,
   });
-  
-  const refreshToken = jwt.sign(payload, config.jwtSecret, {
-    expiresIn: config.jwtRefreshExpiresIn as string,
+
+  const refreshToken = jwt.sign(payload, config.jwtSecret as string, {
+    expiresIn: config.jwtRefreshExpiresIn as any,
   });
   
   return { accessToken, refreshToken };
