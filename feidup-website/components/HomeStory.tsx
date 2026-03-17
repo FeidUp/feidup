@@ -434,37 +434,37 @@ function AudienceSplit() {
 }
 
 /* ─── 6. STATS ─── */
-function StatsSection() {
-  const stats = [
-    { value: 500, suffix: "+", label: "Impressions Daily" },
-    { value: 25, suffix: "+", label: "Venue Partners" },
-    { value: 98, suffix: "%", label: "Partner Satisfaction" },
-    { value: 20, suffix: "+", label: "Minutes per Impression" },
-  ];
+// function StatsSection() {
+//   const stats = [
+//     { value: 500, suffix: "+", label: "Impressions Daily" },
+//     { value: 25, suffix: "+", label: "Venue Partners" },
+//     { value: 98, suffix: "%", label: "Partner Satisfaction" },
+//     { value: 20, suffix: "+", label: "Minutes per Impression" },
+//   ];
 
-  return (
-    <section className="relative py-32 md:py-40 overflow-hidden">
-      <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
+//   return (
+//     <section className="relative py-32 md:py-40 overflow-hidden">
+//       <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
 
-      <div className="mx-auto max-w-6xl px-6 lg:px-8">
-        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-          {stats.map((s) => (
-            <StaggerItem key={s.label} className="text-center">
-              <div className="fluid-5xl font-bold font-[family-name:var(--font-fredoka)] text-gradient mb-3">
-                <CountUp end={s.value} suffix={s.suffix} />
-              </div>
-              <p className="text-sm font-medium tracking-[0.15em] uppercase" style={{ color: "var(--text-muted)" }}>
-                {s.label}
-              </p>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-      </div>
+//       <div className="mx-auto max-w-6xl px-6 lg:px-8">
+//         <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+//           {stats.map((s) => (
+//             <StaggerItem key={s.label} className="text-center">
+//               <div className="fluid-5xl font-bold font-[family-name:var(--font-fredoka)] text-gradient mb-3">
+//                 <CountUp end={s.value} suffix={s.suffix} />
+//               </div>
+//               <p className="text-sm font-medium tracking-[0.15em] uppercase" style={{ color: "var(--text-muted)" }}>
+//                 {s.label}
+//               </p>
+//             </StaggerItem>
+//           ))}
+//         </StaggerContainer>
+//       </div>
 
-      <div className="absolute bottom-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
-    </section>
-  );
-}
+//       <div className="absolute bottom-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
+//     </section>
+//   );
+// }
 
 /* ─── 7. CLOSING CTA ─── */
 function ClosingCTA() {
@@ -536,7 +536,7 @@ export function HomeStory() {
       <InsightSection />
       <HowItWorksSection />
       <AudienceSplit />
-      <StatsSection />
+      {/* <StatsSection /> */}
       <ClosingCTA />
     </>
   );

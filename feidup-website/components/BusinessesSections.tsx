@@ -251,12 +251,10 @@ function ProcessSection() {
         </FadeIn>
 
         <div className="relative">
-          <div className="hidden md:block absolute top-14 left-[15%] right-[15%] h-px bg-gradient-to-r from-[hsl(0,83%,59%)]/30 via-[hsl(0,83%,59%)]/20 to-[hsl(0,83%,59%)]/30 z-0" />
-
-          <StaggerContainer className="grid md:grid-cols-4 gap-6">
+          <StaggerContainer className="relative z-10 grid md:grid-cols-4 gap-6">
             {processSteps.map((step) => (
               <StaggerItem key={step.num} className="flex">
-                <div className="relative pt-8 flex-1 flex flex-col">
+                <div className="relative z-10 pt-8 flex-1 flex flex-col">
                   <div className="absolute top-0 left-8 md:left-1/2 md:-translate-x-1/2 w-14 h-14 bg-gradient-to-br from-[hsl(0,83%,59%)] to-[hsl(0,83%,45%)] rounded-2xl flex items-center justify-center font-bold font-[family-name:var(--font-fredoka)] text-white text-xl shadow-lg shadow-red-500/20 z-10">
                     {step.num}
                   </div>
