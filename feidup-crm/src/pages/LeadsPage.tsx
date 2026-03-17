@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
 import type { Lead } from '../api';
-import { Plus, Search, Filter, ArrowUpRight, Building2, UtensilsCrossed } from 'lucide-react';
+import { Plus, Search, ArrowUpRight, Building2, UtensilsCrossed } from 'lucide-react';
 
 const stageColors: Record<string, string> = {
   lead: 'bg-gray-500/10 text-gray-400',

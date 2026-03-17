@@ -2,9 +2,9 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import { useTheme } from '../ThemeContext';
 import {
-  LayoutDashboard, Users, Building2, UtensilsCrossed, Megaphone,
+  LayoutDashboard, Building2, UtensilsCrossed, Megaphone,
   Package, BarChart3, UserCog, LogOut, Target, Kanban, ChevronLeft, Menu,
-  QrCode, Coffee, Sparkles, ChevronRight, Sun, Moon, MapPin,
+  QrCode, Coffee, Sparkles, Sun, Moon, MapPin,
 } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -32,7 +32,7 @@ const navItems = [
 
 export function Layout() {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme, isDark } = useTheme();
+  const { toggleTheme, isDark } = useTheme();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -67,7 +67,7 @@ export function Layout() {
 
         {/* Nav */}
         <nav className="flex-1 py-3 px-2 overflow-y-auto space-y-0.5">
-          {filteredNav.map((item, idx) => {
+          {filteredNav.map((item) => {
             const showSection = !collapsed && item.section && item.section !== lastSection;
             if (item.section) lastSection = item.section;
 

@@ -70,7 +70,7 @@ function InternalDashboard() {
                 </div>
               ))}
             </div>
-          </div>
+          </FadeIn>
 
           <FadeIn delay={0.4} className="glass-card rounded-2xl p-6">
             <h2 className="text-[15px] font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Quick Actions</h2>

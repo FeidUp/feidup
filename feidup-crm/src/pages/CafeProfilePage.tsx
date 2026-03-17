@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api';
 import type { CafePortalData } from '../api';
-import { MapPin, Clock, Users, Coffee } from 'lucide-react';
+import { Clock, Users, Coffee } from 'lucide-react';
 
 export function CafeProfilePage() {
   const [cafe, setCafe] = useState<CafePortalData | null>(null);

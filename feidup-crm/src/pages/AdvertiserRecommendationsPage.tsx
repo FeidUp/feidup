@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api';
 import type { AdvertiserPortalData, Recommendation } from '../api';
-import { Sparkles, MapPin, Users, TrendingUp, Star } from 'lucide-react';
+import { Sparkles, MapPin, Users, TrendingUp } from 'lucide-react';
 
 export function AdvertiserRecommendationsPage() {
   const [advertiser, setAdvertiser] = useState<AdvertiserPortalData | null>(null);

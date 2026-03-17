@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 // Fade in from direction
 export function FadeIn({ children, delay = 0, direction = 'up', duration = 0.5, className = '' }: {
@@ -108,7 +108,7 @@ export function AnimatedNumber({ value, duration = 1 }: { value: number; duratio
   );
 }
 
-function Counter({ to, duration }: { to: number; duration: number }) {
+function Counter({ to, duration: _duration }: { to: number; duration: number }) {
   return (
     <motion.span
       initial={{ opacity: 0, y: 10 }}

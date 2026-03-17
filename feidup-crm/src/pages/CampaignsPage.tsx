@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api';
-import type { Campaign, Advertiser, Recommendation, Restaurant } from '../api';
+import type { Campaign, Advertiser, Recommendation } from '../api';
 import { Plus, Search, Megaphone, MapPin, Calendar, DollarSign, Eye, ChevronDown, ChevronUp, Target } from 'lucide-react';
 
 const statusColors: Record<string, string> = {

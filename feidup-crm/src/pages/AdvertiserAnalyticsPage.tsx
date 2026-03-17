@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from '../api';
 import type { AdvertiserPortalData, QRCampaignAnalytics } from '../api';
 import { QrCode, Smartphone, MapPin, TrendingUp } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const COLORS = ['#dc2626', '#2563eb', '#16a34a', '#f59e0b', '#8b5cf6'];
 

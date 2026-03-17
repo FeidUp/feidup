@@ -21,7 +21,7 @@ import { CafeProfilePage } from './pages/CafeProfilePage';
 import { AdvertiserAnalyticsPage } from './pages/AdvertiserAnalyticsPage';
 import { AdvertiserRecommendationsPage } from './pages/AdvertiserRecommendationsPage';
 import { MapPage } from './pages/MapPage';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 function ProtectedRoute({ children, roles }: { children: ReactNode; roles?: string[] }) {
   const { user, loading } = useAuth();
