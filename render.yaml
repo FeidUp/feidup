@@ -25,7 +25,7 @@ services:
       - key: PORT
         value: "3001"
       - key: FRONTEND_URL
-        value: https://feidup-crm.vercel.app
+        value: https://app.feidup.com
       - key: GOOGLE_MAPS_API_KEY
         sync: false
       - key: RESEND_API_KEY
