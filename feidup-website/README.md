@@ -1,6 +1,6 @@
 # FeidUp Marketing Website
 
-A professional marketing-focused website for FeidUp, a startup that partners with cafés to provide free custom packaging funded by advertiser impressions.
+A professional marketing-focused website for FeidUp, a startup that partners with restaurants to provide free custom packaging funded by advertiser impressions.
 
 ## 🎯 Project Overview
 
