@@ -11,16 +11,21 @@ const rateLimiter = new RateLimiter({ maxRequestsPerSecond: 5 });
 // Business types we want to discover as potential advertisers
 const ADVERTISER_TYPES = [
   { types: ['gym', 'fitness_center'], industry: 'fitness', label: 'Gyms & Fitness' },
-  { types: ['dentist'], industry: 'health', label: 'Dentists' },
+  { types: ['dentist'], industry: 'health_dental', label: 'Dentists' },
   { types: ['real_estate_agency'], industry: 'real_estate', label: 'Real Estate' },
-  { types: ['beauty_salon', 'hair_salon', 'spa'], industry: 'beauty', label: 'Beauty & Wellness' },
-  { types: ['school', 'university'], industry: 'education', label: 'Education' },
-  { types: ['veterinary_care'], industry: 'health', label: 'Vets' },
+  { types: ['beauty_salon', 'hair_salon', 'spa'], industry: 'beauty', label: 'Beauty & Hair' },
+  { types: ['school', 'university'], industry: 'education', label: 'Schools' },
+  { types: ['veterinary_care'], industry: 'vets', label: 'Vets' },
   { types: ['physiotherapist', 'doctor'], industry: 'health', label: 'Health Services' },
   { types: ['lawyer', 'accounting'], industry: 'professional_services', label: 'Professional Services' },
   { types: ['car_dealer', 'car_repair'], industry: 'automotive', label: 'Automotive' },
-  { types: ['pet_store'], industry: 'retail', label: 'Pet Services' },
-  { types: ['sports_club'], industry: 'fitness', label: 'Sports & Recreation' },
+  { types: ['pet_store'], industry: 'pets', label: 'Pet Services' },
+  { types: ['sports_club'], industry: 'sports', label: 'Sports & Recreation' },
+  { types: ['barber_shop'], industry: 'barbers', label: 'Barbers' },
+  { types: ['plumber', 'electrician', 'roofing_contractor'], industry: 'trades', label: 'Trades' },
+  { types: ['pharmacy'], industry: 'pharmacy', label: 'Pharmacies' },
+  { types: ['restaurant'], industry: 'restaurants', label: 'Restaurants' },
+  { types: ['child_care_agency'], industry: 'childcare', label: 'Childcare' },
 ];
 
 interface DiscoveredAdvertiser {
