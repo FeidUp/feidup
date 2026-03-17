@@ -53,6 +53,14 @@ const INCOME_LEVELS: Record<string, number> = {
   high: 5,
 };
 
+// Suburb-level demographic data from ABS Census
+export interface SuburbDemographics {
+  population?: number;
+  medianAge?: number;
+  medianIncome?: number;
+  primaryDemographic?: string;
+}
+
 interface CafeForScoring {
   id: string;
   name: string;
@@ -65,6 +73,7 @@ interface CafeForScoring {
   packagingVolume: number;
   demographics: CafeDemographics | null;
   tags: string[];
+  suburbData?: SuburbDemographics | null;
 }
 
 /**
@@ -182,7 +191,19 @@ function calculateVolumeScore(cafe: CafeForScoring): { score: number; reasons: s
 }
 
 /**
+ * Classify income level from ABS median annual income
+ */
+function classifyIncomeFromABS(medianIncome: number): string {
+  if (medianIncome < 35000) return 'low';
+  if (medianIncome < 50000) return 'low-medium';
+  if (medianIncome < 65000) return 'medium';
+  if (medianIncome < 85000) return 'medium-high';
+  return 'high';
+}
+
+/**
  * Calculate demographic match score
+ * Uses real ABS Census suburb data when available, falls back to cafe-level estimates
  */
 function calculateDemographicScore(
   cafe: CafeForScoring,
@@ -191,64 +212,121 @@ function calculateDemographicScore(
   const reasons: string[] = [];
   let score = 50; // Default score when no targeting specified
 
-  if (!targetAudience || !cafe.demographics) {
+  if (!targetAudience) {
     return { score, reasons };
   }
 
   const cafeDemographics = cafe.demographics;
+  const suburbData = cafe.suburbData;
   let matchCount = 0;
   let totalChecks = 0;
 
-  // Age range matching
-  if (targetAudience.ageRange && cafeDemographics.type) {
+  // === AGE MATCHING ===
+  if (targetAudience.ageRange) {
     totalChecks++;
-    const cafeAgeRange = DEMOGRAPHIC_AGE_RANGES[cafeDemographics.type];
+    const targetMin = targetAudience.ageRange.min;
+    const targetMax = targetAudience.ageRange.max;
+    const targetMid = (targetMin + targetMax) / 2;
 
-    if (cafeAgeRange) {
-      const targetMin = targetAudience.ageRange.min;
-      const targetMax = targetAudience.ageRange.max;
-
-      // Check overlap
-      const overlapMin = Math.max(targetMin, cafeAgeRange.min);
-      const overlapMax = Math.min(targetMax, cafeAgeRange.max);
-
-      if (overlapMin <= overlapMax) {
-        const overlapRange = overlapMax - overlapMin;
-        const targetRange = targetMax - targetMin;
-        const overlapRatio = overlapRange / targetRange;
-
-        if (overlapRatio >= 0.5) {
-          matchCount++;
-          reasons.push(`Age demographic match: ${cafeDemographics.type}`);
-        } else if (overlapRatio >= 0.25) {
+    // Prefer real ABS median age data
+    if (suburbData?.medianAge) {
+      const medianAge = suburbData.medianAge;
+      // Check if suburb median age falls within target range
+      if (medianAge >= targetMin && medianAge <= targetMax) {
+        matchCount += 1;
+        reasons.push(`Suburb median age ${medianAge} matches target ${targetMin}-${targetMax} (ABS Census)`);
+      } else {
+        // Partial match: how close is it?
+        const distance = medianAge < targetMin ? targetMin - medianAge : medianAge - targetMax;
+        if (distance <= 5) {
           matchCount += 0.5;
-          reasons.push(`Partial age overlap with ${cafeDemographics.type}`);
+          reasons.push(`Suburb median age ${medianAge} near target range ${targetMin}-${targetMax}`);
+        }
+      }
+    } else if (cafeDemographics?.type) {
+      // Fall back to cafe-level demographic type
+      const cafeAgeRange = DEMOGRAPHIC_AGE_RANGES[cafeDemographics.type];
+      if (cafeAgeRange) {
+        const overlapMin = Math.max(targetMin, cafeAgeRange.min);
+        const overlapMax = Math.min(targetMax, cafeAgeRange.max);
+        if (overlapMin <= overlapMax) {
+          const overlapRange = overlapMax - overlapMin;
+          const targetRange = targetMax - targetMin;
+          const overlapRatio = overlapRange / targetRange;
+          if (overlapRatio >= 0.5) {
+            matchCount++;
+            reasons.push(`Age demographic match: ${cafeDemographics.type}`);
+          } else if (overlapRatio >= 0.25) {
+            matchCount += 0.5;
+            reasons.push(`Partial age overlap with ${cafeDemographics.type}`);
+          }
         }
       }
     }
   }
 
-  // Income level matching
-  if (targetAudience.incomeLevel && cafeDemographics.income) {
+  // === INCOME MATCHING ===
+  if (targetAudience.incomeLevel) {
     totalChecks++;
     const targetLevel = INCOME_LEVELS[targetAudience.incomeLevel] || 3;
-    const cafeLevel = INCOME_LEVELS[cafeDemographics.income] || 3;
-    const levelDiff = Math.abs(targetLevel - cafeLevel);
 
-    if (levelDiff === 0) {
-      matchCount++;
-      reasons.push(`Income level match: ${cafeDemographics.income}`);
-    } else if (levelDiff === 1) {
-      matchCount += 0.5;
+    // Prefer real ABS median income data
+    if (suburbData?.medianIncome) {
+      const absIncomeLevel = classifyIncomeFromABS(suburbData.medianIncome);
+      const absLevel = INCOME_LEVELS[absIncomeLevel] || 3;
+      const levelDiff = Math.abs(targetLevel - absLevel);
+
+      if (levelDiff === 0) {
+        matchCount++;
+        reasons.push(`Suburb income $${suburbData.medianIncome.toLocaleString()}/yr matches target ${targetAudience.incomeLevel} (ABS Census)`);
+      } else if (levelDiff === 1) {
+        matchCount += 0.5;
+        reasons.push(`Suburb income $${suburbData.medianIncome.toLocaleString()}/yr close to target ${targetAudience.incomeLevel}`);
+      }
+    } else if (cafeDemographics?.income) {
+      // Fall back to cafe-level income estimate
+      const cafeLevel = INCOME_LEVELS[cafeDemographics.income] || 3;
+      const levelDiff = Math.abs(targetLevel - cafeLevel);
+      if (levelDiff === 0) {
+        matchCount++;
+        reasons.push(`Income level match: ${cafeDemographics.income}`);
+      } else if (levelDiff === 1) {
+        matchCount += 0.5;
+      }
     }
   }
 
-  // Calculate final score
-  if (totalChecks > 0) {
-    score = (matchCount / totalChecks) * 100;
+  // === POPULATION DENSITY BONUS ===
+  // Higher population suburbs offer more potential reach
+  if (suburbData?.population) {
+    if (suburbData.population > 12000) {
+      score += 5;
+      reasons.push(`High population suburb: ${suburbData.population.toLocaleString()} residents`);
+    } else if (suburbData.population > 8000) {
+      score += 2;
+    }
   }
 
-  return { score: Math.min(100, score), reasons };
+  // === PRIMARY DEMOGRAPHIC TYPE MATCH ===
+  // If ABS says the suburb is "students" and advertiser targets 18-25, that's a signal
+  if (suburbData?.primaryDemographic && targetAudience.ageRange) {
+    const demoAgeRange = DEMOGRAPHIC_AGE_RANGES[suburbData.primaryDemographic];
+    if (demoAgeRange) {
+      const overlapMin = Math.max(targetAudience.ageRange.min, demoAgeRange.min);
+      const overlapMax = Math.min(targetAudience.ageRange.max, demoAgeRange.max);
+      if (overlapMin <= overlapMax) {
+        score += 5;
+        reasons.push(`Suburb demographic type "${suburbData.primaryDemographic}" aligns with target age`);
+      }
+    }
+  }
+
+  // Calculate final score from match ratio
+  if (totalChecks > 0) {
+    score = (matchCount / totalChecks) * 100 + (score - 50); // Add bonuses on top
+  }
+
+  return { score: Math.max(0, Math.min(100, score)), reasons };
 }
 
 /**

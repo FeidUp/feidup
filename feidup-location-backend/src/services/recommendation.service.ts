@@ -5,6 +5,7 @@ import { config } from '../config/index.js';
 import { prisma } from '../lib/prisma.js';
 import { NotFoundError } from '../middleware/errorHandler.js';
 import { scoreAllCafes, generateMatchReason, getTopRecommendations } from './matching.service.js';
+import type { SuburbDemographics } from './matching.service.js';
 import type {
   RecommendationResponse,
   CafeRecommendation,
@@ -60,7 +61,21 @@ export class RecommendationService {
       weights: config.matching.weights,
     };
 
-    // Format cafes for scoring (parse JSON strings from SQLite)
+    // Fetch suburb demographic data (ABS Census enriched)
+    const suburbNames = [...new Set(cafes.map(c => c.suburb))];
+    const suburbDataRecords = await prisma.suburbData.findMany({
+      where: { suburb: { in: suburbNames }, city: advertiser.city },
+    });
+    const suburbDataMap = new Map<string, SuburbDemographics>(
+      suburbDataRecords.map(s => [s.suburb, {
+        population: s.population ?? undefined,
+        medianAge: s.medianAge ?? undefined,
+        medianIncome: s.medianIncome ?? undefined,
+        primaryDemographic: s.primaryDemographic ?? undefined,
+      }])
+    );
+
+    // Format cafes for scoring (parse JSON strings from SQLite + attach suburb data)
     const cafesForScoring = cafes.map((cafe) => ({
       id: cafe.id,
       name: cafe.name,
@@ -73,6 +88,7 @@ export class RecommendationService {
       packagingVolume: cafe.packagingVolume,
       demographics: cafe.demographics ? JSON.parse(cafe.demographics as string) as CafeDemographics : null,
       tags: JSON.parse((cafe.tags as string) || '[]') as string[],
+      suburbData: suburbDataMap.get(cafe.suburb) || null,
     }));
 
     // Score all cafes
@@ -168,7 +184,21 @@ export class RecommendationService {
       weights: config.matching.weights,
     };
 
-    // Format cafes for scoring (parse JSON strings from SQLite)
+    // Fetch suburb demographic data (ABS Census enriched)
+    const areaSuburbs = [...new Set(cafes.map(c => c.suburb))];
+    const areaSuburbData = await prisma.suburbData.findMany({
+      where: { suburb: { in: areaSuburbs }, city: advertiser.city },
+    });
+    const areaSuburbMap = new Map<string, SuburbDemographics>(
+      areaSuburbData.map(s => [s.suburb, {
+        population: s.population ?? undefined,
+        medianAge: s.medianAge ?? undefined,
+        medianIncome: s.medianIncome ?? undefined,
+        primaryDemographic: s.primaryDemographic ?? undefined,
+      }])
+    );
+
+    // Format cafes for scoring (parse JSON strings from SQLite + attach suburb data)
     const cafesForScoring = cafes.map((cafe) => ({
       id: cafe.id,
       name: cafe.name,
@@ -181,6 +211,7 @@ export class RecommendationService {
       packagingVolume: cafe.packagingVolume,
       demographics: cafe.demographics ? JSON.parse(cafe.demographics as string) as CafeDemographics : null,
       tags: JSON.parse((cafe.tags as string) || '[]') as string[],
+      suburbData: areaSuburbMap.get(cafe.suburb) || null,
     }));
 
     const scoredCafes = scoreAllCafes(cafesForScoring, context);
@@ -255,6 +286,11 @@ export class RecommendationService {
       weights: config.matching.weights,
     };
 
+    // Fetch suburb demographic data
+    const cafeSuburbData = await prisma.suburbData.findFirst({
+      where: { suburb: cafe.suburb, city: cafe.city },
+    });
+
     // Parse cafe JSON strings from SQLite
     const cafeForScoring = {
       id: cafe.id,
@@ -268,6 +304,12 @@ export class RecommendationService {
       packagingVolume: cafe.packagingVolume,
       demographics: cafe.demographics ? JSON.parse(cafe.demographics as string) as CafeDemographics : null,
       tags: JSON.parse((cafe.tags as string) || '[]') as string[],
+      suburbData: cafeSuburbData ? {
+        population: cafeSuburbData.population ?? undefined,
+        medianAge: cafeSuburbData.medianAge ?? undefined,
+        medianIncome: cafeSuburbData.medianIncome ?? undefined,
+        primaryDemographic: cafeSuburbData.primaryDemographic ?? undefined,
+      } : null,
     };
 
     const [scored] = scoreAllCafes([cafeForScoring], context);
