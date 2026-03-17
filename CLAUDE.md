@@ -6,134 +6,183 @@ FeidUp connects **small local businesses** (real estate agents, schools, barbers
 
 **The product**: A coffee cup with the cafe's branding prominently displayed + a sponsor's branding integrated tastefully. Each cup has **two QR codes** — one linking to the cafe's website, one to the advertiser's. QR scans = trackable impressions and conversions.
 
-**Target market**: Brisbane, Australia (starting local, expanding later).
+**Target market**: South East Queensland (Brisbane, Gold Coast, Sunshine Coast, Logan, Ipswich).
+
+**Live site**: https://feidup.com
 
 ## Monorepo Structure
 
 ```
 feidup/
-├── feidup-website/          # Public marketing site (Next.js 16, Tailwind v4, Framer Motion)
-│                             # Deployed at https://feidup-website.vercel.app
-├── feidup-location-backend/  # Core API (Express + TypeScript + Prisma + SQLite)
-│                             # Matching engine, campaigns, analytics, auth
-├── feidup-crm/              # Internal CRM dashboard (React + TypeScript + Vite)
-│                             # For FeidUp sales/ops team
-├── feidup-admin/            # Admin panel (React + TypeScript + Vite)
-└── CLAUDE.md                # This file
+├── feidup-website/          # Marketing site (Next.js 16, Tailwind v4, Framer Motion)
+│                             # Deployed on Vercel (Shubh's account) → feidup.com
+├── feidup-location-backend/  # Core API (Express + TypeScript + Prisma + PostgreSQL)
+│                             # Deployed on Render → https://feidup.onrender.com
+├── feidup-crm/              # CRM dashboard (React + Vite + Leaflet + Framer Motion)
+│                             # Deployed on Vercel (Kunwar's account) → feidup-crm.vercel.app
+├── CLAUDE.md                # This file
+└── PLATFORM.md              # Full technical documentation
 ```
 
-## Three CRM/Portal Experiences Needed
+## Deployment Architecture
 
-### 1. Cafe Portal (for cafe owners)
-- View active campaigns running at their venue
-- See which advertisers they're partnered with
-- Track cup inventory (allocated, used, remaining)
-- View QR scan analytics (cafe QR code traffic)
-- Campaign calendar/schedule
-- Accept/reject proposed placements
+```
+┌──────────────┐     ┌──────────────────────┐     ┌──────────────┐
+│ feidup.com   │     │ feidup.onrender.com  │     │ feidup-crm   │
+│ (Vercel)     │     │ (Render, Singapore)  │     │ .vercel.app  │
+│              │     │                      │     │              │
+│ Marketing    │     │ Express API          │◄────│ React CRM    │
+│ website      │     │ PostgreSQL (Render)  │     │ 3 portals    │
+└──────────────┘     │ 48 cafes seeded      │     └──────────────┘
+                     │ 967 cafes discovered │
+                     └──────┬───────────────┘
+                            │
+              ┌─────────────┼─────────────┐
+              │             │             │
+        ABS Census    Google Places   Overpass/OSM
+        (free)        (API key set)   (free)
+```
 
-### 2. Advertiser Portal (for sponsors/brands)
-- Run campaigns across multiple cafes simultaneously
-- Track QR scan conversions (how many people visited their website via FeidUp)
-- Campaign performance breakdown by cafe/location/suburb
-- Impression counts, scan rates, conversion metrics
-- Budget and billing management
-- View recommended cafes for targeting
+### Deployment Details
 
-### 3. Internal CRM (for FeidUp team — sales, ops, admin)
-- **Lead pipeline**: Track advertiser and cafe leads through stages
-- **ML-powered matching**: When a new advertiser signs up, recommend optimal cafes
-- **Full analytics dashboard**: All metrics across all campaigns
-- **Inventory management**: Track packaging production, shipping, stock levels
-- **User management**: RBAC (admin, sales, operations, advertiser, restaurant roles)
+| Component | Platform | URL | Branch | Root Dir |
+|-----------|----------|-----|--------|----------|
+| Website | Vercel (Shubh) | feidup.com | main | feidup-website |
+| Backend | Render (free) | feidup.onrender.com | client-side-interface | feidup-location-backend |
+| CRM | Vercel (Kunwar) | feidup-crm.vercel.app | main | feidup-crm |
+| Database | Render PostgreSQL | Singapore region | — | — |
 
-## ML Matching Engine — Data Sources
+### Environment Variables
 
-The core differentiator is an intelligent matching algorithm that recommends the best cafes for each advertiser based on:
+**Render (backend)**:
+- `DATABASE_URL` — Render PostgreSQL connection string
+- `JWT_SECRET` — set on Render
+- `NODE_ENV=production`
+- `PORT=3001`
+- `FRONTEND_URL=https://feidup-crm.vercel.app`
+- `GOOGLE_MAPS_API_KEY` — set on Render
 
-- **Google Maps Platform**: Restaurant popularity, reviews, foot traffic estimates, cuisine, competition density
-- **Google Trends**: Location-specific search trends (e.g., anime interest in Sunnybank vs broader Brisbane)
-- **ABS (Australian Bureau of Statistics)**: Suburb demographics — income, population density, age, student population, household size, employment
-- **OpenStreetMap**: Building density, business clusters, office density, universities nearby
-- **Internal data**: QR scan rates, campaign performance history, cafe usage patterns
+**Vercel (CRM)**:
+- `VITE_API_URL=https://feidup.onrender.com` — set in Vercel project settings
 
-## Analytics — What We Track
+### Known Deployment Issues
+- Vercel free tier doesn't support **private org repos**. Repo must be public OR moved to a personal GitHub account
+- Render free tier spins down after 15min idle — first request takes ~30s cold start
+- The `client-side-interface` branch has been merged to `main` but Render is still pointing at `client-side-interface`. Can be switched to `main` in Render settings
 
-Every metric must be meticulous. Track the full funnel:
+## Current State (as of March 2026)
 
-| What | Why | Who sees it |
-|------|-----|-------------|
-| QR scans (cafe code) | Measure cafe website traffic from cups | Cafe portal |
-| QR scans (advertiser code) | Measure advertiser conversions | Advertiser portal |
-| Scan location (suburb/postcode) | Understand where cups travel | Internal + Advertiser |
-| Scan time (hour/day) | Understand peak engagement | Internal |
-| Cups produced per batch | Inventory tracking | Internal + Cafe |
-| Cups used/remaining per cafe | Stock management | Internal + Cafe |
-| Estimated daily impressions | Based on cafe foot traffic | All portals |
-| Actual vs estimated impressions | Model accuracy feedback | Internal |
-| Campaign spend vs conversions | ROI for advertisers | Advertiser portal |
-| Match score accuracy | Did recommended cafes perform well? | Internal |
+### feidup-website ✅ Complete
+- Dark/light theme with toggle
+- Storytelling scroll-driven home page with Framer Motion animations
+- Pages: Home, About, For Advertisers, For Businesses, Contact (Resend email)
+- Deployed at feidup.com
 
-## Tech Stack
+### feidup-location-backend ✅ Production ready
+- **Database**: PostgreSQL on Render (was SQLite for local dev)
+- **Auth**: JWT with 5 roles (admin, sales, operations, advertiser, restaurant)
+- **Matching engine**: Scores cafes across 4 dimensions (location 40%, volume 30%, demographic 20%, relevance 10%) using real ABS Census data
+- **QR tracking**: Public `/qr/:code` redirect with UTM params, device/OS/browser logging
+- **Data enrichment**: ABS Census (68 suburbs), Google Places (967 cafes discovered), OSM Overpass (cafe density, POI context)
+- **Advertiser discovery**: Search Google Places for potential advertisers by keyword (gyms, dentists, padel, etc.)
+- **Seed data**: 48 cafes, 5 advertisers, 3 campaigns, 8 placements, 16 QR codes, 80 scans, 68 suburbs
+- **All 37 backend tests passing**, 32 enrichment stress tests passing
+- Live at https://feidup.onrender.com
 
-| Component | Stack |
-|-----------|-------|
-| Website | Next.js 16, Tailwind v4, Framer Motion, Vercel |
-| Backend API | Express.js, TypeScript, Prisma ORM, SQLite (dev) → PostgreSQL (prod) |
-| CRM/Admin | React, TypeScript, Vite, Tailwind |
-| Auth | JWT with bcrypt, RBAC middleware |
-| Email | Resend API |
-| Future ML | Python service TBD, consuming Google Maps / ABS / OSM data |
+### feidup-crm ✅ Fully functional
+- **21 pages** across 3 portal experiences
+- **Dark/light theme** toggle matching website design (Framer Motion animations)
+- **Interactive map** (Leaflet) with 967 cafes across 126 SEQ suburbs
+- **Advertiser discovery** — search "padel brisbane" etc., results on map with "Add to Leads" button
+- Builds clean with zero TypeScript errors
 
-## Current State of Each Component
+#### Three Portal Experiences
 
-### feidup-website ✅ Mostly complete
-- Dark/light theme with toggle (cream light mode, charcoal dark mode)
-- Storytelling scroll-driven home page
-- Pages: Home, About, For Advertisers, For Businesses, Contact (with Resend email)
-- Deployed on Vercel
+**Admin/Internal** (admin, sales, operations):
+- Dashboard with stats, pipeline, quick actions
+- Leads management + Kanban pipeline
+- Advertisers/Restaurants CRUD
+- Campaigns with AI cafe recommendations
+- Map View (venues tab + advertisers discovery tab)
+- Inventory tracking (batches + allocations)
+- Analytics (overview + QR analytics with live feed, geography, conversion funnel)
+- User management
 
-### feidup-location-backend 🟡 Solid foundation
-- Prisma schema covers: Users, Auth, Leads, Advertisers, Cafes, Campaigns, Placements, Packaging Inventory, Assets, Analytics Events, Suburb Data
-- Services: matching, recommendation, campaign, advertiser, cafe
-- Routes: auth, advertisers, cafes, campaigns, recommendations, analytics, inventory, leads, assets
-- JWT auth with role-based middleware
-- Seed data for test accounts
+**Cafe Portal** (restaurant role → restaurant@feidup.com):
+- Dashboard: scan trends, inventory alerts, active campaigns
+- My Inventory: stock levels, report daily usage
+- QR Analytics: daily scans, peak hours, device breakdown, where cups traveled
+- Cafe Profile: read-only details, traffic metrics, operating hours
 
-### feidup-crm 🟡 Early stage
-- Has pages for: Dashboard, Leads, Pipeline, Advertisers, Restaurants, Campaigns, Inventory, Analytics, Users
-- Auth flow with login/forgot/reset password
-- Needs: actual data integration, polish, role-based views
+**Advertiser Portal** (advertiser role → advertiser@feidup.com):
+- Dashboard: impressions, scan rate, campaign performance chart
+- QR Analytics: per-campaign drill-down, device/suburb breakdown, conversion funnel
+- Recommended Cafes: AI-matched with scores and reasoning
 
-### feidup-admin 🔴 Skeleton only
+### Test Accounts (password: `password123`)
+
+| Email | Role | Linked to |
+|-------|------|-----------|
+| admin@feidup.com | admin | — |
+| sales@feidup.com | sales | — |
+| ops@feidup.com | operations | — |
+| advertiser@feidup.com | advertiser | FitLife Brisbane |
+| restaurant@feidup.com | restaurant | Central Perk Coffee |
 
 ## Development Commands
 
 ```bash
 # Website
-cd feidup-website && npm run dev       # Next.js dev server
-cd feidup-website && vercel --prod     # Deploy to production
+cd feidup-website && npm run dev       # Next.js dev (port 3000)
 
-# Backend
-cd feidup-location-backend && npm run dev        # Express dev server (tsx)
+# Backend (local dev with SQLite)
+# NOTE: Change prisma schema provider back to "sqlite" for local dev
+cd feidup-location-backend && npm run dev        # Express dev (port 3002)
 cd feidup-location-backend && npx prisma studio   # DB browser
-cd feidup-location-backend && npx prisma db push  # Apply schema changes
-cd feidup-location-backend && npx prisma db seed  # Seed test data
+cd feidup-location-backend && npx prisma db push  # Apply schema
+cd feidup-location-backend && npx tsx prisma/seed.ts  # Seed data
 
 # CRM
-cd feidup-crm && npm run dev           # Vite dev server
+cd feidup-crm && npm run dev           # Vite dev (port 5174, proxies /api → localhost:3002)
+
+# Stress tests
+cd feidup-location-backend && npx tsx tests/enrichment-stress-test.ts
+
+# Deploy
+cd feidup-crm && vercel --yes --scope kunw4rs-projects --prod  # CRM to Vercel
+# Backend auto-deploys on Render when pushing to branch
 ```
+
+### Local dev note
+The Prisma schema is currently set to `postgresql` for production. For local dev with SQLite, change `prisma/schema.prisma`:
+```
+provider = "sqlite"  // change from "postgresql"
+```
+And use `DATABASE_URL="file:./dev.db"` in `.env`.
 
 ## Git Workflow
 
-- `main` — stable branch
-- `client-side-interface` — current active development branch
-- GitHub: https://github.com/shubhgupta2510/feidup
+- `main` — stable, deployed. Both website (Vercel) and CRM (Vercel) deploy from here
+- `client-side-interface` — development branch, merged to main. Render backend deploys from here
+- GitHub: https://github.com/FeidUp/feidup (org) / https://github.com/shubhgupta2510/feidup (redirects)
 
 ## Key Design Decisions
 
-- **Co-branding, not takeover**: Cafe branding is always primary. Advertiser integration is subtle.
-- **Two QR codes per cup**: One for cafe, one for advertiser. Both trackable.
-- **Matching is the moat**: The ML engine that recommends cafes based on demographics, trends, and performance data is the core competitive advantage.
-- **Brisbane first**: All suburb/demographic data is Brisbane-focused initially.
-- **Dark theme default**: Website and CRM use dark charcoal with red accent, cream light mode available.
+- **Co-branding, not takeover**: Cafe branding is always primary
+- **Two QR codes per cup**: One for cafe, one for advertiser. Both trackable
+- **Matching is the moat**: AI engine using real ABS Census demographics + Google Places data
+- **SEQ first**: Brisbane, Gold Coast, Sunshine Coast, Logan, Ipswich, Redlands
+- **Dark theme default**: Website and CRM use dark charcoal with red accent (#dc2626)
+- **Three portals, one app**: Admin, cafe, and advertiser experiences in a single React app with role-based routing
+- **PostgreSQL in prod**: SQLite for local dev, PostgreSQL on Render for production
+- **967 real cafes**: Discovered via Google Places API, stored with ratings and foot traffic estimates
+
+## What's Next
+
+- [ ] Get repo visibility sorted (public org or personal account) so Vercel auto-deploys work
+- [ ] Set up `app.feidup.com` → CRM and `api.feidup.com` → Render backend
+- [ ] Import more cafes from Google Places across all SEQ suburbs
+- [ ] Build out NFC cup support (premium tier)
+- [ ] A/B testing cup designs
+- [ ] PDF report exports for advertisers
+- [ ] Loyalty rewards for scanners
