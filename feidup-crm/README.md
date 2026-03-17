@@ -1,6 +1,6 @@
 # FeidUp CRM
 
-A full-featured Customer Relationship Management system for FeidUp — a location-based advertising platform that turns café packaging (cups, bags, napkins) into hyper-local advertising for businesses in Brisbane.
+A full-featured Customer Relationship Management system for FeidUp — a location-based advertising platform that turns restaurant packaging (cups, bags, napkins) into hyper-local advertising for businesses in Brisbane.
 
 Built with **React 19 + TypeScript + Vite + Tailwind CSS v4**, powered by an **Express + Prisma + SQLite** backend.
 
