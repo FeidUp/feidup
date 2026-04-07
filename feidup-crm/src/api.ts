@@ -1,5 +1,69 @@
 const API_BASE = (import.meta.env.VITE_API_URL || '') + '/api';
 
+type RawRecommendation = Recommendation & {
+  cafeId?: string;
+  name?: string;
+  address?: string;
+  suburb?: string;
+  postcode?: string;
+  city?: string;
+  location?: { lat: number; lng: number };
+  lat?: number;
+  lng?: number;
+  avgDailyFootTraffic?: number;
+  avgDailyOrders?: number;
+  packagingVolume?: number;
+  tags?: string | string[];
+  isActive?: boolean;
+  createdAt?: string;
+};
+
+function toNumber(value: unknown, fallback = 0): number {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function normalizeRecommendation(rec: RawRecommendation): Recommendation {
+  if (rec.cafe) {
+    return {
+      ...rec,
+      matchScore: toNumber(rec.matchScore),
+      scoreBreakdown: rec.scoreBreakdown || {},
+      mlScore: rec.mlScore == null ? null : toNumber(rec.mlScore),
+      mlScanRate: rec.mlScanRate == null ? null : toNumber(rec.mlScanRate),
+      ruleBasedScore: rec.ruleBasedScore == null ? null : toNumber(rec.ruleBasedScore),
+    };
+  }
+
+  const fallbackId = rec.cafeId || `${rec.name || 'cafe'}-${rec.suburb || 'unknown'}`;
+  return {
+    cafe: {
+      id: fallbackId,
+      name: rec.name || 'Unknown Cafe',
+      address: rec.address || '',
+      suburb: rec.suburb || '',
+      postcode: rec.postcode || '',
+      city: rec.city || 'Brisbane',
+      location: rec.location || (rec.lat != null && rec.lng != null ? { lat: rec.lat, lng: rec.lng } : undefined),
+      lat: rec.lat,
+      lng: rec.lng,
+      avgDailyFootTraffic: toNumber(rec.avgDailyFootTraffic, 0),
+      avgDailyOrders: toNumber(rec.avgDailyOrders, 0),
+      packagingVolume: toNumber(rec.packagingVolume, 0),
+      tags: rec.tags || [],
+      isActive: rec.isActive ?? true,
+      createdAt: rec.createdAt || new Date().toISOString(),
+    },
+    matchScore: toNumber(rec.matchScore),
+    scoreBreakdown: rec.scoreBreakdown || {},
+    matchReason: rec.matchReason || '',
+    mlScore: rec.mlScore == null ? null : toNumber(rec.mlScore),
+    mlScanRate: rec.mlScanRate == null ? null : toNumber(rec.mlScanRate),
+    ruleBasedScore: rec.ruleBasedScore == null ? null : toNumber(rec.ruleBasedScore),
+    isMLEnhanced: Boolean(rec.isMLEnhanced),
+  };
+}
+
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = localStorage.getItem('accessToken');
   const headers: Record<string, string> = {
@@ -124,7 +188,14 @@ export const api = {
 
   recommendations: {
     get: (advertiserId: string) =>
-      request<{ success: boolean; data: Recommendation[] }>(`/recommendations?advertiser_id=${advertiserId}`),
+      request<{ success: boolean; data: RawRecommendation[] }>(`/ml/recommendations/${advertiserId}`).then((res) => ({
+        ...res,
+        data: Array.isArray(res.data) ? res.data.map(normalizeRecommendation) : [],
+      })),
+    explain: (advertiserId: string, cafeId: string) =>
+      request<{ success: boolean; data: any }>(`/ml/explain/${advertiserId}/${cafeId}`),
+    mlStatus: () =>
+      request<{ success: boolean; data: { mlAvailable: boolean; message: string } }>('/ml/status'),
   },
 
   inventory: {
@@ -348,6 +419,11 @@ export interface Recommendation {
   matchScore: number;
   scoreBreakdown: Record<string, number>;
   matchReason: string;
+  // ML-enhanced fields
+  mlScore?: number | null;
+  mlScanRate?: number | null;
+  ruleBasedScore?: number | null;
+  isMLEnhanced?: boolean;
 }
 
 export interface PackagingBatch {

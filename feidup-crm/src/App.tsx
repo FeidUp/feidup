@@ -3,6 +3,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { AuthProvider, useAuth } from './AuthContext';
 import { ThemeProvider } from './ThemeContext';
 import { Layout } from './components/Layout';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { LoginPage } from './pages/LoginPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/ResetPasswordPage';
@@ -37,31 +38,33 @@ export default function App() {
     <ThemeProvider>
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-            <Route index element={<DashboardPage />} />
-            <Route path="leads" element={<ProtectedRoute roles={['admin','sales','operations']}><LeadsPage /></ProtectedRoute>} />
-            <Route path="leads/:id" element={<ProtectedRoute roles={['admin','sales','operations']}><LeadDetailPage /></ProtectedRoute>} />
-            <Route path="pipeline" element={<ProtectedRoute roles={['admin','sales','operations']}><PipelinePage /></ProtectedRoute>} />
-            <Route path="advertisers" element={<AdvertisersPage />} />
-            <Route path="restaurants" element={<RestaurantsPage />} />
-            <Route path="campaigns" element={<CampaignsPage />} />
-            <Route path="map" element={<ProtectedRoute roles={['admin','sales','operations']}><MapPage /></ProtectedRoute>} />
-            <Route path="inventory" element={<ProtectedRoute roles={['admin','operations']}><InventoryPage /></ProtectedRoute>} />
-            <Route path="analytics" element={<AnalyticsPage />} />
-            <Route path="users" element={<ProtectedRoute roles={['admin']}><UsersPage /></ProtectedRoute>} />
-            {/* Cafe portal routes */}
-            <Route path="cafe/inventory" element={<ProtectedRoute roles={['restaurant']}><CafeInventoryPage /></ProtectedRoute>} />
-            <Route path="cafe/qr-analytics" element={<ProtectedRoute roles={['restaurant']}><CafeQRAnalyticsPage /></ProtectedRoute>} />
-            <Route path="cafe/profile" element={<ProtectedRoute roles={['restaurant']}><CafeProfilePage /></ProtectedRoute>} />
-            {/* Advertiser portal routes */}
-            <Route path="advertiser/analytics" element={<ProtectedRoute roles={['advertiser']}><AdvertiserAnalyticsPage /></ProtectedRoute>} />
-            <Route path="advertiser/recommendations" element={<ProtectedRoute roles={['advertiser']}><AdvertiserRecommendationsPage /></ProtectedRoute>} />
-          </Route>
-        </Routes>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+              <Route index element={<DashboardPage />} />
+              <Route path="leads" element={<ProtectedRoute roles={['admin','sales','operations']}><LeadsPage /></ProtectedRoute>} />
+              <Route path="leads/:id" element={<ProtectedRoute roles={['admin','sales','operations']}><LeadDetailPage /></ProtectedRoute>} />
+              <Route path="pipeline" element={<ProtectedRoute roles={['admin','sales','operations']}><PipelinePage /></ProtectedRoute>} />
+              <Route path="advertisers" element={<AdvertisersPage />} />
+              <Route path="restaurants" element={<RestaurantsPage />} />
+              <Route path="campaigns" element={<CampaignsPage />} />
+              <Route path="map" element={<ProtectedRoute roles={['admin','sales','operations']}><MapPage /></ProtectedRoute>} />
+              <Route path="inventory" element={<ProtectedRoute roles={['admin','operations']}><InventoryPage /></ProtectedRoute>} />
+              <Route path="analytics" element={<AnalyticsPage />} />
+              <Route path="users" element={<ProtectedRoute roles={['admin']}><UsersPage /></ProtectedRoute>} />
+              {/* Cafe portal routes */}
+              <Route path="cafe/inventory" element={<ProtectedRoute roles={['restaurant']}><CafeInventoryPage /></ProtectedRoute>} />
+              <Route path="cafe/qr-analytics" element={<ProtectedRoute roles={['restaurant']}><CafeQRAnalyticsPage /></ProtectedRoute>} />
+              <Route path="cafe/profile" element={<ProtectedRoute roles={['restaurant']}><CafeProfilePage /></ProtectedRoute>} />
+              {/* Advertiser portal routes */}
+              <Route path="advertiser/analytics" element={<ProtectedRoute roles={['advertiser']}><AdvertiserAnalyticsPage /></ProtectedRoute>} />
+              <Route path="advertiser/recommendations" element={<ProtectedRoute roles={['advertiser']}><AdvertiserRecommendationsPage /></ProtectedRoute>} />
+            </Route>
+          </Routes>
+        </ErrorBoundary>
       </AuthProvider>
       <Analytics />
     </BrowserRouter>

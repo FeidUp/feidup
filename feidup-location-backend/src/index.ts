@@ -19,6 +19,7 @@ import { analyticsRoutes } from './routes/analytics.routes.js';
 import { assetRoutes } from './routes/asset.routes.js';
 import { qrRedirectRoutes, qrAnalyticsRoutes } from './routes/qr.routes.js';
 import { enrichmentRoutes } from './routes/enrichment.routes.js';
+import mlRoutes from './routes/ml.routes.js';
 
 const app = express();
 const PORT = config.port;
@@ -47,6 +48,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/advertisers', advertiserRoutes);
 app.use('/api/cafes', cafeRoutes);
 app.use('/api/recommendations', recommendationRoutes);
+app.use('/api/ml', mlRoutes);
 app.use('/api/campaigns', campaignRoutes);
 app.use('/api/leads', leadRoutes);
 app.use('/api/inventory', inventoryRoutes);

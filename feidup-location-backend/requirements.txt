@@ -1,0 +1,20 @@
+# FeidUp ML Service - Python Dependencies
+# Machine learning for cafe-advertiser matching
+
+# Core ML
+scikit-learn==1.4.2
+numpy==1.26.4
+pandas==2.2.2
+
+# Model persistence
+joblib==1.4.2
+
+# Explainability (optional but recommended)
+shap==0.45.0
+
+# API integration
+flask==3.0.3
+flask-cors==4.0.1
+
+# Utilities
+python-dotenv==1.0.1
