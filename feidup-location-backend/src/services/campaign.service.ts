@@ -7,6 +7,19 @@ import { recommendationService } from './recommendation.service.js';
 import type { CreateCampaignInput, CampaignResponse, PlacementSummary } from '../types/index.js';
 
 export class CampaignService {
+  private parseOptionalDate(value: unknown, fieldName: string): Date | undefined {
+    if (value === undefined || value === null || value === '') {
+      return undefined;
+    }
+
+    const parsed = value instanceof Date ? value : new Date(String(value));
+    if (Number.isNaN(parsed.getTime())) {
+      throw new ValidationError(`${fieldName} must be a valid date`);
+    }
+
+    return parsed;
+  }
+
   /**
    * Create a new campaign with auto-selected or specified cafes
    */
@@ -26,6 +39,13 @@ export class CampaignService {
 
     if (!advertiser) {
       throw new NotFoundError('Advertiser');
+    }
+
+    const startDate = this.parseOptionalDate(input.startDate, 'startDate');
+    const endDate = this.parseOptionalDate(input.endDate, 'endDate');
+
+    if (startDate && endDate && endDate < startDate) {
+      throw new ValidationError('endDate must be after startDate');
     }
 
     // Get cafe placements
@@ -78,9 +98,9 @@ export class CampaignService {
 
     // Calculate campaign duration in days
     let durationDays = 30; // Default
-    if (input.startDate && input.endDate) {
+    if (startDate && endDate) {
       durationDays = Math.ceil(
-        (new Date(input.endDate).getTime() - new Date(input.startDate).getTime()) /
+        (endDate.getTime() - startDate.getTime()) /
           (1000 * 60 * 60 * 24)
       );
     }
@@ -96,8 +116,8 @@ export class CampaignService {
       data: {
         advertiserId: input.advertiserId,
         name: input.name.trim(),
-        startDate: input.startDate,
-        endDate: input.endDate,
+        startDate,
+        endDate,
         status: 'draft',
         targetSuburbs: JSON.stringify(input.targetSuburbs || advertiserSuburbs),
         targetPostcodes: JSON.stringify(input.targetPostcodes || advertiserPostcodes),
@@ -291,6 +311,19 @@ export class CampaignService {
       status: placement.status,
       estimatedDailyImpressions: placement.estimatedDailyImpressions,
     };
+  }
+
+  /**
+   * Remove (unattach) a placement from a campaign
+   */
+  async removePlacement(placementId: string): Promise<void> {
+    const existing = await prisma.placement.findUnique({ where: { id: placementId } });
+
+    if (!existing) {
+      throw new NotFoundError('Placement');
+    }
+
+    await prisma.placement.delete({ where: { id: placementId } });
   }
 
   /**

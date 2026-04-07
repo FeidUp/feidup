@@ -1,7 +1,7 @@
 // Advertiser API Routes
 import { Router, Request, Response } from 'express';
 import { advertiserService } from '../services/advertiser.service.js';
-import { authenticate, authorize, AuthRequest } from '../middleware/auth.js';
+import { authenticate, authorize } from '../middleware/auth.js';
 import { ScopedRequest, scopeToAdvertiser } from '../middleware/scopeAuth.js';
 import { prisma } from '../lib/prisma.js';
 import type { CreateAdvertiserInput } from '../types/index.js';
@@ -36,13 +36,48 @@ router.get('/me', authenticate, authorize('advertiser'), scopeToAdvertiser, asyn
     where: { qrCode: { advertiserId } },
   });
 
+  let targetAudience: Record<string, unknown> | null = null;
+  if (advertiser.targetAudience) {
+    try {
+      targetAudience = JSON.parse(advertiser.targetAudience) as Record<string, unknown>;
+    } catch {
+      targetAudience = null;
+    }
+  }
+
   res.json({
     success: true,
     data: {
       ...advertiser,
+      targetAudience,
       totalImpressions,
       totalScans,
     },
+  });
+});
+
+/**
+ * PATCH /api/advertisers/me/target-audience
+ * Allows advertiser users to update their own target audience demographics
+ */
+router.patch('/me/target-audience', authenticate, authorize('advertiser'), scopeToAdvertiser, async (req: ScopedRequest, res: Response) => {
+  const advertiserId = req.scopedAdvertiserId!;
+  const targetAudience = req.body?.targetAudience;
+
+  if (!targetAudience || typeof targetAudience !== 'object') {
+    return res.status(400).json({
+      success: false,
+      error: 'targetAudience object is required',
+    });
+  }
+
+  const updated = await advertiserService.update(advertiserId, {
+    targetAudience,
+  });
+
+  res.json({
+    success: true,
+    data: updated,
   });
 });
 

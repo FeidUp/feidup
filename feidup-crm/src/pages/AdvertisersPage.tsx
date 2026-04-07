@@ -74,6 +74,23 @@ export function AdvertisersPage() {
     }
   };
 
+  const formatAudienceSummary = (adv: Advertiser): string[] => {
+    const items: string[] = [];
+    const audience = adv.targetAudience;
+
+    if (audience?.ageRange) {
+      items.push(`Age ${audience.ageRange.min}-${audience.ageRange.max}`);
+    }
+    if (audience?.incomeLevel) {
+      items.push(`Income ${audience.incomeLevel}`);
+    }
+    if (audience?.interests?.length) {
+      items.push(`${audience.interests.length} interests`);
+    }
+
+    return items;
+  };
+
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
@@ -125,6 +142,7 @@ export function AdvertisersPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map(adv => {
             const suburbs = parseSuburbs(adv.targetSuburbs);
+            const audienceSummary = formatAudienceSummary(adv);
             return (
               <div key={adv.id} className="glass-card rounded-2xl p-5 hover:bg-white/[0.02] transition-all duration-200 group">
                 <div className="flex items-start justify-between mb-3">
@@ -176,6 +194,19 @@ export function AdvertisersPage() {
                       {suburbs.length > 4 && (
                         <span className="px-2 py-0.5 bg-white/[0.04] text-gray-500 rounded-full text-xs">+{suburbs.length - 4} more</span>
                       )}
+                    </div>
+                  </div>
+                )}
+
+                {audienceSummary.length > 0 && (
+                  <div className="mb-3">
+                    <div className="flex items-center gap-1 text-xs text-gray-500 mb-1.5">
+                      <Target size={10} /> Target Demographics
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {audienceSummary.map((item) => (
+                        <span key={item} className="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded-full text-xs">{item}</span>
+                      ))}
                     </div>
                   </div>
                 )}

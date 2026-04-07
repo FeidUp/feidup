@@ -1,33 +1,40 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api';
-import type { AdvertiserPortalData, Recommendation } from '../api';
-import { Sparkles, MapPin, Users, TrendingUp, Brain, Activity } from 'lucide-react';
+import type { AdvertiserPortalData, TargetAudience } from '../api';
+import { Save, SlidersHorizontal, Users, CheckCircle2 } from 'lucide-react';
 
 export function AdvertiserRecommendationsPage() {
   const [advertiser, setAdvertiser] = useState<AdvertiserPortalData | null>(null);
-  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
-  const [mlAvailable, setMlAvailable] = useState<boolean>(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState('');
+  const [form, setForm] = useState<TargetAudience>({
+    ageRange: { min: 22, max: 40 },
+    incomeLevel: 'medium',
+    interests: [],
+  });
+  const [interestInput, setInterestInput] = useState('');
+
+  const incomeOptions: Array<NonNullable<TargetAudience['incomeLevel']>> = ['low', 'low-medium', 'medium', 'medium-high', 'high'];
 
   useEffect(() => {
     const load = async () => {
       try {
-        // Check ML status
-        try {
-          const mlStatusRes = await api.recommendations.mlStatus();
-          setMlAvailable(mlStatusRes.data.mlAvailable);
-        } catch (e) {
-          console.warn('ML status check failed, assuming unavailable');
-        }
-
         const advRes = await api.advertiserPortal.me();
         setAdvertiser(advRes.data);
-        if (advRes.data.id) {
-          const recRes = await api.recommendations.get(advRes.data.id);
-          setRecommendations(recRes.data || []);
+        if (advRes.data.targetAudience) {
+          setForm({
+            ageRange: {
+              min: advRes.data.targetAudience.ageRange?.min ?? 22,
+              max: advRes.data.targetAudience.ageRange?.max ?? 40,
+            },
+            incomeLevel: advRes.data.targetAudience.incomeLevel ?? 'medium',
+            interests: advRes.data.targetAudience.interests ?? [],
+          });
         }
       } catch (err) {
-        console.error('Failed to load recommendations:', err);
+        console.error('Failed to load advertiser preferences:', err);
       } finally {
         setLoading(false);
       }
@@ -43,114 +50,178 @@ export function AdvertiserRecommendationsPage() {
     return <div className="p-8 text-gray-500">No advertiser linked to your account.</div>;
   }
 
+  const addInterest = () => {
+    const value = interestInput.trim();
+    if (!value) return;
+    if ((form.interests || []).includes(value)) {
+      setInterestInput('');
+      return;
+    }
+    setForm((prev) => ({ ...prev, interests: [...(prev.interests || []), value] }));
+    setInterestInput('');
+  };
+
+  const removeInterest = (interest: string) => {
+    setForm((prev) => ({
+      ...prev,
+      interests: (prev.interests || []).filter((item) => item !== interest),
+    }));
+  };
+
+  const handleSave = async () => {
+    setError('');
+    setSaved(false);
+
+    const min = form.ageRange?.min ?? 18;
+    const max = form.ageRange?.max ?? 65;
+    if (min < 16 || max > 85 || min >= max) {
+      setError('Please choose a valid age range (min must be lower than max).');
+      return;
+    }
+
+    try {
+      setSaving(true);
+      await api.advertiserPortal.updateTargetAudience({
+        ageRange: { min, max },
+        incomeLevel: form.incomeLevel,
+        interests: form.interests || [],
+      });
+      setSaved(true);
+      const latest = await api.advertiserPortal.me();
+      setAdvertiser(latest.data);
+    } catch (err: any) {
+      setError(err.message || 'Failed to save demographics preferences.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <div className="p-8">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-            <Sparkles size={24} className="text-yellow-500" /> Recommended Cafes
+            <SlidersHorizontal size={24} className="text-blue-400" /> Audience Preferences
           </h1>
-          <p className="text-gray-500 text-sm mt-1">AI-matched cafes based on your target audience and location preferences</p>
+          <p className="text-gray-500 text-sm mt-1">Choose your target demographics. FeidUp staff use this to pair your campaigns with the best cafes.</p>
         </div>
-        {mlAvailable && (
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 text-sm">
-            <Brain size={14} />
-            <span className="font-medium">ML Enhanced</span>
-          </div>
-        )}
       </div>
 
-      {recommendations.length === 0 ? (
-        <div className="glass-card rounded-2xl p-12 text-center">
-          <Sparkles className="mx-auto mb-3 text-gray-600" size={32} />
-          <p className="text-gray-500">No recommendations available yet.</p>
-          <p className="text-gray-600 text-sm mt-1">The matching engine needs more data to provide recommendations.</p>
+      <div className="glass-card rounded-2xl p-6 max-w-3xl">
+        <div className="flex items-center gap-2 text-sm text-gray-400 mb-5">
+          <Users size={14} /> {advertiser.businessName}
         </div>
-      ) : (
-        <div className="space-y-4">
-          {recommendations.map((rec, idx) => {
-            const scoreColor = rec.matchScore >= 80 ? 'text-green-400 bg-green-500/10' :
-                              rec.matchScore >= 60 ? 'text-yellow-400 bg-yellow-500/10' :
-                              'text-gray-400 bg-gray-500/10';
-            return (
-              <div key={rec.cafe.id} className="glass-card rounded-2xl p-5">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-sm font-bold text-gray-600 w-6">#{idx + 1}</span>
-                      <h3 className="font-semibold text-lg text-white">{rec.cafe.name}</h3>
-                      <span className={`px-2.5 py-0.5 rounded-full text-sm font-bold ${scoreColor}`}>
-                        {rec.matchScore}%
-                      </span>
-                      {rec.isMLEnhanced && (
-                        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-purple-500/10 text-purple-400 flex items-center gap-1">
-                          <Brain size={10} /> ML
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-gray-400 text-sm ml-9 mb-3 flex items-center gap-1">
-                      <MapPin size={12} /> {rec.cafe.address}, {rec.cafe.suburb} {rec.cafe.postcode}
-                    </p>
-                    <p className="text-gray-500 text-sm ml-9 mb-3">{rec.matchReason}</p>
 
-                    {/* ML Prediction (if available) */}
-                    {rec.mlScanRate && (
-                      <div className="ml-9 mb-3 flex items-center gap-2">
-                        <Activity size={12} className="text-blue-400" />
-                        <span className="text-xs text-gray-500">
-                          Predicted: <span className="font-semibold text-blue-400">{rec.mlScanRate.toFixed(1)}</span> scans/100 impressions
-                        </span>
-                        <span className="text-xs text-gray-600">
-                          ({((rec.mlScanRate * rec.cafe.packagingVolume) / 100).toFixed(0)} scans/day estimated)
-                        </span>
-                      </div>
-                    )}
+        {error && <div className="mb-4 rounded-xl bg-red-500/10 text-red-400 px-3 py-2 text-sm">{error}</div>}
+        {saved && (
+          <div className="mb-4 rounded-xl bg-emerald-500/10 text-emerald-400 px-3 py-2 text-sm flex items-center gap-2">
+            <CheckCircle2 size={14} /> Saved. Your FeidUp admin team can now use these preferences for matching.
+          </div>
+        )}
 
-                    {/* Score breakdown */}
-                    {rec.scoreBreakdown && (
-                      <div className="ml-9 flex gap-4">
-                        {Object.entries(rec.scoreBreakdown).map(([key, value]) => (
-                          <div key={key} className="flex items-center gap-1.5 text-xs">
-                            <span className="text-gray-600 capitalize">{key.replace(/Score$/, '')}:</span>
-                            <div className="w-16 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                              <div className="h-full bg-red-500 rounded-full" style={{ width: `${value}%` }} />
-                            </div>
-                            <span className="font-medium text-gray-400">{value}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* ML vs Rule-based scores (if both available) */}
-                    {rec.mlScore !== null && rec.ruleBasedScore !== null && (
-                      <div className="ml-9 mt-2 flex gap-4 text-xs">
-                        <div className="text-gray-600">
-                          ML: <span className="font-medium text-purple-400">{rec.mlScore?.toFixed(0)}</span>
-                        </div>
-                        <div className="text-gray-600">
-                          Rule-based: <span className="font-medium text-blue-400">{rec.ruleBasedScore?.toFixed(0)}</span>
-                        </div>
-                        <div className="text-gray-600">
-                          Hybrid: <span className="font-medium text-green-400">{rec.matchScore}</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="text-right text-sm space-y-1 ml-6">
-                    <div className="flex items-center gap-1 text-gray-500">
-                      <Users size={12} /> {rec.cafe.avgDailyFootTraffic}/day traffic
-                    </div>
-                    <div className="flex items-center gap-1 text-gray-500">
-                      <TrendingUp size={12} /> {rec.cafe.packagingVolume} cups/day
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block text-xs font-medium text-gray-400 mb-1">Target Age Min</label>
+            <input
+              type="number"
+              min={16}
+              max={85}
+              value={form.ageRange?.min ?? 22}
+              onChange={(e) => setForm((prev) => ({
+                ...prev,
+                ageRange: {
+                  min: Number(e.target.value),
+                  max: prev.ageRange?.max ?? 40,
+                },
+              }))}
+              className="w-full px-3 py-2 rounded-xl text-sm text-white focus:ring-2 focus:ring-red-500 outline-none"
+              style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)' }}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-400 mb-1">Target Age Max</label>
+            <input
+              type="number"
+              min={16}
+              max={85}
+              value={form.ageRange?.max ?? 40}
+              onChange={(e) => setForm((prev) => ({
+                ...prev,
+                ageRange: {
+                  min: prev.ageRange?.min ?? 22,
+                  max: Number(e.target.value),
+                },
+              }))}
+              className="w-full px-3 py-2 rounded-xl text-sm text-white focus:ring-2 focus:ring-red-500 outline-none"
+              style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)' }}
+            />
+          </div>
         </div>
-      )}
+
+        <div className="mb-4">
+          <label className="block text-xs font-medium text-gray-400 mb-1">Target Income Level</label>
+          <select
+            value={form.incomeLevel || 'medium'}
+            onChange={(e) => setForm((prev) => ({ ...prev, incomeLevel: e.target.value as TargetAudience['incomeLevel'] }))}
+            className="w-full px-3 py-2 rounded-xl text-sm text-white focus:ring-2 focus:ring-red-500 outline-none"
+            style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)' }}
+          >
+            {incomeOptions.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mb-5">
+          <label className="block text-xs font-medium text-gray-400 mb-1">Interests</label>
+          <div className="flex gap-2 mb-2">
+            <input
+              value={interestInput}
+              onChange={(e) => setInterestInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  addInterest();
+                }
+              }}
+              placeholder="e.g. fitness, healthy food, family"
+              className="flex-1 px-3 py-2 rounded-xl text-sm text-white focus:ring-2 focus:ring-red-500 outline-none"
+              style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)' }}
+            />
+            <button
+              type="button"
+              onClick={addInterest}
+              className="px-3 py-2 rounded-xl text-sm bg-white/[0.06] text-gray-300 hover:bg-white/[0.1] transition-colors"
+            >
+              Add
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {(form.interests || []).map((interest) => (
+              <button
+                key={interest}
+                type="button"
+                onClick={() => removeInterest(interest)}
+                className="px-2.5 py-1 rounded-full text-xs bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors"
+                title="Remove interest"
+              >
+                {interest}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={saving}
+            className="flex items-center gap-2 bg-red-600 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-red-700 disabled:opacity-60 transition-colors"
+          >
+            <Save size={14} /> {saving ? 'Saving...' : 'Save Demographics'}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

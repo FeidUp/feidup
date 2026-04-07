@@ -28,6 +28,18 @@ interface MLPrediction {
   ml_score: number;
 }
 
+interface MLHealthResponse {
+  model_loaded: boolean;
+}
+
+interface MLBatchPrediction extends MLPrediction {
+  cafe_id: string;
+}
+
+interface MLBatchPredictionResponse {
+  predictions: MLBatchPrediction[];
+}
+
 interface MLExplanation {
   predicted_scan_rate: number;
   top_features: Array<{
@@ -46,7 +58,7 @@ export class MLMatchingService {
     if (!ML_ENABLED) return false;
     
     try {
-      const response = await axios.get(`${ML_API_URL}/health`, { timeout: 2000 });
+      const response = await axios.get<MLHealthResponse>(`${ML_API_URL}/health`, { timeout: 2000 });
       return response.data.model_loaded === true;
     } catch (error) {
       console.warn('ML service not available:', error instanceof Error ? error.message : 'Unknown error');
@@ -63,7 +75,7 @@ export class MLMatchingService {
     suburbData?: SuburbDemographics | null
   ): Promise<MLPrediction | null> {
     try {
-      const response = await axios.post(
+      const response = await axios.post<MLPrediction>(
         `${ML_API_URL}/predict`,
         {
           cafe: {
@@ -103,7 +115,7 @@ export class MLMatchingService {
     pairs: Array<{ cafe: any; advertiser: any; suburbData?: SuburbDemographics | null }>
   ): Promise<Map<string, MLPrediction>> {
     try {
-      const response = await axios.post(
+      const response = await axios.post<MLBatchPredictionResponse>(
         `${ML_API_URL}/predict`,
         {
           pairs: pairs.map((p) => ({
@@ -387,7 +399,7 @@ export class MLMatchingService {
 
     if (mlAvailable) {
       try {
-        const response = await axios.post(
+        const response = await axios.post<MLExplanation>(
           `${ML_API_URL}/explain`,
           {
             cafe: {

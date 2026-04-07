@@ -27,7 +27,7 @@ const navItems = [
   { to: '/cafe/profile', icon: Coffee, label: 'Cafe Profile', roles: ['restaurant'] },
   // Advertiser portal
   { to: '/advertiser/analytics', icon: QrCode, label: 'QR Analytics', roles: ['advertiser'], section: 'My Campaigns' },
-  { to: '/advertiser/recommendations', icon: Sparkles, label: 'Recommended Cafes', roles: ['advertiser'] },
+  { to: '/advertiser/recommendations', icon: Sparkles, label: 'Audience Preferences', roles: ['advertiser'] },
 ];
 
 export function Layout() {

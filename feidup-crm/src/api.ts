@@ -184,6 +184,17 @@ export const api = {
     get: (id: string) => request<{ success: boolean; data: Campaign }>(`/campaigns/${id}`),
     create: (data: Record<string, unknown>) =>
       request<{ success: boolean; data: Campaign }>('/campaigns', { method: 'POST', body: JSON.stringify(data) }),
+    update: (id: string, data: Record<string, unknown>) =>
+      request<{ success: boolean; data: Campaign }>(`/campaigns/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+    updateStatus: (id: string, status: string) =>
+      request<{ success: boolean; data: Campaign }>(`/campaigns/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) }),
+    addPlacement: (id: string, cafeId: string) =>
+      request<{ success: boolean; data: Placement }>(`/campaigns/${id}/placements`, { method: 'POST', body: JSON.stringify({ cafeId }) }),
+    updatePlacementStatus: (placementId: string, status: string) =>
+      request<{ success: boolean; data: Placement }>(`/campaigns/placements/${placementId}/status`, { method: 'PATCH', body: JSON.stringify({ status }) }),
+    removePlacement: (placementId: string) =>
+      request<{ success: boolean; message: string }>(`/campaigns/placements/${placementId}`, { method: 'DELETE' }),
+    delete: (id: string) => request<{ success: boolean }>(`/campaigns/${id}`, { method: 'DELETE' }),
   },
 
   recommendations: {
@@ -258,6 +269,11 @@ export const api = {
 
   advertiserPortal: {
     me: () => request<{ success: boolean; data: AdvertiserPortalData }>('/advertisers/me'),
+    updateTargetAudience: (targetAudience: TargetAudience) =>
+      request<{ success: boolean; data: Advertiser }>(`/advertisers/me/target-audience`, {
+        method: 'PATCH',
+        body: JSON.stringify({ targetAudience }),
+      }),
     campaignQRAnalytics: (campaignId: string) => request<{ success: boolean; data: QRCampaignAnalytics }>(`/analytics/qr/campaign/${campaignId}`),
   },
 };
@@ -348,6 +364,15 @@ export interface Pagination {
   total: number;
 }
 
+export interface TargetAudience {
+  ageRange?: {
+    min: number;
+    max: number;
+  };
+  interests?: string[];
+  incomeLevel?: 'low' | 'medium' | 'low-medium' | 'medium-high' | 'high';
+}
+
 export interface Advertiser {
   id: string;
   businessName: string;
@@ -355,6 +380,7 @@ export interface Advertiser {
   targetSuburbs: string | string[];
   targetPostcodes: string | string[];
   targetRadiusKm?: number;
+  targetAudience?: TargetAudience | null;
   campaignGoal: string;
   contactEmail?: string;
   contactPhone?: string;
@@ -611,6 +637,7 @@ export interface AdvertiserPortalData {
   industry: string;
   city: string;
   isActive: boolean;
+  targetAudience?: TargetAudience | null;
   contactEmail?: string;
   totalImpressions: number;
   totalScans: number;

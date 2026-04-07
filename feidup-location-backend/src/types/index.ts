@@ -128,6 +128,12 @@ export interface CafeRecommendation {
   
   // Tags for context
   tags: string[];
+
+  // Optional ML-enhanced fields
+  mlScore?: number | null;
+  mlScanRate?: number | null;
+  ruleBasedScore?: number | null;
+  isMLEnhanced?: boolean;
 }
 
 export interface RecommendationResponse {
@@ -137,6 +143,7 @@ export interface RecommendationResponse {
   generatedAt: Date;
   recommendations: CafeRecommendation[];
   totalCafesEvaluated: number;
+  mlEnabled?: boolean;
 }
 
 // =============================================================================
