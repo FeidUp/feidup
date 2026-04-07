@@ -16,10 +16,36 @@ function InternalDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([api.analytics.overview(), api.leads.pipeline()])
-      .then(([ov, pl]) => { setOverview(ov.data); setPipeline(pl.data); })
-      .catch(err => console.error('Failed to load dashboard:', err))
-      .finally(() => setLoading(false));
+    let mounted = true;
+
+    const loadDashboard = async () => {
+      const [overviewRes, pipelineRes] = await Promise.allSettled([
+        api.analytics.overview(),
+        api.leads.pipeline(),
+      ]);
+
+      if (!mounted) return;
+
+      if (overviewRes.status === 'fulfilled') {
+        setOverview(overviewRes.value.data);
+      }
+
+      if (pipelineRes.status === 'fulfilled') {
+        setPipeline(pipelineRes.value.data);
+      }
+
+      if (overviewRes.status === 'rejected' && pipelineRes.status === 'rejected') {
+        console.warn('Dashboard endpoints temporarily unavailable');
+      }
+
+      setLoading(false);
+    };
+
+    void loadDashboard();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   if (loading) {
