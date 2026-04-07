@@ -27,3 +27,4 @@ prisma/*.db
 prisma/*.db-journal
 
 python-ml-service/venv
+python-ml-service/__pycache__/
