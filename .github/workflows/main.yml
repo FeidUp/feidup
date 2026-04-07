@@ -1,4 +1,6 @@
 name: Keep Supabase Alive
+permissions:
+  contents: read
 on:
   schedule:
     - cron: '0 12 */5 * *'  # Every 5 days
