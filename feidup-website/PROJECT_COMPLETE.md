@@ -34,7 +34,7 @@ Your professional FeidUp marketing website is **100% complete** with all request
    - Focus on impressions, reach, and engagement
 
 4. **Café Partners Page** (`/businesses`)
-   - "Premium Packaging, Zero Cost" messaging
+   - "Premium Packaging, Minimal Cost" messaging
    - 6 partnership benefits
    - Co-branding reassurance (your brand always comes first)
    - Partnership process (4 steps)

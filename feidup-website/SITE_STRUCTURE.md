@@ -106,13 +106,13 @@
 │              CAFÉ PARTNERS PAGE (/businesses)            │
 ├─────────────────────────────────────────────────────────┤
 │ HERO                                                     │
-│ • "Premium Packaging, Zero Cost"                         │
-│ • Free custom packaging for café partners                │
+│ • "Premium Packaging, Minimal Cost"                      │
+│ • Premium custom packaging for a minimal fee             │
 │ • [CTA: Become a Partner]                                │
 │ • [Placeholder Image: Custom Café Packaging]             │
 ├─────────────────────────────────────────────────────────┤
 │ BENEFITS (6 Cards)                                       │
-│ • No Cost to You                                         │
+│ • Low Cost, High Value                                   │
 │ • Your Brand Front & Center                              │
 │ • Premium Quality                                        │
 │ • Sustainable Materials                                  │

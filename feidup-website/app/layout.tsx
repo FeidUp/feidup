@@ -20,7 +20,7 @@ const fredoka = Fredoka({
 
 export const metadata: Metadata = {
   title: "FeidUp | Transform Cafe Packaging into High-Visibility Ad Inventory",
-  description: "FeidUp partners with cafes to provide free custom packaging funded by advertiser impressions. Unskippable real-world advertising meets sustainable co-branding.",
+  description: "FeidUp partners with cafes to provide premium custom packaging through a minimal fee, supported by advertiser impressions. Unskippable real-world advertising meets sustainable co-branding.",
   keywords: "advertising impressions, cafe partnerships, co-branded packaging, marketing platform, real-world advertising, sustainable packaging",
   openGraph: {
     title: "FeidUp | Marketing & Impressions Platform",

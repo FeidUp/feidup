@@ -97,7 +97,7 @@ function VisionSection() {
               </p>
               <p>
                 We believe in creating value for everyone: cafes get premium packaging
-                at no cost, advertisers gain authentic real-world impressions, and customers
+                at a minimal fee, advertisers gain authentic real-world impressions, and customers
                 enjoy better-designed, more sustainable products.
               </p>
               <p>

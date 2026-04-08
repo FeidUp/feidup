@@ -16,7 +16,7 @@ const features = [
     icon: <Building2 className="h-5 w-5 text-[hsl(0,83%,59%)]" />,
     title: "For Venue Partners",
     description:
-      "Get premium custom packaging co-branded with your venue's identity at zero cost.",
+      "Get premium custom packaging co-branded with your venue's identity for a minimal fee.",
     href: "/businesses",
   },
   {

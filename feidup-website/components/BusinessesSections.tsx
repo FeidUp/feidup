@@ -40,14 +40,14 @@ function BusinessesHero() {
             <FadeIn delay={0.1}>
               <h1 className="fluid-7xl font-bold font-[family-name:var(--font-fredoka)] mb-6 leading-[1.05]" style={{ color: "var(--text-primary)" }}>
                 Premium Packaging,<br />
-                <span className="text-gradient">Zero Cost</span>
+                <span className="text-gradient">Minimal Cost</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={0.2}>
               <p className="text-xl md:text-2xl leading-relaxed max-w-xl mb-10" style={{ color: "var(--text-secondary)" }}>
-                Partner with FeidUp to get free, high-quality custom packaging that showcases
-                your cafe&apos;s brand while supporting sustainability.
+                Partner with FeidUp to get high-quality custom packaging at a minimal fee
+                that showcases your cafe&apos;s brand while supporting sustainability.
               </p>
             </FadeIn>
 
@@ -75,8 +75,8 @@ function BusinessesHero() {
 /* ─── BENEFITS ─── */
 const benefits = [
   {
-    title: "No Cost to You",
-    desc: "Premium custom packaging is 100% funded by advertiser partnerships. Upgrade your packaging quality without impacting your budget.",
+    title: "Low Cost, High Value",
+    desc: "Premium custom packaging is delivered through a minimal partner fee, with advertiser partnerships helping keep costs low.",
     icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
   },
   {
@@ -118,7 +118,7 @@ function BenefitsSection() {
             Why Partner with FeidUp?
           </h2>
           <p className="text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-            We provide everything you need to elevate your cafe&apos;s packaging without the cost.
+            We provide everything you need to elevate your cafe&apos;s packaging with minimal ongoing cost.
           </p>
         </FadeIn>
 
@@ -376,7 +376,7 @@ function BusinessesCTA() {
                 Ready to Upgrade Your Packaging?
               </h2>
               <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-                Join FeidUp and get premium custom packaging at no cost to your cafe.
+                Join FeidUp and get premium custom packaging for a minimal fee.
               </p>
               <MagneticButton href="/contact">
                 <span className="inline-flex items-center gap-2 px-10 py-5 rounded-full font-semibold text-lg bg-white text-[hsl(0,83%,59%)] shadow-xl hover:shadow-2xl transition-all duration-300 hover:bg-gray-50">

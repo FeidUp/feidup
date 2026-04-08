@@ -98,7 +98,7 @@ Instead of using Gmail or a server, we use a Cloudflare Worker:
 - Secure (use encrypted secrets, not app passwords)
 - Free tier more than enough for FeidUp
 
-This gives us a **serverless backend** at zero cost.
+This gives us a **serverless backend** at minimal platform cost.
 
 **→ Worker = The backend API for sending emails.**
 

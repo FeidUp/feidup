@@ -1,13 +1,13 @@
 # FeidUp Marketing Website
 
-A professional marketing-focused website for FeidUp, a startup that partners with restaurants to provide free custom packaging funded by advertiser impressions.
+A professional marketing-focused website for FeidUp, a startup that partners with restaurants to provide premium custom packaging through a minimal partner fee supported by advertiser impressions.
 
 ## 🎯 Project Overview
 
 FeidUp is a marketing and impressions company that transforms everyday café packaging into high-visibility ad inventory. This website serves to:
 
 - Attract advertisers seeking targeted, real-world impressions
-- Recruit café partners interested in free premium co-branded packaging
+- Recruit café partners interested in affordable premium co-branded packaging
 - Educate stakeholders about FeidUp's unique value proposition
 
 ## 🛠 Tech Stack
@@ -134,7 +134,7 @@ npm start
 - CTA to contact for campaign planning
 
 ### Café Partners Page (`/businesses`)
-- Free premium packaging benefits
+- Affordable premium packaging benefits
 - Co-branding assurance (café identity first)
 - Partnership process
 - Ideal partner criteria

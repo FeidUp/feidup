@@ -313,13 +313,13 @@ function AudienceSplit() {
           </h2>
         </FadeIn>
 
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
           {/* Advertisers */}
-          <FadeIn direction="left" delay={0.1}>
-            <Tilt3D maxTilt={10} scale={1.02} glare>
-            <Link href="/advertisers" className="group block h-full">
+          <FadeIn direction="left" delay={0.1} className="flex">
+            <Tilt3D maxTilt={10} scale={1.02} glare className="w-full">
+            <Link href="/advertisers" className="group block h-full w-full">
               <div
-                className="relative rounded-3xl p-10 md:p-12 h-full transition-all duration-700 overflow-hidden"
+                className="relative rounded-3xl p-10 md:p-12 h-full flex flex-col transition-all duration-700 overflow-hidden"
                 style={{
                   background: "var(--card-bg)",
                   border: "1px solid var(--border)",
@@ -367,11 +367,11 @@ function AudienceSplit() {
           </FadeIn>
 
           {/* Venues */}
-          <FadeIn direction="right" delay={0.1}>
-            <Tilt3D maxTilt={10} scale={1.02} glare>
-            <Link href="/businesses" className="group block h-full">
+          <FadeIn direction="right" delay={0.1} className="flex">
+            <Tilt3D maxTilt={10} scale={1.02} glare className="w-full">
+            <Link href="/businesses" className="group block h-full w-full">
               <div
-                className="relative rounded-3xl p-10 md:p-12 h-full transition-all duration-700 overflow-hidden"
+                className="relative rounded-3xl p-10 md:p-12 h-full flex flex-col transition-all duration-700 overflow-hidden"
                 style={{
                   background: "var(--card-bg)",
                   border: "1px solid var(--border)",
@@ -391,11 +391,11 @@ function AudienceSplit() {
                   For Cafes & Venues
                 </span>
                 <h3 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-fredoka)] mb-4" style={{ color: "var(--text-primary)" }}>
-                  Premium Packaging, Zero Cost
+                  Premium Packaging, Minimal Cost
                 </h3>
                 <p className="leading-relaxed text-lg mb-8" style={{ color: "var(--text-secondary)" }}>
                   Upgrade your cups and packaging to a premium co-branded
-                  design — completely funded by our advertising partners.
+                  design — with costs kept low through advertiser partnerships.
                 </p>
                 <span className="inline-flex items-center gap-2 text-[hsl(0,83%,59%)] font-medium group-hover:gap-4 transition-all duration-300">
                   Learn more
