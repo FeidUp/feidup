@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   FadeIn,
@@ -190,16 +191,16 @@ function PartnershipsSection() {
               className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-gradient-to-br from-purple-600 to-indigo-700 shadow-2xl"
               style={{ y: imgY }}
             >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center">
-                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  </div>
-                  <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Partnership Network</p>
-                  <p className="text-white/60 mt-2">High-traffic cafe locations</p>
-                </div>
+              <Image
+                src="/images/cups-brown.png"
+                alt="FeidUp co-branded cup network visual"
+                fill
+                sizes="(min-width: 1024px) 40vw, 90vw"
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/70 via-black/35 to-transparent">
+                <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Partnership Network</p>
+                <p className="text-white/75 mt-1">High-traffic cafe locations</p>
               </div>
               <div className="absolute -top-12 -right-12 w-40 h-40 border border-white/10 rounded-full" />
             </motion.div>

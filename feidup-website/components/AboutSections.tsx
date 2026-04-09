@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   FadeIn,
@@ -112,17 +113,16 @@ function VisionSection() {
               className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-gradient-to-br from-[hsl(0,83%,55%)] to-[hsl(0,83%,45%)] shadow-2xl"
               style={{ y: imgY }}
             >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
-                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  </div>
-                  <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Our Vision</p>
-                  <p className="text-white/70 mt-2">Premium packaging for every cafe</p>
-                </div>
+              <Image
+                src="/images/cups-white.png"
+                alt="FeidUp co-branded packaging concept"
+                fill
+                sizes="(min-width: 1024px) 40vw, 90vw"
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/70 via-black/35 to-transparent">
+                <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Our Vision</p>
+                <p className="text-white/75 mt-1">Premium packaging for every cafe</p>
               </div>
               <div className="absolute -top-12 -right-12 w-40 h-40 border border-white/10 rounded-full" />
               <div className="absolute -bottom-8 -left-8 w-32 h-32 border border-white/10 rounded-full" />
@@ -154,16 +154,16 @@ function StartingLocalSection() {
               className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 shadow-2xl"
               style={{ y: imgY }}
             >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
-                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                  </div>
-                  <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Co-Branded Packaging</p>
-                  <p className="text-white/70 mt-2">Ipswich Cafe x FeidUp</p>
-                </div>
+              <Image
+                src="/images/cups-purple.png"
+                alt="Co-branded coffee cup for local cafe partnerships"
+                fill
+                sizes="(min-width: 1024px) 40vw, 90vw"
+                className="object-cover object-center rotate-180"
+              />
+              <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/70 via-black/35 to-transparent">
+                <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Co-Branded Packaging</p>
+                <p className="text-white/75 mt-1">Ipswich Cafe x FeidUp</p>
               </div>
             </motion.div>
           </FadeIn>

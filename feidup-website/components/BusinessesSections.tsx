@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   FadeIn,
@@ -210,16 +211,16 @@ function CoBrandingSection() {
               className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 shadow-2xl"
               style={{ y: imgY }}
             >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center">
-                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                    </svg>
-                  </div>
-                  <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Co-Branded Cup</p>
-                  <p className="text-white/60 mt-2">Ipswich Cafe x FeidUp</p>
-                </div>
+              <Image
+                src="/images/cup-cobrand.png"
+                alt="Hand holding a FeidUp co-branded coffee cup"
+                fill
+                sizes="(min-width: 1024px) 40vw, 90vw"
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/70 via-black/35 to-transparent">
+                <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Co-Branded Cup</p>
+                <p className="text-white/75 mt-1">Ipswich Cafe x FeidUp</p>
               </div>
               <div className="absolute -top-12 -right-12 w-40 h-40 border border-white/10 rounded-full" />
               <div className="absolute -bottom-8 -left-8 w-32 h-32 border border-white/10 rounded-full" />
