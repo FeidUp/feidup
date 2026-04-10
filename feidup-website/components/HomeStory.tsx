@@ -208,8 +208,8 @@ function InsightSection() {
 const steps = [
   {
     num: "01",
-    title: "Partner with Venues",
-    desc: "We collaborate with local cafes & venues to provide custom packaging featuring both their branding and advertiser messaging.",
+    title: "Partner with Cafes & Restaurants",
+    desc: "We collaborate with local cafes and restaurants to provide custom packaging featuring both the cafe and advertiser.",
   },
   {
     num: "02",
@@ -388,7 +388,7 @@ function AudienceSplit() {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[hsl(0,83%,59%)] rounded-full blur-[60px] group-hover:opacity-[0.1] transition-opacity duration-700" style={{ opacity: "var(--glow-opacity)" }} />
 
                 <span className="text-[hsl(0,83%,59%)] font-medium text-xs uppercase tracking-[0.3em] mb-4 block">
-                  For Cafes & Venues
+                  For Cafes & Restaurants
                 </span>
                 <h3 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-fredoka)] mb-4" style={{ color: "var(--text-primary)" }}>
                   Premium Packaging, Minimal Cost

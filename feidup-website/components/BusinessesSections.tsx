@@ -73,6 +73,81 @@ function BusinessesHero() {
   );
 }
 
+/* ─── CO-BRANDING ─── */
+function CoBrandingSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const imgY = useTransform(scrollYProgress, [0, 1], [60, -60]);
+
+  return (
+    <section ref={ref} className="section-pad-lg relative overflow-hidden">
+      <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
+
+      <div
+        className="absolute inset-0"
+        style={{
+          opacity: 0.04,
+          backgroundImage: `radial-gradient(circle at 1px 1px, var(--grid-color) 1px, transparent 0)`,
+          backgroundSize: "40px 40px",
+        }}
+      />
+
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          <FadeIn direction="right">
+            <span className="text-[hsl(0,83%,59%)] font-semibold text-xs uppercase tracking-[0.2em]">Co-Branding</span>
+            <h2 className="fluid-4xl font-bold font-[family-name:var(--font-fredoka)] mt-4 mb-8" style={{ color: "var(--text-primary)" }}>
+              Your Brand Always Comes First
+            </h2>
+            <div className="space-y-5 text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+              <p>
+                When customers pick up a cup from your cafe, they should see <em style={{ color: "var(--text-primary)", opacity: 0.8 }}>your</em> branding
+                first and foremost. That&apos;s our promise.
+              </p>
+              <div className="backdrop-blur-sm rounded-2xl p-6" style={{ background: "var(--card-bg)", border: "1px solid var(--border)" }}>
+                <p className="font-semibold font-[family-name:var(--font-fredoka)] text-lg mb-2" style={{ color: "var(--text-primary)" }}>
+                  Co-Branding, Not Takeover
+                </p>
+                <p style={{ color: "var(--text-secondary)" }}>
+                  Advertiser messaging is integrated subtly and tastefully — complementing your
+                  design, not competing with it.
+                </p>
+              </div>
+              <p>
+                For example, an &ldquo;Ipswich Cafe x Ipswich Gym&rdquo; cup would feature Ipswich Cafe&apos;s
+                branding prominently, with the gym's branding integrated thoughtfully.
+              </p>
+            </div>
+          </FadeIn>
+
+          <FadeIn direction="left" delay={0.2}>
+            <motion.div
+              className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 shadow-2xl"
+              style={{ y: imgY }}
+            >
+              <Image
+                src="/images/cup-cobrand.png"
+                alt="Hand holding a FeidUp co-branded coffee cup"
+                fill
+                sizes="(min-width: 1024px) 40vw, 90vw"
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/70 via-black/35 to-transparent">
+                <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Co-Branded Cup</p>
+                <p className="text-white/75 mt-1">Your Cafe x Local Business (Gyms, Dentists, Shops)</p>
+              </div>
+              <div className="absolute -top-12 -right-12 w-40 h-40 border border-white/10 rounded-full" />
+              <div className="absolute -bottom-8 -left-8 w-32 h-32 border border-white/10 rounded-full" />
+            </motion.div>
+          </FadeIn>
+        </div>
+      </div>
+
+      <div className="absolute -bottom-32 left-0 w-[500px] h-[300px] bg-amber-500 rounded-full blur-[120px]" style={{ opacity: "calc(var(--glow-opacity) * 0.8)" }} />
+    </section>
+  );
+}
+
 /* ─── BENEFITS ─── */
 const benefits = [
   {
@@ -155,81 +230,6 @@ function BenefitsSection() {
           ))}
         </StaggerContainer>
       </div>
-    </section>
-  );
-}
-
-/* ─── CO-BRANDING ─── */
-function CoBrandingSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const imgY = useTransform(scrollYProgress, [0, 1], [60, -60]);
-
-  return (
-    <section ref={ref} className="section-pad-lg relative overflow-hidden">
-      <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(to right, transparent, var(--divider), transparent)" }} />
-
-      <div
-        className="absolute inset-0"
-        style={{
-          opacity: 0.04,
-          backgroundImage: `radial-gradient(circle at 1px 1px, var(--grid-color) 1px, transparent 0)`,
-          backgroundSize: "40px 40px",
-        }}
-      />
-
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          <FadeIn direction="right">
-            <span className="text-[hsl(0,83%,59%)] font-semibold text-xs uppercase tracking-[0.2em]">Co-Branding</span>
-            <h2 className="fluid-4xl font-bold font-[family-name:var(--font-fredoka)] mt-4 mb-8" style={{ color: "var(--text-primary)" }}>
-              Your Brand Always Comes First
-            </h2>
-            <div className="space-y-5 text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-              <p>
-                When customers pick up a cup from your cafe, they should see <em style={{ color: "var(--text-primary)", opacity: 0.8 }}>your</em> branding
-                first and foremost. That&apos;s our promise.
-              </p>
-              <div className="backdrop-blur-sm rounded-2xl p-6" style={{ background: "var(--card-bg)", border: "1px solid var(--border)" }}>
-                <p className="font-semibold font-[family-name:var(--font-fredoka)] text-lg mb-2" style={{ color: "var(--text-primary)" }}>
-                  Co-Branding, Not Takeover
-                </p>
-                <p style={{ color: "var(--text-secondary)" }}>
-                  Advertiser messaging is integrated subtly and tastefully — complementing your
-                  design, not competing with it.
-                </p>
-              </div>
-              <p>
-                For example, an &ldquo;Ipswich Cafe x FeidUp&rdquo; cup would feature Ipswich Cafe&apos;s
-                branding prominently, with advertiser elements integrated thoughtfully.
-              </p>
-            </div>
-          </FadeIn>
-
-          <FadeIn direction="left" delay={0.2}>
-            <motion.div
-              className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 shadow-2xl"
-              style={{ y: imgY }}
-            >
-              <Image
-                src="/images/cup-cobrand.png"
-                alt="Hand holding a FeidUp co-branded coffee cup"
-                fill
-                sizes="(min-width: 1024px) 40vw, 90vw"
-                className="object-cover object-center"
-              />
-              <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/70 via-black/35 to-transparent">
-                <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Co-Branded Cup</p>
-                <p className="text-white/75 mt-1">Ipswich Cafe x FeidUp</p>
-              </div>
-              <div className="absolute -top-12 -right-12 w-40 h-40 border border-white/10 rounded-full" />
-              <div className="absolute -bottom-8 -left-8 w-32 h-32 border border-white/10 rounded-full" />
-            </motion.div>
-          </FadeIn>
-        </div>
-      </div>
-
-      <div className="absolute -bottom-32 left-0 w-[500px] h-[300px] bg-amber-500 rounded-full blur-[120px]" style={{ opacity: "calc(var(--glow-opacity) * 0.8)" }} />
     </section>
   );
 }
@@ -400,8 +400,8 @@ export function BusinessesSections() {
   return (
     <>
       <BusinessesHero />
-      <BenefitsSection />
       <CoBrandingSection />
+      <BenefitsSection />
       <ProcessSection />
       <IdealPartnersSection />
       <BusinessesCTA />

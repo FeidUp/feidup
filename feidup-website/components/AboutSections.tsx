@@ -163,7 +163,7 @@ function StartingLocalSection() {
               />
               <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/70 via-black/35 to-transparent">
                 <p className="text-white font-semibold text-xl font-[family-name:var(--font-fredoka)]">Co-Branded Packaging</p>
-                <p className="text-white/75 mt-1">Ipswich Cafe x FeidUp</p>
+                <p className="text-white/75 mt-1">Your Cafe x Local Business (Gyms, Dentists, Shops)</p>
               </div>
             </motion.div>
           </FadeIn>
@@ -180,21 +180,18 @@ function StartingLocalSection() {
             <div className="space-y-5 text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
               <p>
                 We&apos;re launching with targeted pilots at select local cafes, beginning with
-                custom co-branded cups that feature both the cafe&apos;s identity and advertiser
-                messaging.
+                custom cups that feature both the cafe&apos;s branding and local businesses like gyms, dentists, community initiatives and more.
               </p>
               <div className="rounded-2xl p-6" style={{ background: "var(--card-bg)", border: "1px solid var(--border)" }}>
                 <p className="font-semibold font-[family-name:var(--font-fredoka)] text-lg mb-2" style={{ color: "var(--text-primary)" }}>
                   Co-Branding, Not Takeover
                 </p>
                 <p style={{ color: "var(--text-secondary)" }}>
-                  Our packaging is designed cafe-first. When you see a FeidUp cup at Ipswich Cafe,
-                  it looks like their branding with subtle advertiser integration.
+                  Our packaging is designed cafe-first. When you see a FeidUp cup at your cafe,
+                  it looks like your branding with subtle advertiser integration.
                 </p>
               </div>
               <p>
-                This ensures cafes maintain brand integrity while gaining access
-                to premium materials they might not otherwise afford.
               </p>
             </div>
           </FadeIn>
