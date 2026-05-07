@@ -3,7 +3,7 @@ permissions:
   contents: read
 on:
   schedule:
-    - cron: '0 12 */5 * *'  # Every 5 days
+    - cron: '0 12 */1 * *'  # Every day
   workflow_dispatch:
 
 jobs:
