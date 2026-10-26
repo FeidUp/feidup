@@ -48,7 +48,7 @@ feidup/
 | Component | Platform | URL | Branch | Root Dir |
 |-----------|----------|-----|--------|----------|
 | Website | Vercel (Shubh) | feidup.com | main | feidup-website |
-| Backend | Render (free) | feidup.onrender.com | client-side-interface | feidup-location-backend |
+| Backend | Render (free) | feidup.onrender.com | main | feidup-location-backend |
 | CRM | Vercel (Kunwar) | feidup-crm.vercel.app | main | feidup-crm |
 | Database | Render PostgreSQL | Singapore region | — | — |
 
@@ -68,7 +68,7 @@ feidup/
 ### Known Deployment Issues
 - Vercel free tier doesn't support **private org repos**. Repo must be public OR moved to a personal GitHub account
 - Render free tier spins down after 15min idle — first request takes ~30s cold start
-- The `client-side-interface` branch has been merged to `main` but Render is still pointing at `client-side-interface`. Can be switched to `main` in Render settings
+- Render free Postgres `feidup-db` (recreated 2026-10-26) expires 2026-11-25 — upgrade or recreate before then. Build runs `npm run db:seed-if-empty`
 
 ## Current State (as of March 2026)
 
@@ -163,7 +163,7 @@ And use `DATABASE_URL="file:./dev.db"` in `.env`.
 ## Git Workflow
 
 - `main` — stable, deployed. Both website (Vercel) and CRM (Vercel) deploy from here
-- `client-side-interface` — development branch, merged to main. Render backend deploys from here
+- `client-side-interface` — old development branch (merged). Render now deploys from `main`
 - GitHub: https://github.com/FeidUp/feidup (org) / https://github.com/shubhgupta2510/feidup (redirects)
 
 ## Key Design Decisions
