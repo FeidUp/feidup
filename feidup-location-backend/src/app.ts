@@ -43,7 +43,10 @@ const authLimiter = rateLimit({
   message: { success: false, error: 'Too many attempts, try again later' },
 });
 
+// Known CRM origins are always allowed; FRONTEND_URL can add more (comma-separated)
 const allowedOrigins = new Set([
+  'https://feidup-crm.vercel.app',
+  'https://app.feidup.com',
   ...config.frontendUrl.split(',').map((o) => o.trim()).filter(Boolean),
   ...(config.nodeEnv === 'production' ? [] : ['http://localhost:5173', 'http://localhost:5174']),
 ]);
