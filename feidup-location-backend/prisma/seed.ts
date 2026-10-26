@@ -245,6 +245,12 @@ const sampleAdvertisers = [
 ];
 
 async function main() {
+  // SEED_IF_EMPTY=1 (used in the Render build) only seeds a fresh database, never wipes real data
+  if (process.env.SEED_IF_EMPTY && (await prisma.user.count()) > 0) {
+    console.log('🌱 Database already has users, skipping seed.');
+    return;
+  }
+
   console.log('🌱 Seeding FeidUp database...\n');
 
   // Clear existing data

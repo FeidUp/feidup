@@ -9,6 +9,7 @@ Shared working memory for Claude Code and ZCode. One line per entry, `YYYY-MM-DD
 2026-10-26 — Backend tests: `npm test` (vitest + supertest, Prisma mocked, no DB). App lives in src/app.ts; src/index.ts only listens.
 
 ## Gotchas
+2026-10-26 — Render build runs `npm run db:seed-if-empty` (seeds only when no users). Plain `db:seed` WIPES all tables. New free Render DB `feidup-db` expires 2026-11-25.
 2026-10-26 — Server refuses to start with NODE_ENV=production and no JWT_SECRET.
 2026-10-26 — Legacy feidup-admin calls the API without tokens, so it no longer works (it isn't deployed).
 2026-10-26 — Prod check: Render API reports database "disconnected" (free Postgres likely expired); feidup-crm.vercel.app returns 402. Infra, not code.
