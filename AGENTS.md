@@ -86,7 +86,7 @@ feidup/
 - **Data enrichment**: ABS Census (68 suburbs), Google Places (967 cafes discovered), OSM Overpass (cafe density, POI context)
 - **Advertiser discovery**: Search Google Places for potential advertisers by keyword (gyms, dentists, padel, etc.)
 - **Seed data**: 48 cafes, 5 advertisers, 3 campaigns, 8 placements, 16 QR codes, 80 scans, 68 suburbs
-- **All 37 backend tests passing**, 32 enrichment stress tests passing
+- **Tests**: `npm test` (vitest, route auth/ownership, no DB needed); manual enrichment stress test via `npx tsx tests/enrichment-stress-test.ts`
 - Live at https://feidup.onrender.com
 
 ### feidup-crm ✅ Fully functional

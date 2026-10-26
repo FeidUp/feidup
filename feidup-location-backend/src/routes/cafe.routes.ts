@@ -34,11 +34,14 @@ router.get('/me', authenticate, authorize('restaurant'), scopeToCafe, async (req
   res.json({ success: true, data: cafe });
 });
 
+// Everything below /me is internal-only
+router.use(authenticate);
+
 /**
  * POST /api/cafes
  * Create a new cafe partner
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', authorize('admin', 'sales', 'operations'), async (req: Request, res: Response) => {
   const input: CreateCafeInput = req.body;
   const cafe = await cafeService.create(input);
 
@@ -52,7 +55,7 @@ router.post('/', async (req: Request, res: Response) => {
  * GET /api/cafes
  * List all cafes with optional filters
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', authorize('admin', 'sales', 'operations'), async (req: Request, res: Response) => {
   const { city, suburb, postcode, isActive, minTraffic, tags, limit, offset } = req.query;
 
   const result = await cafeService.getAll({
@@ -81,7 +84,7 @@ router.get('/', async (req: Request, res: Response) => {
  * GET /api/cafes/stats/suburbs
  * Get cafe statistics by suburb
  */
-router.get('/stats/suburbs', async (req: Request, res: Response) => {
+router.get('/stats/suburbs', authorize('admin', 'sales', 'operations'), async (req: Request, res: Response) => {
   const { city } = req.query;
   const stats = await cafeService.getSuburbStats(city as string);
 
@@ -95,7 +98,7 @@ router.get('/stats/suburbs', async (req: Request, res: Response) => {
  * GET /api/cafes/:id
  * Get cafe by ID
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', authorize('admin', 'sales', 'operations'), async (req: Request, res: Response) => {
   const { id } = req.params;
   const cafe = await cafeService.getById(id);
 
@@ -109,7 +112,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  * PUT /api/cafes/:id
  * Update a cafe
  */
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', authorize('admin', 'sales', 'operations'), async (req: Request, res: Response) => {
   const { id } = req.params;
   const input: Partial<CreateCafeInput> = req.body;
   const cafe = await cafeService.update(id, input);
@@ -124,7 +127,7 @@ router.put('/:id', async (req: Request, res: Response) => {
  * PATCH /api/cafes/:id/metrics
  * Update cafe traffic/volume metrics
  */
-router.patch('/:id/metrics', async (req: Request, res: Response) => {
+router.patch('/:id/metrics', authorize('admin', 'sales', 'operations'), async (req: Request, res: Response) => {
   const { id } = req.params;
   const { avgDailyFootTraffic, packagingVolume } = req.body;
 
@@ -143,7 +146,7 @@ router.patch('/:id/metrics', async (req: Request, res: Response) => {
  * PATCH /api/cafes/:id/deactivate
  * Deactivate a cafe (soft delete)
  */
-router.patch('/:id/deactivate', async (req: Request, res: Response) => {
+router.patch('/:id/deactivate', authorize('admin', 'sales', 'operations'), async (req: Request, res: Response) => {
   const { id } = req.params;
   const cafe = await cafeService.deactivate(id);
 
@@ -157,7 +160,7 @@ router.patch('/:id/deactivate', async (req: Request, res: Response) => {
  * DELETE /api/cafes/:id
  * Delete a cafe
  */
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', authorize('admin'), async (req: Request, res: Response) => {
   const { id } = req.params;
   await cafeService.delete(id);
 
