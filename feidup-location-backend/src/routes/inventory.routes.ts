@@ -7,6 +7,11 @@ import { NotFoundError } from '../middleware/errorHandler.js';
 const router = Router();
 router.use(authenticate);
 
+// Restaurant users may only act on their own cafe
+function ownsCafe(req: AuthRequest, cafeId: string) {
+  return req.user!.role !== 'restaurant' || req.user!.restaurantId === cafeId;
+}
+
 // GET /inventory - List inventory across all cafes
 router.get('/', authorize('admin', 'operations'), async (req, res) => {
   const { cafeId, lowStock } = req.query;
@@ -30,7 +35,11 @@ router.get('/', authorize('admin', 'operations'), async (req, res) => {
 });
 
 // GET /inventory/restaurant/:cafeId
-router.get('/restaurant/:cafeId', authorize('admin', 'operations', 'restaurant'), async (req, res) => {
+router.get('/restaurant/:cafeId', authorize('admin', 'operations', 'restaurant'), async (req: AuthRequest, res) => {
+  if (!ownsCafe(req, req.params.cafeId)) {
+    return res.status(403).json({ success: false, error: 'Access denied' });
+  }
+
   const inventory = await prisma.packagingInventory.findMany({
     where: { cafeId: req.params.cafeId },
     include: {
@@ -134,6 +143,10 @@ router.post('/usage', authorize('admin', 'operations', 'restaurant'), async (req
     packagingUsed: z.number().int().positive(),
     notes: z.string().optional(),
   }).parse(req.body);
+
+  if (!ownsCafe(req, data.cafeId)) {
+    return res.status(403).json({ success: false, error: 'Access denied' });
+  }
   
   const report = await prisma.usageReport.create({
     data: {

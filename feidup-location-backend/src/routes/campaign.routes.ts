@@ -3,9 +3,13 @@ import { Router, Request, Response } from 'express';
 import { campaignService } from '../services/campaign.service.js';
 import { prisma } from '../lib/prisma.js';
 import { ValidationError } from '../middleware/errorHandler.js';
+import { authenticate, authorize } from '../middleware/auth.js';
 import type { CreateCampaignInput } from '../types/index.js';
 
 const router = Router();
+
+router.use(authenticate);
+router.use(authorize('admin', 'sales', 'operations'));
 
 /**
  * POST /api/campaigns
@@ -150,7 +154,7 @@ router.patch('/placements/:placementId/status', async (req: Request, res: Respon
  * DELETE /api/campaigns/:id
  * Delete a campaign
  */
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', authorize('admin'), async (req: Request, res: Response) => {
   const { id } = req.params;
   await campaignService.delete(id);
 

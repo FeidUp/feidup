@@ -42,7 +42,7 @@ router.get('/overview', authorize('admin', 'sales', 'operations'), async (_req, 
 });
 
 // GET /analytics/campaign/:id - Campaign-specific analytics
-router.get('/campaign/:id', authorize('admin', 'sales', 'operations', 'advertiser'), async (req, res) => {
+router.get('/campaign/:id', authorize('admin', 'sales', 'operations', 'advertiser'), async (req: AuthRequest, res) => {
   const campaign = await prisma.campaign.findUnique({
     where: { id: req.params.id },
     include: {
@@ -55,6 +55,11 @@ router.get('/campaign/:id', authorize('admin', 'sales', 'operations', 'advertise
   
   if (!campaign) {
     return res.status(404).json({ success: false, error: 'Campaign not found' });
+  }
+
+  // Advertisers may only view their own campaigns
+  if (req.user!.role === 'advertiser' && campaign.advertiserId !== req.user!.advertiserId) {
+    return res.status(403).json({ success: false, error: 'Access denied' });
   }
   
   const totalActualImpressions = campaign.placements.reduce((sum, p) => sum + p.actualImpressions, 0);

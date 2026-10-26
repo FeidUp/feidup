@@ -88,9 +88,20 @@ router.get('/', authorize('admin', 'sales', 'operations'), async (req, res) => {
 });
 
 // GET /assets/:id/download
-router.get('/:id/download', async (req, res) => {
-  const asset = await prisma.asset.findUnique({ where: { id: req.params.id } });
+router.get('/:id/download', authorize('admin', 'sales', 'operations', 'advertiser'), async (req: AuthRequest, res) => {
+  const asset = await prisma.asset.findUnique({
+    where: { id: req.params.id },
+    include: { campaign: { select: { advertiserId: true } } },
+  });
   if (!asset) throw new NotFoundError('Asset');
+
+  // Advertisers may only download assets attached to them or their campaigns
+  if (req.user!.role === 'advertiser') {
+    const ownerId = asset.advertiserId ?? asset.campaign?.advertiserId;
+    if (!ownerId || ownerId !== req.user!.advertiserId) {
+      return res.status(403).json({ success: false, error: 'Access denied' });
+    }
+  }
   
   const filePath = path.resolve(uploadDir, asset.storagePath);
   if (!filePath.startsWith(uploadDir)) {
@@ -100,9 +111,8 @@ router.get('/:id/download', async (req, res) => {
     throw new NotFoundError('File');
   }
   
-  res.setHeader('Content-Disposition', `attachment; filename="${asset.fileName}"`);
   res.setHeader('Content-Type', asset.mimeType);
-  res.sendFile(filePath);
+  res.download(filePath, asset.fileName);
 });
 
 // DELETE /assets/:id

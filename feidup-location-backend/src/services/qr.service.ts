@@ -70,6 +70,15 @@ export const qrService = {
     const qrCode = await prisma.qRCode.findUnique({ where: { code } });
     if (!qrCode || !qrCode.isActive) return null;
 
+    // Only ever redirect to web URLs (blocks javascript:, data:, malformed targets)
+    let target: URL;
+    try {
+      target = new URL(qrCode.targetUrl);
+    } catch {
+      return null;
+    }
+    if (target.protocol !== 'http:' && target.protocol !== 'https:') return null;
+
     const { deviceType, os, browser } = parseUserAgent(req.userAgent);
     const sessionId = crypto.randomBytes(8).toString('hex');
 
@@ -88,7 +97,7 @@ export const qrService = {
     });
 
     // Build redirect URL with UTM params
-    const url = new URL(qrCode.targetUrl);
+    const url = target;
     url.searchParams.set('utm_source', 'feidup_cup');
     url.searchParams.set('utm_medium', 'print');
     if (qrCode.campaignId) url.searchParams.set('utm_campaign', qrCode.campaignId);

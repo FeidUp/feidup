@@ -1,0 +1,25 @@
+name: Backend CI
+permissions:
+  contents: read
+on:
+  push:
+    paths: ['feidup-location-backend/**', '.github/workflows/backend-ci.yml']
+  pull_request:
+    paths: ['feidup-location-backend/**', '.github/workflows/backend-ci.yml']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: feidup-location-backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: feidup-location-backend/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm test

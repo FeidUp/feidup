@@ -46,11 +46,14 @@ router.get('/me', authenticate, authorize('advertiser'), scopeToAdvertiser, asyn
   });
 });
 
+// Everything below /me is internal-only
+router.use(authenticate);
+
 /**
  * POST /api/advertisers
  * Create a new advertiser
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', authorize('admin', 'sales', 'operations'), async (req: Request, res: Response) => {
   const input: CreateAdvertiserInput = req.body;
   const advertiser = await advertiserService.create(input);
 
@@ -64,7 +67,7 @@ router.post('/', async (req: Request, res: Response) => {
  * GET /api/advertisers
  * List all advertisers
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', authorize('admin', 'sales', 'operations'), async (req: Request, res: Response) => {
   const { city, industry, isActive, limit, offset } = req.query;
 
   const result = await advertiserService.getAll({
@@ -90,7 +93,7 @@ router.get('/', async (req: Request, res: Response) => {
  * GET /api/advertisers/:id
  * Get advertiser by ID
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', authorize('admin', 'sales', 'operations'), async (req: Request, res: Response) => {
   const { id } = req.params;
   const advertiser = await advertiserService.getById(id);
 
@@ -104,7 +107,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  * PUT /api/advertisers/:id
  * Update an advertiser
  */
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', authorize('admin', 'sales', 'operations'), async (req: Request, res: Response) => {
   const { id } = req.params;
   const input: Partial<CreateAdvertiserInput> = req.body;
   const advertiser = await advertiserService.update(id, input);
@@ -119,7 +122,7 @@ router.put('/:id', async (req: Request, res: Response) => {
  * PATCH /api/advertisers/:id/deactivate
  * Deactivate an advertiser (soft delete)
  */
-router.patch('/:id/deactivate', async (req: Request, res: Response) => {
+router.patch('/:id/deactivate', authorize('admin', 'sales', 'operations'), async (req: Request, res: Response) => {
   const { id } = req.params;
   const advertiser = await advertiserService.deactivate(id);
 
@@ -133,7 +136,7 @@ router.patch('/:id/deactivate', async (req: Request, res: Response) => {
  * DELETE /api/advertisers/:id
  * Delete an advertiser
  */
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', authorize('admin'), async (req: Request, res: Response) => {
   const { id } = req.params;
   await advertiserService.delete(id);
 

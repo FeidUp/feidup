@@ -4,8 +4,22 @@
 import { Router, Request, Response } from 'express';
 import { recommendationService } from '../services/recommendation.service.js';
 import { ValidationError } from '../middleware/errorHandler.js';
+import { authenticate, authorize } from '../middleware/auth.js';
+import { ScopedRequest, scopeToAdvertiser } from '../middleware/scopeAuth.js';
 
 const router = Router();
+
+router.use(authenticate);
+router.use(authorize('admin', 'sales', 'operations', 'advertiser'));
+router.use(scopeToAdvertiser);
+
+// Advertiser users may only query recommendations for their own advertiser
+router.use((req: ScopedRequest, res: Response, next) => {
+  if (req.scopedAdvertiserId && req.query.advertiser_id !== req.scopedAdvertiserId) {
+    return res.status(403).json({ success: false, error: 'Access denied' });
+  }
+  next();
+});
 
 /**
  * GET /api/recommendations
